@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Service Registration und Discovery im Internet of Things | hannesh</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Service Registration und Discovery im Internet of Things" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Das Thema dieser Arbeit ist die Untersuchung verschiedener Ansätze zur Registration und Service Discovery im Internet of Things. Das Internet of Things besteht aus einer Vielzahl von verschiedenen Geräten, welche unterschiedliche Technologien nutzen und somit über unterschiedliche Wege identifizierbar und ansprechbar sind. Um diese Geräte ohne menschliche Hilfe und möglichst automatisch nutzen zu können, gibt es verschiedene Möglichkeiten, sie zu finden. Dafür müssen sich die Geräte je nach genutztem Ansatz registrieren. Anschließend können Interessenten nach den Geräten und den angebotenen Services suchen und mithilfe maschinenlesbarer Beschreibung ansprechen. Das Ziel der Arbeit ist der Vergleich der unterschiedlichen Ansätze und eine Untersuchung von Integrationsmöglichkeiten. Aufbauend auf der Literaturrecherche soll in einem Prototypen eine identifizierte Lösung umgesetzt werden. Schlüsselwörter: Registration, Discovery, Internet of Things" />
+<meta property="og:description" content="Das Thema dieser Arbeit ist die Untersuchung verschiedener Ansätze zur Registration und Service Discovery im Internet of Things. Das Internet of Things besteht aus einer Vielzahl von verschiedenen Geräten, welche unterschiedliche Technologien nutzen und somit über unterschiedliche Wege identifizierbar und ansprechbar sind. Um diese Geräte ohne menschliche Hilfe und möglichst automatisch nutzen zu können, gibt es verschiedene Möglichkeiten, sie zu finden. Dafür müssen sich die Geräte je nach genutztem Ansatz registrieren. Anschließend können Interessenten nach den Geräten und den angebotenen Services suchen und mithilfe maschinenlesbarer Beschreibung ansprechen. Das Ziel der Arbeit ist der Vergleich der unterschiedlichen Ansätze und eine Untersuchung von Integrationsmöglichkeiten. Aufbauend auf der Literaturrecherche soll in einem Prototypen eine identifizierte Lösung umgesetzt werden. Schlüsselwörter: Registration, Discovery, Internet of Things" />
+<link rel="canonical" href="https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html" />
+<meta property="og:url" content="https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html" />
+<meta property="og:site_name" content="hannesh" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-09-08T23:01:18+02:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Service Registration und Discovery im Internet of Things","dateModified":"2017-09-08T23:01:18+02:00","datePublished":"2017-09-08T23:01:18+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html"},"url":"https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html","description":"Das Thema dieser Arbeit ist die Untersuchung verschiedener Ansätze zur Registration und Service Discovery im Internet of Things. Das Internet of Things besteht aus einer Vielzahl von verschiedenen Geräten, welche unterschiedliche Technologien nutzen und somit über unterschiedliche Wege identifizierbar und ansprechbar sind. Um diese Geräte ohne menschliche Hilfe und möglichst automatisch nutzen zu können, gibt es verschiedene Möglichkeiten, sie zu finden. Dafür müssen sich die Geräte je nach genutztem Ansatz registrieren. Anschließend können Interessenten nach den Geräten und den angebotenen Services suchen und mithilfe maschinenlesbarer Beschreibung ansprechen. Das Ziel der Arbeit ist der Vergleich der unterschiedlichen Ansätze und eine Untersuchung von Integrationsmöglichkeiten. Aufbauend auf der Literaturrecherche soll in einem Prototypen eine identifizierte Lösung umgesetzt werden. Schlüsselwörter: Registration, Discovery, Internet of Things","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="alternate" type="application/rss+xml" title="hannesh" href="/feed.xml">
+
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113921069-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-113921069-1');
+</script>
+
+
+
+</head>
+
+
+  <body>
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Service Registration und Discovery im Internet of Things</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2017-09-08T23:01:18+02:00" itemprop="datePublished">
+        
+        Sep 8, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p class="abstract">Das Thema dieser Arbeit ist die Untersuchung verschiedener Ansätze
+zur Registration und Service Discovery im Internet of Things. Das
+Internet of Things besteht aus einer Vielzahl von verschiedenen Geräten,
+welche unterschiedliche Technologien nutzen und somit über
+unterschiedliche Wege identifizierbar und ansprechbar sind. Um diese
+Geräte ohne menschliche Hilfe und möglichst automatisch nutzen zu
+können, gibt es verschiedene Möglichkeiten, sie zu finden. Dafür müssen
+sich die Geräte je nach genutztem Ansatz registrieren. Anschließend
+können Interessenten nach den Geräten und den angebotenen Services
+suchen und mithilfe maschinenlesbarer Beschreibung ansprechen. Das Ziel
+der Arbeit ist der Vergleich der unterschiedlichen Ansätze und eine
+Untersuchung von Integrationsmöglichkeiten. Aufbauend auf der
+Literaturrecherche soll in einem Prototypen eine identifizierte Lösung
+umgesetzt werden. Schlüsselwörter: Registration, Discovery, Internet of
+Things</p>
+
+<h1 id="einleitung">Einleitung</h1>
+
+<p>Das Internet of Things (IoT) wird durch eine hohe Anzahl smarter Geräte
+bestimmt. Diese Geräte wiederum bieten Services an, welche anschließend
+innerhalb des Netzwerks genutzt werden können. Um Geräte und ihre
+Services sofort und ohne menschliche Einrichtung zu nutzen, müssen sich
+diese möglichst einfach in einer bestehenden IoT Architektur integrieren
+lassen. Dies geschieht durch die Prozesse Registration und Discovery.
+Dazu muss sich ein Gerät bei der erstmaligen Nutzung im Netzwerk
+registrieren und seine Services bekannt machen. Durch Service Discovery
+ist es anschließend möglich im Netzwerk nach Geräten und angebotenen
+Services zu suchen. Sowohl bei der Registration als auch bei der
+Discovery wird eine Nachricht übermittelt, welche grundlegende
+Informationen über das Gerät und die Services beinhaltet. Weiterhin
+müssen Services maschinenlesbar und einheitlich beschrieben werden, um
+die verschiedenen Arten von Services zu verstehen.</p>
+
+<h2 id="problemstellung-und-motivation">Problemstellung und Motivation</h2>
+
+<p>Die Heterogenität der Geräte stellt jedoch für die Interoperabilität der
+Prozesse eine Herausforderung dar, da die Geräte unterschiedliche
+Transportwege und Technologien nutzen. Auf Grund fehlender Standards
+können die Geräte nicht einheitlich kommunizieren, wodurch schließlich
+die Bereitstellung von IoT-Services beeinträchtigt wird (vgl.
+[@Khodadadi2016 207]). Zudem ist die Komplexität des gesamten
+IoT-Netzwerks ein Problem. Die Geräte können zum Beispiel innerhalb
+eines lokalen Netzwerks oder mit einem Server in der Cloud
+kommunizieren. Der Server kann wiederum mit anderen Servern
+kommunizieren. Die Prozesse zur Registration und Discovery müssen sich
+daher an den jeweiligen Anwendungsfall anpassen (vgl. [@Khodadadi2016
+262]). Weiterhin stellt die eindeutige Identifikation der Geräte und der
+Services eine Herausforderung dar, da diese noch nicht einheitlich
+ansprechbar sind (vgl. [@Delicato2017 34]). Verschiedene Allianzen von
+Herstellern und eine Vielzahl an Protokollen stellen ebenfalls eine
+Hürde in der Entwicklung größerer IoT-Architekturen dar. Daher stellen
+sich die Fragen, welche Eigenschaften die Ansätze zur Registration und
+Discovery haben, wie sie sich unterscheiden und welche Möglichkeiten es
+zur Integration gibt.</p>
+
+<h2 id="zielstellung">Zielstellung</h2>
+
+<p>Ziel der Arbeit ist die Erstellung eines Überblicks über die
+unterschiedlichen Ansätze zur Registration und Discovery. Dabei sollen
+verschiedene Ausprägungen der Ansätze betrachtet werden und basierend
+auf den Eigenschaften Identifikation der Geräte und Services, Sicherheit
+und Datenschutz, verwendete Protokolle, Skalierung, Reichweite, Eignung
+für beschränkte Geräte und Suchmöglichkeiten verglichen werden. Darauf
+aufbauend sollen verschiedene Möglichkeiten zur Integration der Ansätze
+betrachtet werden. Weiterhin soll ein Prototyp erstellt werden, welcher
+eine identifizierte Lösung zur Registration und Discovery nutzt.</p>
+
+<h2 id="vorgehensweise">Vorgehensweise</h2>
+
+<p>Die verwendeten Methoden sind die Literaturrecherche und die
+Implementierung eines Prototyps. Für die Literaturrecherche werden
+Bücher als auch wissenschaftliche Artikel genutzt. Basierend auf dieser
+ersten Recherche werden die Primärquellen genutzt. Dazu zählen zum
+Beispiel die Spezifikationen der Internet Engineering Task Force.
+Ausgehend von der Literaturrecherche sollen die Ansätze herausgearbeitet
+werden und exemplarisch in einem Prototypen umgesetzt werden.</p>
+
+<h1 id="grundlagen-des-internet-of-things">Grundlagen des Internet of Things</h1>
+
+<p>Im Folgenden werden die Grundlagen des IoT erklärt, um den Aufbau, die
+beteiligten Geräte und die verwendeten Kommunikationswege zu verstehen.
+Weiterhin werden grundlegende Begriffe definiert.</p>
+
+<h2 id="definitionen">Definitionen</h2>
+
+<p>Der Client ist der Ursprung einer Anfrage und das Ziel einer Antwort
+(vgl. [Shelby et al. 2014, 4]) und bezeichnet im Zusammenhang mit dem
+Prozess der Discovery den interessierten Teilnehmer im Netzwerk. Der
+Server ist das Ziel einer Anfrage und der Ursprung einer Antwort (vgl.
+[Shelby et al. 2014, 4]). Der Endpoint stellt den Zugang zu einer
+Funktionalität des physischen Gerätes, zum Beispiel einem Sensor, dar
+und kann einen oder mehrere Services bereitstellen. Ein Gerät kann
+mehrere Endpoints haben, wenn es zum Beispiel durch mehrere Protokolle
+ansprechbar ist. Ein Service ist ein konkreter Dienst, zum Beispiel das
+Messen von Spannung. Registration bezeichnet im engeren Sinn den Prozess
+des Endpoints, sich direkt anzumelden oder die Möglichkeit zu schaffen,
+gefunden werden zu können. Im weiteren Sinn gehört das Abmelden des
+Endpoints und die Bekanntmachung von Änderungen dazu. Discovery
+bezeichnet im engeren Sinn den Prozess des Clients, Endpoints und ihre
+angebotenen Services automatisch oder manuell zu finden. Im weiteren
+Sinn unterteilt sich dieser Prozess in das Finden aller Endpoints und
+Services und das auf Parametern basierende Suchen.</p>
+
+<h2 id="aufbau-und-infrastruktur">Aufbau und Infrastruktur</h2>
+
+<p>Das IoT wird durch eine starke Heterogenität bestimmt, da viele
+unterschiedliche Geräte am IoT teilnehmen. Dazu gehören leistungsfähige
+Computer, Smartphones, Smart TV, aber auch leistungsschwache Sensoren,
+Lampen und Mikrocontroller. Die leistungsschwächsten Geräte gehören zur
+Gruppe der beschränkten Geräte, welche durch begrenzten Speicher,
+begrenzte CPU, begrenzt nutzbare Netzwerkbandbreite sowie
+Batteriebetrieb gekennzeichnet sind (vgl. [@Petersen2014 1]). Um diese
+Geräte im IoT integrieren zu können, müssen die genutzten Ansätze und
+Protokolle ressourcensparend funktionieren. Je nach Reichweite kann
+innerhalb des IoT zwischen Device to Device, Device to Server und Server
+to Server Kommunikation unterschieden werden (vgl. [@Khodadadi2016
+262]). In Device to Device Umgebungen werden mindestens zwei Teilnehmer
+innerhalb eines lokalen Netzwerkes benötigt. In Device to Server
+Umgebungen sind mindestens 3 Teilnehmer beteiligt. Der Server kann
+innerhalb eines lokalen Netzwerkes oder über das Internet erreichbar
+sein. Server to Server Umgebungen stellen eine Spezifikation der Device
+to Server Umgebung dar, in welcher zwei Plattformen miteinander
+kommunizieren. Weiterhin verwenden die Geräte unterschiedliche drahtlose
+und drahtgebundene Technologien, wodurch die Kommunikation erschwert
+wird.Die Vernetzungsdichte nimmt besonders durch die kabellosen
+Technologien zu (vgl. [@Petersen2014 1]). Wireless Personal Area
+Networks (WPAN), auch Wireless Sensor Networks genannt, basieren auf dem
+IEEE 802-15 Standard und agieren in kurzen Distanzen. Spezifikationen
+wie Zigbee, Bluetooth und 6LoWPAN sind Teil dieser Gruppe. Wireless
+Local Area Networks (WLAN) basieren auf dem IEE 802-11 Standard und
+haben eine größere Reichweite im Vergleich zu WPAN.</p>
+
+<h2 id="kommunikation">Kommunikation</h2>
+
+<p>Die Kommunikation im IoT basiert auf dem OSI Schichtenmodell (siehe Abb.
+1). Die verwendeten Protokolle und Spezifikationen werden dabei je zu
+einer oder mehreren Schichten zugeordnet.
+Die ersten beiden Schichten, Bitübertragungsschicht und
+Sicherungsschicht legen die technischen Voraussetzungen für die
+Übertragung und die Umwandlung von Information in physikalische Signale
+fest (vgl. [@comer2003tcp 195]). Die verschiedenen Arten der
+Netzwerkstrukturen wie WLAN, LAN und WPAN stellen Spezifikationen dieser
+Schichten dar. Darauf aufbauend sorgt die Vermittlungsschicht für das
+Routing zwischen den Teilnehmern. Dabei muss zwischen IP-basierter und
+nicht-IP-basierter Vermittlung unterschieden werden. Während die
+IP-basierte Vermittlung das Internet Protocol (IP) verwendet, nutzt die
+nicht IP-basierte Vermittlung unterschiedliche Spezifikationen. Diese
+Spezifikationen enthalten zudem bereits Definitionen für die nächsten
+Schichten, wie zum Beispiel Zigbee. IP ist ein unverlässliches und
+verbindungsloses Protokoll, welches das Format der Datenübertragung,
+sogenannte Internet Datagramme, definiert. Dieses wird von den folgenden
+Schichten erweitert. Weiterhin stellt es eine eindeutige Adressierung
+der Teilnehmer durch IP-Adressen als auch die Routing Funktionalität
+durch Netzwerke bereit (vgl. [@comer2003tcp 120f]). Nachdem ein
+Datenpaket mittels IP beim Empfänger angekommen ist, wird durch die
+Transportschicht festgelegt, wie zuverlässig der Pakettransport erfolgt
+und an welchem Ziel innerhalb des Empfängers das Paket verwendet werden
+soll. Das Ziel wird durch einen Port definiert (vgl. [@comer2003tcp
+207]). Ein Protokoll der Transportschicht ist das User Datagram Protocol
+(UDP), welches, basierend auf IP, unzuverlässig und verbindungslos
+Datenpakete transportiert. Der Vorteil dieser Methode ist die sparsame
+Nutzung von Ressourcen und der daraus resultierende Performancegewinn.
+Der Nachteil ist jedoch, dass der Sender keine Informationen über den
+Zustand der Pakete erhält. Dadurch ist es möglich, dass Pakete beim
+Empfänger nicht ankommen oder in der falschen Reihenfolge ankommen (vgl.
+[@comer2003tcp 208]). Im Gegensatz zu UDP ist das Transmission Control
+Protocol (TCP) verbindungsorientiert und zuverlässig. Pakete, welche
+über TCP versendet werden, kommen somit sicher beim Empfänger an (vgl.
+[@comer2003tcp 222f]). Um dies zu gewährleisten ist jedoch ein höherer
+Aufwand nötig, wodurch die Performance von TCP sinkt. Die
+Zuverlässigkeit wird durch einen Drei-Wege-Handschlag garantiert,
+welcher beim Verbindungsaufbau und Verbindungsabbau zum Einsatz kommt.
+Dieser sieht den Austausch von drei Nachrichten vor. Zunächst wird mit
+einer Nachricht der Empfänger informiert, dass der Sender zum Beispiel
+eine Verbindung aufbauen möchte. Der Empfänger bestätigt die Nachricht,
+woraufhin der Sender den Empfang erneut bestätigt (vgl. [@comer2003tcp
+242]). Die verschiedenen Ansätze zur Registration und Discovery nutzen
+darauf aufbauend Protokolle aus der Anwendungsschicht. Die IP-basierte
+Kommunikation nutzt zur Identifikation der Teilnehmer IP-Adressen,
+wohingegen die nicht-IP-basierte Kommunikation eigene
+Identifikationsnummer verwendet, zum Beispiel basierend auf
+MAC-Adressen. Durch IPv6 wird angenommen, dass in Zukunft IP-Adressen
+zur Identifikation aller Geräte nutzbar sind. Weiterhin stellt die
+Identifikation der Services auf Grund fehlender Standards eine
+Herausforderung dar (vgl. [@Delicato2017 34]). Es wird meist eine
+‘Uniform Resource Identifier’ (URI) verwendet, um einen Service eines
+Gerätes anzusprechen. Diese stellt eine Abfolge von Zeichen dar, um eine
+abstrakte oder physische Ressource zu identifizieren (vgl.
+[@Berner-Lee2005 1]). Diese besteht aus einem ‘Scheme’, einer
+‘Authority’, einem ‘Path’, einer ‘Query’ und einem ‘Fragment’ (vgl.
+[@Berner-Lee2005 16]). In der IP-basierten Kommunikation ist das
+‘Scheme’ das Protokoll und die ‘Authority’ die IP-Adresse und der Port
+(vgl. [@Berner-Lee2005 17ff]).</p>
+
+<h2 id="genereller-ablauf-der-registration-und-discovery">Genereller Ablauf der Registration und Discovery</h2>
+
+<p>Grundlegend laufen die Ansätze zur Bereitstellung von IoT-Services nach
+einem ähnlichen Schema ab. Der erste Schritt besteht aus der
+Registration eines neuen Endpoints. Dieser kann sich in einem lokalen
+Netzwerk durch das Lauschen auf einen bestimmten Port anmelden oder
+einem Server bekannt machen. Darauf folgt die Discovery, welche von
+einem Client ausgeht. Dieser kann je nach verwendetem Ansatz direkt nach
+Endpoints suchen oder einen Server anfragen (siehe Abb. 2). Im ersten
+Fall kann nach Endpoints im lokalen Netzwerk oder in der unmittelbaren
+Umgebung über andere physische Schichten gesucht werden. Im zweiten Fall
+sucht der Client in einer zentralen oder verteilten Datenbasis nach
+Endpoints. Nachdem ein Endpoint und seine anzubietenden Services
+gefunden wurden, müssen die Informationen maschinenlesbar und
+standardisiert beschrieben werden, um ohne menschliche Hilfe nach der
+Discovery verwendet werden zu können.</p>
+
+<h1 id="ansätze-zur-registration-und-discovery">Ansätze zur Registration und Discovery</h1>
+
+<p>Die Einteilung der Ansätze orientiert sich an [@Broring2016]. Die
+Autoren ordnen die Ansätze dabei in die Kategorien ‘Searching around
+me’, ‘Searching on my network’ und ‘Searching in Directories’ ein. Die
+Bezeichnungen sind jedoch nicht eindeutig, da es ein ‘Directory’ auch in
+lokalen Netzwerken geben kann und die Reichweite ‘around me’ auch lokale
+Netzwerke mit einschließt. ‘Searching around me’ entspricht somit dem
+nicht-IP-basierten Device to Device Ansatz und ‘Searching on my network’
+dem IP-basierten Device to Device Ansatz. Die Kategorie ‘Searching in
+Directories’ gehört zum Device to Server Ansatz. Der Ansatz Server to
+Server ist eine Unterkategorie des Device to Server Ansatzes. Er wird
+bei der Kommunikation zwischen zwei Servern, zum Beispiel zwei
+IoT-Plattformen, verwendet.</p>
+
+<h2 id="device-to-device">Device to Device</h2>
+
+<p>Die Device to Device Umgebung ist hauptsächlich durch eine begrenzte
+Distanz zwischen den Geräten gekennzeichnet und findet dadurch zum
+Beispiel im Smart Home Bereich Anwendung. Weiterhin nehmen mindestens
+zwei Teilnehmer teil, welche direkt miteinander kommunizieren. Dazu
+zählen lokale Netzwerke, basierend auf IP und Spezifikationen, welche
+andere Protokolle in den ersten drei OSI Schichten nutzen. Eine
+Unterteilung in drahtlose und drahtgebundene Kommunikation ist nicht
+empfehlenswert, da zwar der nicht-IP-basierte Ansatz drahtlos
+funktioniert, der IP-basierte Ansatz jedoch beides unterstützt.</p>
+
+<h3 id="ip-basiert">IP-basiert</h3>
+
+<p>Der IP-basierte Device-to-Device Ansatz nutzt die Protokolle IP und UDP.
+Er ist ein Teilbereich der ‘Zeroconfiguration Networks’. Diese
+Spezifikation ging 1999 aus der IETF Zeroconf Working Group hervor. Um
+die Anforderungen zu erfüllen, müssen vier Bedingung gegeben sein.
+Zunächst werden die IP-Adressen automatisch und ohne DHCP Server
+zugeordnet. Darauf aufbauend werden sie ohne DNS Server zu Hostnamen
+aufgelöst. Zudem muss eine Möglichkeit zur IP Multicast Kommunikation
+angeboten werden. Können die Geräte schließlich angesprochen werden,
+muss eine Service Discovery ohne zentralen Server möglich sein (vgl.
+[@Cheshire2017; @Williams2002 1]). Grundsätzlich kann die Registration
+des Endpoints durch zwei Wege erfolgen (vgl. [@Broring2016 3]). Zum
+Einen kann sich ein Endpoint, zum Beispiel beim Starten im Netzwerk ,
+bekannt machen, indem es einen Multicast Request sendet. Die Discovery
+würde dann automatisch nach dem Empfangen des Requests starten (siehe
+Abb. 3).</p>
+
+<p>\centering
+<img src="./content/hauptkapitel/d2d_ip_2.png" alt="IP-basierte Device to Device Kommunikation ausgehend vom Endpoint (In
+Anlehnung an [@Broring2016
+3])" />{height=”5cm”}</p>
+
+<p>Zum Anderen kann der Endpoint nur auf einen Multicast Port einer
+bestimmten Adresse lauschen. Der Client müsste die Discovery Anfrage
+aktiv senden, woraufhin der Endpoint auf einen Multicast Request des
+Clients antwortet (siehe Abb. 4).</p>
+
+<p>\centering
+<img src="./content/hauptkapitel/d2d_ip_1.png" alt="IP-basierte Device to Device Kommunikation ausgehend vom Client (In
+Anlehnung an [@Broring2016
+3])" />{height=”5cm”}</p>
+
+<p>Vorteil des IP-basierten Device to Device Ansatzes ist die einfache und
+automatische Nutzung in lokalen Netzwerken, da dort die Multicast
+Kommunikation gewährleistet ist. Allerdings sind die Reichweite und die
+Suchmöglichkeiten stark begrenzt. Falls eine Firewall auf dem Endpoint
+eingerichtet ist, muss zudem eine Ausnahme für die entsprechenden
+Multicast Ports gesetzt werden. Dies kann problematisch sein, wenn der
+Endpoint auch über das Internet erreichbar ist, da dadurch UDP-
+Verstärkungsattacken ermöglicht werden (vgl. [@US-CERT2016 1]).</p>
+
+<h4 id="multicast-constrained-application-protocol">Multicast Constrained Application Protocol</h4>
+<p>Das Constrained Application Protocol (CoAP) ist ein Protokoll speziell für beschränkte Gerä-
+te. Es basiert auf IP in der Netzwerkschicht und auf UDP in der Transportschicht.
+CoAP basiert wie HTTP auf dem Client-Server Prinzip. Der Client sendet einen Request
+an den Server, um eine bestimmte Aktion auf einer bestimmten Ressource anzufragen. Die
+Aktion wird durch einen Code und die Ressource durch eine URI festgelegt. Die Antwortet
+des Servers besteht aus einem Code und eventuell einem Payload (vgl. [Shelby et al. 2014,
+10]).
+Die verwendeten Methoden sind wie bei HTTP GET, PUT, DELETE und POST. Es kön-
+nen zudem eigene Methoden definiert werden. Im Gegensatz zu HTTP, welches TCP nutzt,
+basiert CoAP auf UDP. Um trotz UDP zuverlässig Nachrichten auszutauschen, gibt es vier
+verschiedene Nachrichtentypen. ’Confirmable’ Nachrichten, müssen im Gegensatz zu ’Non-
+Confirmable’ Nachrichten nach dem Empfang bestätigt werden. Dies geschieht durch das
+Senden einer ’Acknowledgment’ Nachricht, in welcher der Empfang bestätigt wird. Innerhalb
+dieser Nachricht kann auch die Antwort mitgesendet werden, um eine zweite Antwort zu
+vermeiden. Eine Reset Nachricht wird gesendet, falls eine Nachricht empfangen wurde, aber
+nicht verarbeitet werden konnte (vgl. [Shelby et al. 2014, 10f]).
+Die Registration besteht aus dem Lauschen des Endpoints auf den Port 5683 der reservierte
+Multicast Adresse 224.0.1.187. CoAP besitzt keine Definition für eine Nachricht zum Be-
+kanntmachen im Netzwerk. Der Client kann daraufhin einen GET Request an die Multicast
+Adresse senden. Der Endpoint antwortet mit einer Response Nachricht, welche die Informa-
+tionen über den Endpoint und die Services beinhaltet (vgl. [Shelby et al. 2014, 97]).
+Mit dem CoRE Link Format ist weiterhin eine Spezifikation für den Ablauf der Discovery
+definiert. Sie sieht vor, dass der Discovery Request an die reservierte URI ’/.well-known/core’
+gesendet werden soll. Unter diesem Pfad erhält der Client eine Liste mit angebotenen Services,
+welche entsprechend der Spezifikation beschrieben sind (vgl. [Shelby et al. 2014, 64].
+Die Ausprägung Multicast CoAP erweist sich als sehr praktisch für die Verwendung mit
+beschränkten Geräten, da der geringe Header Overhead, eine einfache Parsing Möglichkeit,
+sowie die Verwendung von UDP sehr ressourcensparend sind. CoAP stellt zudem eine Mög-
+lichkeit für zuverlässige Kommunikation bereit, welche dem Drei-Wege-Handschlag von
+TCP ähnelt. Ein Mapping zu HTTP und Multicast DNS wird ebenfalls unterstützt, wodurch
+die Kommunikation über das Web vereinfacht wird. Es bietet zudem die Möglichkeit zur
+Verschlüsselung über Datagram Transport Layer Security (vgl. [Shelby et al. 2014, 5f]).</p>
+
+<h4 id="simple-service-discovery-protocol">Simple Service Discovery Protocol</h4>
+<p>Das Simple Service Discovery Protocol (SSDP) basiert auf den Protokollen IP und UDP. Es
+wird vom Protokoll Universal Plug and Play (UPnP) zur Discovery von Services genutzt und
+wurde 1999 von Microsoft und Hewlett Packard spezifiziert.
+SSDP nutzt teilweise das HTTP Header Format. Die Nachrichten haben nur einen Header
+und keinen Body (vgl. [Donoho et al. 2008, 15f]).
+Die Identifikation der Endpoints erfolgt durch eine ’Universally Unique Identifier’ (UUID),
+welche durch fünf hexadezimale Zahlen dargestellt wird. UPnP empfiehlt zur Berechnung
+einen Zeit und MAC-Adressenbasierten Algorithmus (vgl. [Donoho et al. 2008, 17]).
+Das Lauschen des Endpoints auf den Port 1900 der für SSDP reservierte Multicast Adresse
+239.255.255.250 stellt die Registration dar (vgl. [Goland et al. 1999, 4]).
+Daneben kann auch der Client auf die Adresse hören, um automatisch bei Eintritt eines
+Endpoints benachrichtigt zu werden.
+Der Client sendet zur Discovery im ersten Fall einen M-SEARCH Request an die Multicast
+Adresse, welche vom Endpoint empfangen wird (siehe Listing 1). Im HTTP-Header müssen
+zusätzlich die Attribute ’HOST’, ’MAN’, ’ST’ und ’MX’ gesetzt werden. Unter ’ST’ in
+Zeile 5 wird ein Service Typ festgelegt, um eine einfache Suche, basierend auf dem Typen,
+durchzuführen. ’MX’ in Zeile 4 legt den Zeitraum fest, in welchem die Endpoints antworten
+sollen. Die Suchmöglichkeiten beschränken sich auf den ’ST’ Parameter, welcher verschie-
+dene Arten von URI anbietet. Die URI ’ssdp:all’ kann genutzt werden, um alle Endpoints
+zu finden, während ’uuid:’, gefolgt von einer UUID, nach einem konkreten Endpoint sucht.
+Durch die URI ’urn:schemas-upnp-org:device’ und ’urn:schemas-upnp-org:service’, gefolgt
+von einem Typen, wird nach Endpoints und Services mit einem bestimmten Typen gesucht
+(vgl. [Donoho et al. 2008, 30f]).
+Zusätzlich kann sich ein Endpoint durch das Senden eines NOTIFY Requests über Multicast
+bei den anderen Teilnehmern bekannt machen (siehe Anhang B). Unter dem Header ’NTS’
+wird der Typ der Bekanntmachung festgelegt. Mit dem Wert ’ssdp:alive’ wird der Beitritt des
+Endpoints zum Netzwerk definiert (vgl. [Donoho et al. 2008, 19]).
+Der Client kann nach Empfang dieser Nachricht einen Discovery Request senden und in per
+Unicast direkt an den Endpoint senden oder eine generelle Multicast Anfrage durchführen.
+Der Endpoint antwortet daraufhin mit einer Unicast Response. Die unter ’LOCATION’
+angegebenen URI in Zeile 8 von Listing 2 verweist auf ein XML-Dokument beim Endpoint,
+welches die Beschreibungen beinhaltet. Unter ’USN’ ist eine eindeutige URI des Services
+angegeben (vgl. [Goland et al. 1999, 5]).
+Die Beschreibung wird durch UPnP definiert und besteht aus zwei Teilen: der Beschreibung
+des Endpoints und der Services. Der Endpoint wird unter anderem durch den Modelnamen,
+die Seriennummer und den Herstellernamen charakterisiert. Die Services werden durch einen
+Service Namen, eine URL zur genaueren Beschreibung und eine URL zum Ansprechen der
+Services beschrieben (vgl. [Donoho et al. 2008, 37], siehe Anhang J).
+Durch einen NOTIFY Request kann sich ein Endpoint zudem abmelden, indem er den ’NTS’
+Parameter mit ’ssdp:byebye’ setzt (vgl. [Donoho et al. 2008, 25]).
+Eine Änderung im Endpoint kann durch den Wert ’ssdp:update’ bekannt gemacht werden
+(vgl. [Donoho et al. 2008, 27]).
+SSDP bietet den Vorteil, dass es bereits von vielen Geräten durch den Standard UPnP
+unterstützt wird. Allerdings ist nur eine einfache Suche, basierend auf dem Service und
+Endpoint Typ, möglich. Zum Vergleich des Suchwertes wird nur die Gleichheit der URI
+verwendet.</p>
+
+<h4 id="dns-service-discovery-mittels-multicast-dns">DNS Service Discovery mittels Multicast DNS</h4>
+<p>DNS Service Discovery (DNS-SD) ist eine Spezifikation, um Services über DNS in einem
+lokalen Netzwerk zu finden. Es wird zum Beispiel vom Apple Dienst Bonjour verwendet,
+welches von iTunes genutzt wird, um Computer mit freigegebener Musik im lokalen Netz-
+werk zu finden. Zur Kommunikation wird Multicast DNS verwendet. Dieses ermöglicht die
+Auflösung von Hostnamen zu IP-Adressen ohne DNS Server (vgl. [Cheshire et al. 2013a, 1]).
+Die Auflösung der Hostnamen über einen DNS Server gehört wiederum zu den Device to
+Server Ansätzen.
+Mutlicast DNS definiert die Bezeichnung der Hostnamen von Geräten in einem lokalen
+Netzwerk. Diese benennen sich durch einen selbstgewählten Namen, auf welchen die DNS
+Top-Level-Domain ’.local.’ folgt (vgl. [Cheshire et al. 2013a, 5f]).
+Möchte ein Client den Hostnamen auflösen, sendet er eine Multicast Nachricht an alle End-
+points.
+DNS-SD definiert darauf aufbauend, wie die ’DNS Records’ aufgebaut sein müssen, damit
+eine Discovery möglich ist (vgl. [Cheshire et al. 2013b, 3f]).
+Ein ’DNS Record’ besteht aus vier Teilen (siehe Listing 3). Der ’A Record’ beinhaltet die
+IP-Adresse und den Namen des Endpoints. Der ’SRV Record’ beinhaltet den Service, basie-
+rend auf dem Service Typen und dem Port. Der ’PTR Record’ sagt aus, dass ein bestimmter
+Service Typ vorhanden ist (vgl. [Saint-Andre 2008, 2]).
+Die Registration eines Endpoints kann durch das Lauschen auf den Port 5353 der Multicast
+Adresse 224.0.0.251 geschehen oder durch das aktive Anmelden durch das Senden eines
+’DNS Records’ (vgl. [Cheshire et al. 2013a, 15]).
+Die Discovery erfolgt durch das Senden eines Multicast Requests, welcher einen ’PTR
+Record’ beinhaltet. Basierend auf dem Service Typen kann auf Gleichheit gesucht werden.
+Ein Endpoint antwortet darauf mit seinem ’DNS Record’, welcher die IP-Adresse und die
+URI des Services beinhaltet (vgl. [Saint-Andre 2008, 2]).
+Vorteil von DNS-SD ist, dass die Nutzung eines Services auch bei einem IP-Adressen-Wechsel
+des Endpoints weiterhin möglich ist, da der Client den Hostnamen des Endpoints verwenden
+kann, um per Multicast DNS die neue IP-Adresse zu erhalten.</p>
+
+<h3 id="nicht-ip-basiert">Nicht-IP-basiert</h3>
+
+<p>Zu dem nicht-IP-basierten Device to Device Ansatz gehören Technologien,
+wie Zigbee, Z-Wave, NFC, Bluetooth und iBeacon. Diese gehören zur Gruppe
+der WPAN. Der Ansatz soll anhand von Zigbee genauer erläutert werden.
+Die Zigbee Spezifikation beschreibt mehrere Schichten des OSI Modells,
+basierend auf dem IEEE 802.15.4 Standard in der Bitübertragungsschicht
+und Sicherungsschicht. Ein Zigbee Netzwerk besteht aus zwei bzw. drei
+Teilnehmern. Das Endgerät stellt den Endpoint dar. Dieser gehört zur
+Gruppe der beschränkten Geräten, da er nicht immer aktiv ist und meist
+mit Batterien betrieben wird. Der Router dient dem Transport der Pakete
+innerhalb des Netzwerkes und kann das Netzwerk vergrößern. Der
+Koordinator besitzt die Fähigkeit, ein Netzwerk zu starten und wird
+anschließend zu einem Router (vgl. [@Hersent2011 96]). Die
+Identifikation der Teilnehmer im Zigbee Netzwerk basiert auf der 64-bit
+MAC-Adresse der Sicherungsschicht sowie einer 16-bit Netzwerkadresse,
+welche entweder zufällig oder entlang einer Baumstruktur vergeben wird
+(vgl. [@Krausse2014 229]). Das Zigbee Netzwerk wird dabei durch eine
+‘PAN ID’ identifiziert, welche der Koordinator bei Start des Netzwerks
+per Broadcast Beacon kommuniziert. Zur Registration des Endpoints muss
+dieser die ‘PAN ID’ des Netzwerkes kennen. Dies geschieht durch den
+Empfang des Beacons vom Koordinator oder durch das Senden eines
+Broadcast Beacons, woraufhin der Koordinator erneut die ‘PAN ID’
+mitteilt [@Hersent2011 97]). In der Anwendungsschicht erfolgt
+schließlich die Discovery. Dazu definiert das Gerät verschiedene
+Deskriptoren, um sich zu beschreiben. Der ‘Node-Deskriptor’ beschreibt
+das physische Gerät und seine Rolle im Netzwerk, der
+‘Node-Power-Deskriptor’ beschreibt die Stromversorgung und der
+‘Simple-Deskriptor’ beschreibt den Endpoint [@Krausse2014 311]). Die
+Deskriptoren können durch verschiedene Nachrichten angefragt werden.
+Dies erfolgt durch das Senden eines Broadcast Requests (vgl.
+[@Krausse2014 319]). Mit der Zigbee IP Spezifikation wird die Verwendung
+von IP in der Vermittlungsschicht ebenfalls unterstützt. Es nutzt dabei
+das 6LoWPAN Protokoll (vgl. [@Hersent2011 213]). Zigbee bietet den
+Vorteil, dass es von einer großen Allianz von Herstellern betrieben
+wird, wodurch die Interoperabilität zwischen den Herstellern
+gewährleistet wird. Weiterhin unterstützt Zigbee eine hohe
+Teilnehmerzahl im Netzwerk und kann durch den
+AES-Verschlüsselungsalgorithmus gesichert werden.</p>
+
+<h2 id="device-to-server">Device to Server</h2>
+
+<p>Im Device to Server Umfeld befinden sich mindestens drei Geräte. Ein
+nachfragender Client, ein Endpoint, welcher einen Service anbietet, und
+ein Teilnehmer, welcher die Informationen in einer Datenbasis, genannt
+‘Resource Directory’ (RD), speichert. Der grundlegende Ablauf besteht
+aus der Registration des Endpoints beim RD. Ein nachfragender Client
+kann in diesem wiederum nach bestehenden Endpoints und Services suchen.
+Die Möglichkeiten der Suche unterscheiden sich dabei je nach genutztem
+Ansatz (vgl. [@Broring2016 3]). Im Device to Server Umfeld muss
+unterschieden werden, ob sich das RD in einem lokalen Netzwerk oder im
+Internet befindet. Wenn es sich in einem lokalen Netzwerk befindet, kann
+es aktiv oder auf Anfrage nach neuen Endpoints suchen, indem es Device
+to Device Ansätze nutzt. Weiterhin muss unterschieden werden, ob der
+Endpoint die IP-Adresse des RD kennt oder nicht kennt. Ist die
+IP-Adresse des RD bekannt, zum Beispiel durch eine Vorkonfiguration des
+Gerätes, erfolgt die Registration problemlos, da der Endpoint sich
+direkt anmelden kann. Ist die IP-Adresse nicht bekannt, muss diese
+zunächst ermittelt werden. Dies kann durch eine Integration mit Device
+to Device Ansätzen erfolgen. Befindet sich das RD im Internet, muss die
+IP-Adresse bekannt sein, da es keinen Weg gibt, diese dynamisch zu
+erhalten. Eine weitere Unterscheidung erfolgt anhand der gewählten
+Infrastruktur. Das RD kann entweder zentral oder verteilt gehostet
+werden. Durch einen dritten Teilnehmer, welcher die Informationen
+persistent speichert, kann sichergestellt werden, dass auch Services von
+vorübergehend inaktiven Endpoints gefunden werden. Diese würden durch
+Device to Device Ansätze ignoriert werden.</p>
+
+<h3 id="zentrales-rescource-directory">Zentrales Rescource Directory</h3>
+
+<p>Bei diesem Ansatz wird das RD durch einen zentralen Server dargestellt,
+welcher von den Endpoints und Clients angesprochen wird. Es wird
+angenommen, dass die IP-Adresse des RD bekannt ist (siehe Abb. 5).
+Der Vorteil dieses Ansatzes ist, dass ein Client auch außerhalb eines
+lokalen Netzwerkes nach Endpoints und Services suchen kann. Dazu kann
+der Client eine IoT-Plattform über einen ihrer Server anfragen. Dieser
+hat wiederum Zugriff auf ein RD, welches die Informationen über die
+Endpoints der Plattform beinhaltet. Der Nachteil dieser Umgebung ist
+jedoch die Anfälligkeit für Angriffe von außen, zum Beispiel durch
+‘Distributed Denial of Service’ Attacken.</p>
+
+<h4 id="rd-mit-dem-message-queue-telemetry-transport-protocol">RD mit dem Message Queue Telemetry Transport Protocol</h4>
+<p>Das Message Queue Telemetry Transport Protocol (MQTT) basiert auf TCP und dem Publish-
+Subscribe Modell (siehe Abb. 6). Innerhalb dieses Modells gibt es mindestens drei Teilnehmer.
+Ein Producer, welcher ein Endpoint sein kann, produziert und liefert Informationen über
+ein bestimmtes Thema an einen Broker. Der Broker ist ein Server, welcher als Schnittstelle
+zwischen dem Producer und dem Subscriber agiert. Der Subscriber kann sich beim Broker für
+ein bestimmten Thema anmelden und bekommt daraufhin die entsprechenden Nachrichten
+vom Producer über den Broker weitergeleitet. Zum Beispiel kann ein Lichtsensor über das
+Thema Helligkeit Informationen an den Broker senden. Ein Client könnte dann das Thema
+Helligkeit auf dem Server abonnieren (vgl. [Lampkin et al. 2012, 6]).
+MQTT bietet weiterhin drei ’Quality of Services’ Level, welche die Zustellung von Nach-
+richten bestimmen. Je höher das Level, desto zuverlässiger werden die Nachrichten gesendet.
+Das erste Level ist das Unzuverlässigste. Es wird keine Antwort erwartet, wodurch nicht
+sichergestellt werden kann, ob die Nachricht angekommen ist. Nur die TCP/IP Funktionen
+werden genutzt. Ein unerwarteter Verbindungsabbruch oder ein Serverproblem würden nicht
+auffallen. Die aufbauenden Level ähneln dem Drei-Wege-Handschlag von TCP und fügen
+eine weitere Sicherungsschicht zu TCP hinzu (vgl. [Lampkin et al. 2012, 212f]).
+MQTT kann im Device to Server Umfeld auch für die Bereitstellung von IoT Services verwen-
+det werden. Allerdings bietet MQTT in der reinen Protokoll Spezifikation keine Definitionen
+für diesen Anwendungsfall. Es wäre möglich, dass ein Endpoint bei seiner erstmaligen Nut-
+zung Informationen über sich und seine Services an eine festgelegte Broker Adresse sendet.
+Dieser könnte dann Clients, die das Discovery Thema vorher abonniert haben, informieren
+und ihnen die Beschreibung weiterleiten. Falls der interessierte Client nicht online ist, wird er
+die Information jedoch nicht erhalten. Stattdessen könnte ein existierendes RD einen Broker
+als Proxy nutzen, um die Registration der Endpoints nicht direkt zu erhalten (siehe Abb. 7).
+Dadurch wird das RD entlastet. Ein Angreifer könnte dann durch eine DDoS Attacke nur den
+Broker treffen, wodurch zwar keine Registration mehr möglich ist, aber das RD weiterhin
+funktioniert.
+MQTT bietet die Vorteile, dass es ein offenes und leichtes Protokoll ist. Durch die feste
+Headergröße von 2 Bytes ist es auch für beschränkte Geräte nutzbar. Im Vergleich zu CoAP
+ist die Ressourcennutzung jedoch, auf Grund der Verwendung von TCP, höher. Zudem kann
+die Zuverlässigkeit der Nachrichten genau bestimmt werden (vgl. [Lampkin et al. 2012, 5]).
+Bei der Implementierung muss ein Thema für die Registration definiert werden und ein Format
+zur Beschreibung der Services gewählt werden. Dies ist möglich für eigene Entwicklungen
+aber hinderlich bei der Nutzung bestehender Endpoints, da diese das Thema nicht kennen.</p>
+
+<h4 id="constrained-resource-enviroment-resource-discovery">Constrained Resource Enviroment Resource Discovery</h4>
+<p>Die ’Constrained Resource Enviroment Resource Discovery’ (CoRE RD) Spezifikation stellt
+eine Erweiterung der Multicast CoAP Ausprägung dar. Sie beschreibt ein RD, welches über
+eine API mit unterschiedlichen Protokollen verwendet werden kann. Die Spezifikation nennt
+dabei zum Beispiel CoAP und HTTP. Für die Erklärung des Ansatzes soll CoAP dienen.
+Zur Beschreibung der Services wird zur Erklärung das CoRE Link Format genutzt. Dieses
+legt das Format des Payloads fest und stellt einen eigenen ’Internet Media Type’ in Form von
+’application/link-format’ dar (vgl. [Shelby 2012, 7]).
+Die Struktur eines Links besteht aus dem Pfad des Services in eckigen Klammern gefolgt von
+den beschreibenden Parametern, getrennt durch ein Semikolon. Mehrere Links werden durch
+ein Komma getrennt (vgl. [Shelby 2012, 7]).
+Ein Parameter kann mehrere Werte haben, wenn diese durch ein Leerzeichen getrennt werden.
+Der Parameter ’title’ ist eine menschenlesbare Beschreibung des Services, wohingegen der
+Parameter ’rt’ eine semantische und komplexere Beschreibung des Ressourcentyps darstellt
+(vgl. [Shelby 2012, 9]).
+Dieser könnte bei einem Temperatursensor auf eine Ontologie verweisen, welche die Ressour-
+ce Temperatur beschreibt. Der Parameter ’if’ dient zur Beschreibung des Interfaces. Mehrere
+Services, zum Beispiel Sensoren für verschiedene Eigenschaften, können über das gleiche
+Interface angesprochen werden (vgl. [Shelby 2012, 10]).
+Durch die Parameter ’rel’ und ’anchor’ können Beziehung zwischen Links beschrieben wer-
+den. Der Link in Zeile 1 aus Listing 4 sagt aus, dass die Sensor Ressource durch einen
+externen Link beschrieben wird. Der Link in Zeile 2 gibt einen alternativen Link für die
+Sensor Ressource an (vgl. [Shelby 2012, 14]).
+Wenn kein Relationen Parameter gesetzt ist, wird der Typ ’hosts’ angenommen, da meist
+Services beschrieben werden, die auch bei dem entsprechenden Server gehostet werden (vgl.
+[Shelby 2012, 8f]).
+Das CoRE Link Format ist ressourcensparend, da es kompakt aufgebaut ist. Allerdings ist es
+im Vergleich zu XML und JSON noch nicht sehr verbreitet.
+CoRE RD erweitert das CoRE Link Format um weitere Attribute, um den Endpoint und die
+Services genauer zu beschreiben.
+Für die Registration benötigt der Endpoint zunächst den Basis Pfad des RD, an welcher er
+sich anschließend anmeldet (vgl. [Shelby et al. 2016, 11]).
+Durch die Antwort erhält der Endpoint die IP-Adresse und die Basis URI des RD ’&lt;/rd&gt;’
+(siehe Listing 5 Zeile 7). Ist die IP-Adresse bekannt, muss der Request per Unicast an das RD
+gesendet werden, um die Basis URI zu erhalten.
+Die Registration erfolgt anschließend durch das Senden eines POST Requests an die Basis
+Adresse (vgl. [Shelby et al. 2016, 13], siehe Listing 6).
+Es muss mindestens der Name des Endpoints als Query Parameter ’ep’ gesetzt werden.
+Dieser muss innerhalb einer Domain eindeutig sein. Weitere optionale Query Parameter
+können die Domain ’d’, der Endpoint Typ ’et’, die Lebenszeit ’lt’ und der Kontext ’con’
+sein. Die Lebenszeit bezeichnet die Dauer der Gültigkeit der Registration in Sekunden und
+kann zwischen einer Minute und 71582788 Minuten liegen. Der Kontext stellt die URI des
+Endpoints dar, falls die Registration über einen Verwalter des Endpoints abläuft, welcher über
+eine andere IP-Adresse angesprochen wird. Die Domain ist der Geltungsbereich, zu welcher
+der Endpoint gehört (vgl. [Shelby et al. 2016, 16]).
+Der Payload beinhaltet eine Liste mit Services, welche der Endpoint anmelden möchte. Das
+Format des Payloads muss entweder dem CoRE Link Format, JSON CoRE Link Format oder
+CBOR CoRE Link Format entsprechen (vgl. [Shelby et al. 2016, 15]).
+Eine andere Möglichkeit zur Registration ist das dauerhafte Senden eines Registration Re-
+quests an alle verfügbaren RD durch die Multicast Adresse. Dieser wird jedoch an die
+’/.well-known/core’ Ressource gesendet, da der Pfad zum RD unbekannt ist. In der URI
+muss mindestens der Parameter Endpoint Name gesetzt sein. Der Payload des Requests muss
+zudem leer sein. Wenn das RD einen Request dieser Art erhält, sendet es einen Device to
+Device Discovery Request an die ’/.well-known/core’ Ressource des Endpoints (vgl. [Shelby
+et al. 2016, 17]).
+Wenn mehrere Endpoints zu einer Gruppe gehören, da sie zum Beispiel am selben Standort
+platziert sind oder die selbe Funktionalität haben, ist es möglich, eine Gruppe im RD zu
+registrieren. Dazu wird ein Gerät benötigt, welches als Verwalter der Gruppe dient. Eine
+weitere Voraussetzung ist die vorige Registration der einzelnen Endpoints. Der Registration
+Request wird vom Verwalter an die ’rd-group’ Ressource des RD gesendet und muss den
+Parameter ’gp’ als Gruppenname enthalten. Er kann die Parameter Kontext und Domain
+enthalten. Im Payload werden leere Links mit den Namen der zugehörigen Endpoints gesetzt
+(vgl. [Shelby et al. 2016, 28ff]).
+Anschließend können Clients das RD durch eine Anfrage an den Server durchsuchen. Ähnlich
+wie bei der Registration eines Endpoints, muss der Client das Discovery Interface des RD
+kennen. Dieses erhält er über die Ressource ’./well-known/core’. Dazu muss der Ressourcen-
+typ als Parameter ’rt’ mit ’core.rd-lookup’ angegeben werden (vgl. [Shelby et al. 2016, 13],
+siehe Listing 7).
+Die Discovery erfolgt durch das Senden eines GET Requests vom Client an diesen Pfad,
+welcher um den Typ erweitert wird (siehe Listing 8 Zeile 3). Der Client kann dabei nach den
+Typen Ressource ’/res’, Endpoint ’/ep’, Domain ’/d’ und Gruppe ’/gp’ suchen (vgl. [Shelby et
+al. 2016, 30]).
+Ohne Query Parameter gibt das RD die Menge aller Ergebnisse eines Suchtyps zurück. Such-
+möglichkeiten sind zum Beispiel der Name des Endpoints ’ep’, die Domain ’d’, der Name der
+Ressource ’res’, die Gruppe ’gp’, der Typ der Ressource ’rt’ oder der Typ des Endpoints ’et’.
+Zudem können selbst definierte Link Attribute aus der Registration verwendet werden, wenn
+zum Beispiel das CoRE Link Format verwendet wird. Durch die Verwendung der Parameter
+’page’ und ’count’ ist es weiterhin möglich, die Anzahl der Ergebnisse zu beschränken (vgl.
+[Shelby et al. 2016, 32]).
+Beim Austritt des Endpoints aus dem Netzwerk kann sich dieser durch einen DELETE Re-
+quest aus dem RD entfernen. Der Request erfolgt an den Pfad, den der Endpoint nach der
+erfolgreichen Registration erhalten hat (vgl. [Shelby et al. 2016, 20]). An den selben Pfad
+erfolgt das Ändern von Eigenschaften des Endpoints durch das Senden eines POST Requests
+(vgl. [Shelby et al. 2016, 18]).
+Die Vorteile dieser Ausprägung sind die Suchmöglichkeit, basierend auf Schlüssel-Wert
+Paaren, sowie die selben Vorteile der Multicast CoAP Ausprägung. Zudem sind die Prozesse
+umfangreich definiert, zum Beispiel durch die Beachtung von Gruppen und Gültigkeitsberei-
+chen.
+Durch die Verwendung von CoAP und daraus resultierend UDP ist das RD jedoch anfällig für
+UDP-Verstärkungsattacken (vgl. [Shelby et al. 2016, 37]).
+Bei der Nutzung von HTTP entfällt dieser Nachteil, aber damit auch der Vorteil, dass der
+Einsatz mit beschränkten Geräten unterstützt wird.</p>
+
+<h4 id="rd-mit-dem-extensible-messaging-and-presence-protocol">RD mit dem Extensible Messaging and Presence Protocol</h4>
+<p>Das Extensible Messaging and Presence Protocol (XMPP) ist ein offenes Kommunikations-
+protokoll, welches auf IP und TCP basiert. Es nutzt XML, um standardisiert Nachrichten
+auszutauschen.
+Um XMPP nutzen zu können, wird ein XMPP Server benötigt, welcher als Kommunika-
+tonsschnittstelle dient. Die Identifikation der Teilnehmer basiert nicht nur auf IP-Adressen,
+sondern wird durch einen ’Jabber Idenitifier’ (JID) erweitert. Die Syntax dieser JID ähnelt
+einer Emailadresse (vgl. [Kaes 2003, 1]).
+Mithilfe von XMPP können zwei Ausprägungen des Device to Servers Ansatzes implementiert
+werden. Die Spezifikation XEP-0030 definiert die Discovery zwischen zwei Teilnehmern, in
+welcher der Client mit Hilfe des XMPP Servers direkt den Endpoint anfragt (vgl. [Hildebrand
+et al. 2016, 2]).
+Die Spezifikation XEP-0347 definiert die Registration und die Discovery unter Nutzung
+eines zentralen RD, welches einen eigenen XMPP Teilnehmer darstellt. Die Spezifikation
+XEP-0347 wird im Folgenden untersucht.
+Der erste Schritt ist das Finden eines XMPP Servers. Dessen Adresse kann entweder festgelegt
+sein oder per Device to Device Ansatz innerhalb eines lokalen Netzwerkes gesucht werden
+(vgl. [Waher et al. 2017, 3ff]).
+Im Gegensatz zur Ausprägung CoRE RD erfolgt die Kommunikation zum RD nicht direkt
+zwischen den Teilnehmern, sondern durch die Vermittlung der Nachrichten durch einen
+XMPP Server. Die JID des RD muss allerdings bekannt sein, um Nachrichten an das RD
+senden zu können. Die Registration erfolgt daraufhin durch das Senden eines Requests mit
+dem Tag ’register’, welcher weitere Metatags mit Informationen über den Endpoint und die
+Services beinhaltet (vgl. [Waher et al. 2017, 6], siehe Listing 9).
+XMPP spezifiert bereits viele Metatags, welche zur Beschreibung eines Endpoints und der
+Services verwendet werden können (siehe Anhang G). Der Tag ’SN’ kennzeichnet zum
+Beispiel die Seriennummer des Endpoints (siehe Listing 9 Zeile 4). Neben diesen können
+eigene Tags definiert werden. Der Tagname darf dabei maximal 32 Zeichen lang sein. Die
+Werte der Tags haben eine maximale Länge von 128 Zeichen (vgl. [Waher et al. 2017, 17]).
+Die Discovery erfolgt durch das Senden eines Discovery Requests an das RD (siehe Listing
+10). Innerhalb des Tags ’search’ ab Zeile 3 ist es möglich, Suchparameter festzulegen. Dabei
+können verschiedene numerische und zeichenbasierte Operatoren als auch Kardinalitäten
+verwendet werden (vgl. [Waher et al. 2017, 12f], siehe Anhang H).
+Der Suchparameter ’numRange’ in Zeile 6 und 7 legt zum Beispiel einen Wertebereich für
+die Längen- und Breitengrade des Endpoints fest.
+Weiterhin werden die Prozesse zum Ändern von Eigenschaften und dem Entfernen des
+Endpoints aus dem RD definiert. Dies geschieht durch die Nutzung eines ’unregister’ oder
+’update’ Tags (vgl. [Waher et al. 2017, 10f,14], siehe Anhang E und F).
+Die Nutzung eines RD mittels XMPP bietet umfangreiche Suchmöglichkeiten. Sie ist jedoch
+nicht für beschränkte Geräte geeignet, da TCP und große Payloads durch die Verwendung von
+XML mehr Ressourcen benötigen. Zudem kann die Einrichtung nicht automatisch ablaufen,
+da es keine Standard JID für das RD gibt und auch keine Möglichkeit diese dynamisch zu
+finden. Diese Funktionalität könnte durch die Verwendung eines Device to Device Ansatzes
+ergänzt werden.</p>
+
+<h4 id="hypercat">Hypercat</h4>
+<p>Eine weitere Möglichkeit zur Beschreibung von Endpoints und Services ist die Nutzung der
+Hypercat Sepzifikation. Hypercat ist ein JSON-basierendes Format, um Services in Form
+von URI darzustellen und in einem Katalog als RD zu verwalten. Diese werden durch RDF-
+ähnliche Aussagen beschrieben (vgl. [Jaffey et al. 2016, 1f]).
+Ein Hypercat Katalog ist ein JSON Objekt mit den Objekten ’items’, welches eine Liste mit
+Services beinhaltet und ’catalogue-metadata’ (vgl. [Jaffey et al. 2016, 5], siehe Anhang C).
+Die Elemente der Serviceliste bestehen wiederum aus den Objekten ’href’ für die URI des
+Services und ’item-metadata’ als Liste mit Parametern. Diese werden durch die Eigenschaften
+’rel’ und ’val’ beschrieben, wobei ’rel’ den Parameter, ähnlich wie ein RDF Prädikat, darstellt
+und ’val’ den Wert, ähnlich wie ein RDF Objekt, darstellt. Die jeweiligen Werte werden als
+URI dargestellt (vgl. [Jaffey et al. 2016, 6], siehe Listing 11).
+Hypercat definiert zudem Prozesse zur Registration und Discovery. Der Webserver wird über
+TCP und HTTP angesprochen und wird über die Methoden GET und POST zur Registration
+und Discovery genutzt. Das RD ist unter dem Basis Pfad ’/cat’ ansprechbar.
+Der Endpoint kann sich durch einen POST Request an diesen Pfad registrieren, indem es das
+JSON Objekt ’items’ im Payload mitsendet. Das Objekt beinhaltet die Services des Endpoints.
+Das RD entscheidet, in welchem Katalog die Services gespeichert werden (vgl. [Jaffey et al.
+2016, 10]).
+Die Discovery erfolgt entweder durch einen GET Request an den Hauptkatalog unter der ’/cat’
+Ressource oder einen untergeordneten Katalog (vgl. [Jaffey et al. 2016, 10]). Zudem ist eine
+Schlüssel-Wert Suche durch Query Parameter in der URI des GET Requests möglich. Die
+Unterstützung zur Suche muss der Katalog in den Katalog Metadaten unter der Eigenschaft
+’urn:Xhypercat:rels:supportsSearch’ angeben. Die Ergebnisse werden basierend auf der In-
+tersektion der Parameter gefiltert. Mögliche Parameter sind ’rel’, ’val’ und ’href’. Das RD
+antwortet mit einem Katalog, welcher die Services beinhaltet (vgl. [Jaffey et al. 2016, 12f]).
+Durch die Nutzung von TCP ist eine Verschlüsselung durch TLS möglich. Die Spezifikation
+sieht zudem die Unterstützung eines ’Authorization Headers’ oder die Nutzung eines ’xapikeys
+Headers’ vor, um den Zugriff auf das RD zu beschränken (vgl. [Jaffey et al. 2016, 11]).
+Die Hypercat Spezifikation ist jedoch nicht für den Einsatz mit beschränkten Geräten geeignet,
+da es auf TCP basiert. Die Prozesse zur Registration und Discovery sind im Vergleich zu den
+Ausprägungen RD mit XMPP und CoRE RD zudem einfacher konzipiert.
+Das Format kann jedoch zur Beschreibung von Ressourcen in anderen Ansätze verwendet
+werden. Der Vorteil liegt in der Nutzung von JSON, da dieses sehr gut unterstützt wird.</p>
+
+<h3 id="verteiltes-resource-directory">Verteiltes Resource Directory</h3>
+
+<p>Die Funktionsweise eines verteilten RD basiert grundlegend auf den
+selben Prozessen wie bei der Nutzung eines zentralen RD. Der Unterschied
+ist die Verwendung mehrerer Peers, welche zusammen das verteilte RD
+darstellen (siehe Abb. 8). Dies wird durch die Nutzung einer verteilten
+Hashtabelle realisiert. Anstelle eines Client-Server Prinzips entspricht
+dieser Ansatz somit dem Peer-to-Peer Prinzip (vgl. [@Jimenez2013 1]).
+Zur Untersuchung des Ansatzes dient die Ausprägung CoRE RD in Verbindung
+mit dem Peer-to-Peer Ansatz.
+Ähnlich wie die CoRE RD Spezifikation benötigt der Endpoint ein
+Registration Interface, welches er zum Beispiel durch einen Unicast oder
+Multicast GET Request an die ‘/.well-known/core’ Ressource eines Peers
+erhält (vgl. [@Jimenez2013 4]). Die Registration erfolgt durch das
+Senden eines POST Requests an einen Peer, welcher die Request URI als
+Hash in der verteilten Hashtabelle als Schlüssel und den Payload des
+Requests mit den verfügbaren Services als Wert verwendet. Der Query
+Parameter Endpoint Name ‘ep’ muss zur Identifikation des Endpoints
+gesetzt werden (vgl. [@Jimenez2013 5]). Die Discovery erfolgt durch das
+Senden eines GET Requests an einen Peer, welcher im RD nach dem Hash der
+Request URI sucht. Das verteilte RD findet den Peer, welcher den Wert zu
+dem Hashschlüssel besitzt und gibt den Wert zurück (vgl. [@Jimenez2013
+6]). Ein Vorteile dieses Ansatzes ist die Skalierung bei zunehmender
+Anzahl von Endpoints, da kein zentraler Server überlastet wird. Eine
+weitere Eigenschaft des verteilten RD ist die hohe Verfügbarkeit, da es
+selbst bei Ausfall mehrerer Peers noch erreichbar ist (vgl. [@Cirani2014
+5]). Nachteil ist die direkte Registration der Endpoints im Netz, da die
+URI des Registration Requests als Hash berechnet wird. Diese ändert sich
+jedoch durch die Verwendung verschiedener Query Parameter, wodurch eine
+konsistente Parameterverwendung benötigt wird.</p>
+
+<h2 id="vergleich-und-integration">Vergleich und Integration</h2>
+
+<p>Die Auswahl eines Ansatzes zur Bereitstellung von IoT Services variiert
+je nach Anwendungsfall und beteiligten Geräten. Im Smart Home Bereich
+reichen Ansätze aus dem Device to Device Umfeld, da hier hauptsächlich
+im lokalen Netzwerk mittels IP oder über kurze Distanzen, zum Beispiel
+mit Zigbee oder Bluetooth, kommuniziert wird. Die Ansätze unterliegen
+jedoch drei Einschränkungen. Sie sind meist nur in kurzen Distanzen
+nutzbar, bieten keine umfangreichen Suchmöglichkeiten und die Discovery
+von Endpoints wird durch Ruhezustände erschwert. Der nicht-IP-basierte
+Ansatz eignet sich auf Grund der Verwendung von ressourcensparenden
+Technologien vor allem für beschränkte Geräte. Die vielen
+unterschiedlichen Ausprägungen erschweren jedoch die Kommunikation,
+sobald mehr als eine Spezifikation verwendet wird. Endpoints aus dem
+Zigbee Bereich können zum Beispiel nicht über Z-Wave kommunizieren. Der
+IP-basierte Ansatz bietet dem entgegen den Vorteil, dass Endpoints,
+welche IP unterstützen, mehrere Ausprägungen des Ansatzes verwenden
+können. Im Smart City und Smart Energy Bereich sind Ansätze aus dem
+Device to Server und Server to Server Bereich sinnvoller, da mehr Geräte
+beteiligt sind und auch über mehrere Standorte und somit zerstreute
+Netzwerke kommuniziert wird. Der Aspekt der Skalierung ist zudem sehr
+wichtig, um geringe Latenzen und die Erreichbarkeit der Plattform zu
+gewährleisten. Zudem muss die Sicherheit der gesamten Plattform bedacht
+werden, da durch die Erreichbarkeit aus dem Internet Angriffsziele
+entstehen können. Die Nutzung eines RD bietet den Vorteil einer
+dauerhaften Speicherung, wodurch auch Endpoints entdeckt werden können,
+die temporär nicht ansprechbar sind. Ein zentrales RD ermöglicht darauf
+aufbauend eine komplexere Suche und die Nutzung von Ontologien zur
+Beschreibung der Services. Zentrale Server sind jedoch anfällig für
+DDoS-Attacken. Verteilte RD bieten dem entgegen eine bessere Skalierung
+und eine höhere Verfügbarkeit aber schlechtere Suchmöglichkeiten.
+Kriterien zum Vergleich der Ausprägungen sind die verwendeten
+Protokolle, die Reichweite, die Suchmöglichkeiten, die Eignung für
+beschränkte Geräte, Sicherheit und Datenschutz, die Existenz von
+Standards zur Beschreibung der Services, die Identifikation der
+Endpoints, sowie Möglichkeiten zur Speicherung und Skalierung (siehe
+Anhang I). Die Auswahl der Kriterien baut auf dem Kriterienkatalog von
+[@Broring2016] auf. Um verschiedene Geräte und Anwendungsfälle verwenden
+zu können, kann eine Integration der Ansätze sinnvoll sein. Die
+Integration von Device to Device Ansätzen und Device to Server Ansätzen
+ist zum Beispiel notwendig, wenn die IP-Adresse des RD in einem lokalen
+Netzwerk nicht bekannt ist und eine direkte Registration nicht möglich
+ist. Die Registration kann dann auf vier verschiedenen Wegen erfolgen
+(siehe Abb. 9).
+Wird eine Device to Device Discovery ausgehend vom Endpoint genutzt,
+agiert das RD als Endpoint und erhält den Discovery Request per
+Multicast, woraufhin er dem ursprünglichen Endpoint antwortet. Die
+Ausprägung CoRE RD definiert zum Beispiel bereits eine Integration mit
+Multicast CoAP. Der Endpoint ermittelt die IP-Adresse durch das Senden
+eines Multicast GET Requests an die ‘./well-known/core’ Ressource.
+Daneben wird der Query Parameter Ressourcen Typ ‘rt’ mit ‘core.rd’
+angegeben. Dadurch antworten nur CoAP Server mit Zugang zu einem RD
+(vgl. [Shelby et al. 2016, 11], siehe Anhang A). Geht die Device to
+Device Discovery vom RD aus, erfolgt der Prozess umgekehrt. Beide Fälle
+wären zum Beispiel durch die Nutzung von Multicast CoAP und dem CoRE
+Link Format möglich. In beiden Fällen muss die Discovery aktiv gestartet
+werden. Dies geschieht entweder durch den Startvorgang des Endpoints
+oder durch das regelmäßige Suchen des RD nach Endpoints. Durch das
+Bekanntmachen des Endpoints oder des RD wird der andere Teilnehmer über
+die Existenz informiert. Dies erfolgt ebenfalls beim Start des Endpoints
+oder periodisch durch das RD. [@Cirani2014] nutzt dafür DNS-SD mit zwei
+verschiedenen Service Typen, um die Existenz des entsprechenden
+Teilnehmers zu kommunizieren. Für die folgende Registration nutzt
+[@Cirani2014] Unicast CoAP und das CoRE Link Format (vgl. [@Cirani2014
+9]). Die Ausprägung RD mit XMPP definiert diese Möglichkeit ebenfalls.
+Das RD sendet dazu ‘DNS Records’ mit dem Service Typen ‘xmpp-client’,
+welcher bei der IANA registriert ist. Die anderen Teilnehmer können
+dadurch den XMPP Server finden (vgl. [@Waher2017 4f], siehe Anhang D).
+Die Ausprägung CoRE RD kann ebenfalls mittels DNS-SD genutzt werden. Die
+Spezifikation beschreibt dazu einen Client, welcher die Einträge im RD
+zu DNS-SD übersetzt. Zunächst fragt dieser die Services beim RD ab und
+sendet die entsprechenden ‘DNS Records’ pro Service im Netzwerk aus. Der
+Parameter Ressourcen Typ ‘rt’ wird dabei als Service Typ verwendet (vgl.
+[Shelby et al. 2016, 36]). Wenn der Endpoint nicht weiß, wie er sich
+aktiv registriert, ist die Bekanntmachung des Endpoints sinnvoller, da
+er dazu nur eine Ressource mit der Beschreibung bedienen muss und der
+Server die Informationen erfragt (vgl. [Shelby et al. 2016, 16]). Die
+Bekanntmachung durch den Endpoint ist zudem besser als die Discovery
+durch das RD, da das RD nicht weiß, ob der Endpoint zum Zeitpunkt der
+Discovery ansprechbar ist oder nicht. Zum Beispiel wäre die
+Implementierung eines zentralen RD möglich, welches durch einen Endpoint
+und den Device to Server Ansatz oder durch ein RD und den Server to
+Server Ansatz gefüllt wird. Innerhalb der lokalen Netzwerke erfolgt die
+Registration der Endpoints entweder direkt an ein lokales RD oder
+indirekt durch das RD (siehe Abb. 10). Dies hat den Vorteil, dass auch
+Endpoints unterstützt werden, die nicht in der Lage sind, sich selber zu
+registrieren oder sich nur in einem lokalen Netzwerk registrieren
+können.
+[@Jara2013] beschreibt eine skalierbare Architektur, welche auf
+zentralen RD basiert. Die Discovery erfolgt durch einen Such-Server,
+basierend auf ‘ElasticSearch’, welcher die Integration mehrerer RD
+ermöglicht. Durch die Vorlagerung dieses Servers wird die Skalierung der
+Discovery gewährleistet (vgl. [@Jara2013 6]). Allerdings besteht das
+Skalierungsproblem weiterhin bei der Registration. Eine weitere
+Möglichkeit ist die Nutzung von vielen lokalen RD, welche in einem
+Peer-to-Peer Netz miteinander verbunden sind. Die Aufgabe des zentralen
+RD wäre dann verteilt auf die Lokalen. [@Cirani2014] beschreibt den
+Aufbau einer globalen Peer-to-Peer Architektur bestehend aus zwei Arten
+von ‘IoT Gateways’ und den Endpoints. Die ‘IoT Gateways’ stellen RD in
+lokalen Netzwerken dar, welche zu gleich als Peers in einem global
+verteilten RD agieren. Die ‘IoT Gateways’ kommunizieren über
+verschiedene Protokolle wie CoAP und HTTP mit den Endpoints (vgl.
+[@Cirani2014 4]). Der ‘Distributed Location Service’ stellt die erste
+Schicht des Peer-Netzwerkes dar und beinhaltet die URI zum Ansprechen
+der Services. Die ‘Distributed Geographic Table’ stellt die zweite
+Schicht dar und beinhaltet die Standorte der Endpoints (vgl.
+[@Cirani2014 5]). Der Vorschlag von [@Cirani2014] nutzt die Vorteile des
+verteilten RD, indem es eine hochverfügbare und skalierbare Architektur
+bereitstellt. Die Suche nach Services ist jedoch zunächst auf
+geographische Standorte beschränkt. Erst nach dem Entdecken der ‘IoT
+Gateways’ der entsprechenden Standorte ist eine Suche mit mehr
+Parametern basierend auf der CoRE RD Ausprägung möglich. Durch eine
+Integration mehrerer Ansätze kann zudem sicher gestellt werden, dass
+alle Endpoints gefunden werden. Eine Integration zwischen dem
+nicht-IP-basierten Ansatz und dem IP-basierten Ansatz ist zum Beispiel
+wichtig, um WPAN, wie Zigbee, im Kontext einer IP-basierten IoT
+Plattform nutzen zu können. Eine Möglichkeit stellt ein Gateway zwischen
+zwei Protokollen dar, welches die Nachrichten übersetzt (vgl.
+[@Mitsugi2011 2]). Dazu wäre es zum Beispiel möglich einen Zigbee Router
+zu einem Gateway umzuwandeln, welcher Nachrichten zwischen Zigbee und
+UPnP umwandelt. Die Anbindung zu IP kann je nach Gerätetyp des Routers
+durch unterschiedliche Technologien, zum Beispiel WLAN oder 6LoWPAN,
+geschehen. Die Spezifikation 6LoWPAN stellt eine Alternative zu Zigbee
+dar und ist ein Protokoll der Sicherungs- und Vermittlungsschicht. Es
+bietet die Unterstützung von IP auf drahtloser Sensorebene an und eignet
+sich besonders für beschränkte Geräte (vgl. [@Kushalnagar2007 2]).
+6LoWPAN besitzt selber noch keine Definitionen zur Registration und
+Discovery (vgl. [@Kushalnagar2007 6]). Es können aber andere IP-basierte
+Device to Device Ansätze verwendet werden. Die Spezifikation Zigbee IP
+basiert weiterhin auf 6LoWPAN und erweitert es um die weiteren OSI
+Schichten. Sobald eine IP-Verbindung besteht, kann das Gateway über
+MQTT, UPnP, HTTP, CoAP oder andere Protokolle angesprochen werden. Die
+Wahl des Protokolls ist abhängig davon, ob das Gateway ein
+leistungsstarkes Gerät ist oder als Teil des Endpoints zu den
+beschränkten Geräten gehört. Der Nachteil eines Gateways zur Übersetzung
+ist jedoch, dass ein neuer Endpoint oder Service erst eingerichtet
+werden müssen (vgl. [@Mitsugi2011 2]). Der Parameter Ressourcen Typ in
+der Ausprägung CoRE RD müsste zum Beispiel manuell gesetzt werden. Die
+zweite Möglichkeit ist die Nutzung eines Gateways, welches die
+Nachrichten weiterleitet anstatt sie zu übersetzen. Dies ist mittels
+MQTT-SN möglich. Dieses Protokoll ist eine Erweiterung des MQTT
+Protokolls und ermöglicht dessen Nutzung in WPAN, indem es auf
+Protokollen aus verschiedenen OSI Schichten, wie 6LoWPAN und UDP oder
+Zigbee, aufbaut. Es kann somit zur Integration der IP-basierten und
+nicht-IP-basierten Ansätze und als Erweiterung von 6LoWPAN als eigener
+Ausprägung dienen. Es wird ein Gateway verwendet, welches mittels TCP
+und MQTT mit einem Broker und mittels MQTT-SN mit den Endpoints
+verbunden ist (vgl. [@Govindan2015 1]). Das Gateway muss bei dieser
+Möglichkeit jedoch TCP nutzen und kann somit nicht direkt über einen
+Endpoint funktionieren. [@Mitsugi2011] beschreibt eine ähnliche
+Architektur, in welcher Zigbee mit UPnP mittels CoAP verbunden wird.
+Dazu wird ein Gateway verwendet, welches über SSDP und UPnP ansprechbar
+ist. Die Endpoints senden zur Registration Zigbee Nachrichten, welche im
+CoAP Format dargestellt werden. Das Gateway leitet die Nachrichten
+anschließend weiter. Der Vorteil dieses Ansatzes ist die verringerte
+Komplexität auf Seite des Gateways. Allerdings ist eine Anpassung der
+Endpoints notwendig, zum Beispiel, um CoAP Nachrichten auf Basis von
+Zigbee zu senden.</p>
+
+<h2 id="evaluation">Evaluation</h2>
+
+<p>Im Experiment liefen die Prozesse erfolgreich ab. Der SmartPi als
+Endpoint registrierte sich beim RD und die Services wurden vom Client
+gefunden. Der Client nutzte die Informationen des RD, um den SmartPi
+anschließend anzusprechen. Bei der Durchführung des Experiments wurden
+jedoch zwei Probleme der Spezifikation offensichtlich. Bei der Discovery
+erhält der Client zwar die URI des Services, aber nicht die zu
+verwendende Methode. Es kann entweder angenommen werden, dass die
+Methode GET verwendet werden soll, oder es kann ein neuer Parameter, zum
+Beispiel ‘method’, bei der Registration eingeführt werden. Die Anpassung
+des Parameters Kontext ist ebenfalls möglich. Dieser müsste dann jedoch
+obligatorisch sein. Zudem muss der Endpoint über eine statische
+IP-Adresse verfügen, damit der Client ihn direkt ansprechen kann. Die
+Nutzung von Endpoints und direkter Registration in einem lokalen
+Netzwerk mit dynamischen IP-Adressen ist somit nicht möglich.
+Stattdessen ist es möglich, dass ein lokales RD als Verwalter der
+Endpoints die Registration übernimmt und im Parameter Kontext die eigene
+URI angibt und als Pfad den Endpoint Namen. Ein Client fragt dann das
+lokale RD an, welches als Gateway dient und wiederum den Endpoint
+anfragt. Die Umsetzung eines Ansatzes zur Registration und Discovery
+anhand des Prototyps hat weiterhin verdeutlicht, dass die Nutzung
+standardisierter Prozesse wichtig für die Interoperabilität des RD ist.
+Das RD des Prototyps kann in einer anwendungsbezogenen Architektur Teil
+einer größeren IoT-Plattform sein. Diese würde über verschiedene
+Schnittstellen die unterschiedlichen Ansätze implementieren und in einer
+oder mehreren Datenbasen die Informationen speichern. Durch die
+Implementierung zeigte sich zudem, dass die eindeutige Identifizierung
+der Endpoints, die Beschreibung und die Speicherung der Informationen
+eine wichtige Rolle spielen. Die Beschreibung der Endpoints und Services
+ist bei vielen Ausprägungen unterschiedlich und kann auf XML, RDF, JSON
+oder dem CoRE Link Format basieren. Diese unterscheiden sich
+hinsichtlich der Komplexität und dem Umfang der Beschreibung, sowie der
+Eignung für beschränkte Geräte und der Verbreitung des Formates. Die
+Identifikation des Endpoints geschieht beim Prototypen über die
+IP-Adresse, welche im Device to Server Umfeld statisch ist. Dies
+funktioniert jedoch nur, wenn sich der Endpoint direkt über das Internet
+registriert. Eine Integration mit Device to Device Ansätzen erschwert
+die Identifikation, da der nicht-IP-basierte Ansatz keine IP-Adresse
+unterstützt und sich die IP-Adresse im lokalen Netzwerk des IP-basierten
+Ansatzes ändern können. Zudem gibt es Ausprägungen des IP-basierten
+Device to Device Ansatzes und des Device to Server Ansatzes, welche
+neben der IP-Adresse weitere Identifikationsmöglichkeiten, wie UUID oder
+JID, nutzen. Der Prototyp nutzt das CoRE Link Format und RDF zur
+Beschreibung und speichert die Eigenschaften des Endpoints und der
+Services mithilfe von zwei Datenmodellen. Das relationale Datenmodell
+eignet sich auf Grund der hohen Verbreitung und Mächtigkeit. Der
+Prototyp nutzt dazu zwei Tabellen, um jeweils die Endpoints und die
+Services zu speichern. Die ID des Endpoints dient dabei als
+Fremdschlüssel. Das graphische Datenmodell in Verwendung mit RDF kann
+für eine semantische Speicherung und Discovery genutzt werden. Eine IoT
+Plattform müsste für die verschiedenen Ansätze und Beschreibungsformate
+eigene Datenmodelle nutzen oder eine Übersetzung in ein einheitliches
+Format durchführen. Der SmartPi als Endpoint war zudem ein sehr
+interessantes Gerät, da er vor dem Experiment erst zusammen gebaut
+werden musste. Weiterhin ermöglicht er die Nutzung der Smart Meter
+Funktionalität in privaten Anwendungsfällen und ließ sich sehr gut bei
+der Entwicklung des Prototyps nutzen.</p>
+
+<h1 id="fazit">Fazit</h1>
+
+<p>Die Nutzung des IoT bietet zahlreiche Chancen, sofern eine
+funktionierende und skalierbare Infrastruktur aufgebaut ist. In dieser
+sollte es möglich sein, ohne menschliche Hilfe eine Vielzahl an
+Endpoints zum Netzwerk hinzuzufügen. Weiterhin müssen die Endpoints und
+die angebotenen Services maschinenlesbar und standardisiert beschrieben
+werden, um die unterschiedlichen Arten von Endpoints bedienen zu können.
+In dieser Arbeit wurden verschiedene Ansätze betrachtet, welche je nach
+Anwendungsfall unterschiedliche Vor- und Nachteile haben. Um die
+Vorteile mehrerer Ansätze zu nutzen, kann eine Integration der Ansätze
+sinnvoll sein. Weiterhin ist die Nutzung mehrerer Ausprägungen der
+Ansätze hilfreich, um mehrere Schnittstellen anbieten zu können.
+Ressourcensparende Ausprägungen wie CoRE RD bieten sich für den Prozess
+der Registration von beschränkten Geräten an. Die Nutzung von Hypercat
+und XMPP, welche mehr Ressourcen benötigen, ist wiederum bei der
+Discovery durch leistungsfähigere Clients sinnvoll. Die Spezifikation
+CoRE RD wurde im Prototypen um eine umfangreichere Discovery erweitert,
+wodurch diese auch für leistungsfähigere Clients geeignet ist. Basierend
+auf dem Umfang der Spezifikation, der Eignung für beschränkte Geräte und
+der zunehmenden Verbreitung von CoAP stellt sie die
+erfolgversprechendste Lösung für eine IP-basierte Registration und
+Discovery dar. Durch die Nutzung von IPv6 und 6LoWPAN kann weitergehend
+davon ausgegangen werden, dass die Nutzung von IP auch in WPAN steigen
+wird. Eine Folge wird sein, dass der IP-basierte Device to Device Ansatz
+den nicht-IP-basierten Ansatz verdrängen wird. Nach den Prozessen der
+Registration und Discovery ist der nächste Schritt die Speicherung und
+Verwaltung der Endpoints und Services. Dies kann durch die Verwendung
+von Ontologien geschehen, um eine semantische und wissensbasierte
+Nutzung des IoT zu ermöglichen. Das ‘Semantic Web of Things’ basiert auf
+den Ansätzen und baut eine umfangreichere Suche darauf auf (vgl.
+[@Ruta2013 1]). Eine Herausforderungen bei der Bearbeitung des Themas
+war die Unterscheidung zwischen den einzelnen Ausprägungen der Ansätze
+und den von ihnen genutzten Protokollen. Die Ausprägung RD mit XMPP
+bezieht sich zum Beispiel nur auf die Verwendung des Protokolls XMPP,
+während die Ausprägung CoRE RD unabhängig vom genutzten Protokoll, wie
+HTTP oder CoAP, ist. Eine weitere Herausforderung war die Unterscheidung
+zwischen den Ausprägungen und den Standards zur Beschreibung von
+Endpoints und Services. Die Hypercat Spezifikation sowie SSDP stellen
+zum Beispiel Ausprägungen der entsprechenden Ansätze dar, beinhalten
+aber auch eine eigene Formatierung der Beschreibung. CoRE RD empfiehlt
+zwar die Verwendung des CoRE Link Formats, bleibt aber trotzdem
+flexibel. Durch die Implementierung des Prototyps wurde offensichtlich,
+dass die Themen Identifikation der Endpoints, Beschreibungsformate und
+die verwendeten Datenmodelle weitergehend betrachtet werden können. Für
+eine umfangreichere Untersuchung der Ansätze sind auch die Themen
+Sicherheit und Verwaltung von Endpoints interessant. Die Prozesse der
+Registration und Discovery sollten Mechanismen zur Verschlüsselung und
+zur Authentifizierung der Nutzer unterstützen, um den Datenschutz in der
+IoT Plattform zu gewährleisten. Die Discovery könnte zum Beispiel
+verschiedene Rollen der Nutzer berücksichtigen, um die Endpoints vor
+bestimmten Nutzergruppen zu verbergen. Weiterhin ist die Möglichkeit zur
+Verwaltung eines Endpoints durch einen zusätzlichen Verwalter
+interessant, um die beschränkten Geräte besser integrieren zu können.
+Ein leistungsfähigerer Verwalter würde sich um die Registration mehrerer
+Endpoints kümmern. Dies hätte eine höhere Zuverlässigkeit der
+Registration zur Folge, aber auch die Anschaffung eines zusätzlichen
+Gerätes.</p>
+
+  </div>
+
+  
+
+  <a class="u-url" href="/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <nav>
+        
+    
+ 	
+            
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/about/">About</a></span>
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/blog/">Blog</a></span>
+            
+          
+            
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/projects/">Projects</a></span>
+            
+          
+            
+            
+          
+            
+            
+          
+</nav>
+
+  </body>
+
+</html>

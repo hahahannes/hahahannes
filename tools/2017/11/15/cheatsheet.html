@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Cheatsheet | hannesh</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Cheatsheet" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Git Clean merge into master branch 1 2 3 4 5 6 git checkout master git pull git checkout dev git merge master git checkout master git merge dev" />
+<meta property="og:description" content="Git Clean merge into master branch 1 2 3 4 5 6 git checkout master git pull git checkout dev git merge master git checkout master git merge dev" />
+<link rel="canonical" href="https://hannesh.de/tools/2017/11/15/cheatsheet.html" />
+<meta property="og:url" content="https://hannesh.de/tools/2017/11/15/cheatsheet.html" />
+<meta property="og:site_name" content="hannesh" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-11-15T21:46:54+01:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Cheatsheet","dateModified":"2017-11-15T21:46:54+01:00","datePublished":"2017-11-15T21:46:54+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://hannesh.de/tools/2017/11/15/cheatsheet.html"},"url":"https://hannesh.de/tools/2017/11/15/cheatsheet.html","description":"Git Clean merge into master branch 1 2 3 4 5 6 git checkout master git pull git checkout dev git merge master git checkout master git merge dev","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="alternate" type="application/rss+xml" title="hannesh" href="/feed.xml">
+
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113921069-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-113921069-1');
+</script>
+
+
+
+</head>
+
+
+  <body>
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Cheatsheet</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2017-11-15T21:46:54+01:00" itemprop="datePublished">
+        
+        Nov 15, 2017
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="git">Git</h1>
+<h2 id="clean-merge-into-master-branch">Clean merge into master branch</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre>git checkout master
+git pull 
+git checkout dev
+git merge master
+git checkout master
+git merge dev
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="keep-fork-up-to-date">Keep Fork up to date</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre>git remote add upstream URL_TO_ORIGINAL_REPO
+git fetch upstream // this will create new branches like upstream/master
+git checkout BRANCH
+git merge upstream/BRANCH
+git push <span class="nt">-u</span> origin master // to update your remote forked repository
+</pre></td></tr></tbody></table></code></pre></div></div>
+<h2 id="removing-a-file-from-the-local-and-remote-repository">Removing a file from the local and remote repository</h2>
+
+<h2 id="removing-a-branch-from-the-local-and-remote-repository">Removing a branch from the local and remote repository</h2>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>git branch <span class="nt">-D</span> BRANCH
+git push <span class="nt">-u</span> origin master <span class="nt">--delete</span> 
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h1 id="python">Python</h1>
+
+<h1 id="javascript">JavaScript</h1>
+
+  </div>
+
+  
+
+  <a class="u-url" href="/tools/2017/11/15/cheatsheet.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <nav>
+        
+    
+ 	
+            
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/about/">About</a></span>
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/blog/">Blog</a></span>
+            
+          
+            
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/projects/">Projects</a></span>
+            
+          
+            
+            
+          
+            
+            
+          
+</nav>
+
+  </body>
+
+</html>

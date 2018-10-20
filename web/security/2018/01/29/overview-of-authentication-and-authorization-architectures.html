@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.4.0 -->
+<title>Overview of authentication and authorization architectures | hannesh</title>
+<meta name="generator" content="Jekyll v3.7.2" />
+<meta property="og:title" content="Overview of authentication and authorization architectures" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html" />
+<meta property="og:url" content="https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html" />
+<meta property="og:site_name" content="hannesh" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-01-29T21:46:54+01:00" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Overview of authentication and authorization architectures","dateModified":"2018-01-29T21:46:54+01:00","datePublished":"2018-01-29T21:46:54+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html"},"url":"https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="alternate" type="application/rss+xml" title="hannesh" href="/feed.xml">
+
+   <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113921069-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-113921069-1');
+</script>
+
+
+
+</head>
+
+
+  <body>
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Overview of authentication and authorization architectures</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-01-29T21:46:54+01:00" itemprop="datePublished">
+        
+        Jan 29, 2018
+      </time>
+      </p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    
+<h1 id="basics">Basics:</h1>
+<p>The selection of an authentication and authorization method depends on multiple factors. For example it depends on the architecture of your project. If it is a monolithic architecture or a microservice based architecture. Then it depends on the usage of the user and roles. Whether you want to use it only for your own purpose or to open your service to third parties.</p>
+
+<h2 id="authentication">Authentication:</h2>
+<p>Authentication is about identity of a user. A user has to verify that he is who he claims to be, for example by knowing a username, password pair.</p>
+
+<h3 id="http-basic-authentication">HTTP Basic Authentication:</h3>
+<p>Username and password are placed inside the Authorization HTTP header. Connection has to be secured with TLS and has to be added to every request. For this you can simply use the <a href="https://getkong.org/plugins/basic-authentication/">Kong Basic Plugin</a> or check the credentials by your own. Then you have to setup a database with users and credentials (never use plaintext storage). This means that on every incoming request, you will have to compare it with your database.</p>
+
+<h3 id="session-authentication">Session Authentication</h3>
+<p>Session Authentication is based on a session cookie. It contains a session id, that is matched to an unique session, that expires after some time. Most webpages use this type of authentication. For example if you have the possibility to stay logged in, a session cookie with higher lifetime, e.g. 30 days, will be generated. This will need an additional service and database, where opaque session ids get generated and stored. Then you can compare the value of a session cookie from an incoming request with your database and connect the session id to an user id.</p>
+
+<h3 id="token-authentication">Token Authentication</h3>
+<p>Token Authentication is based on an opaque token like the one that is in the session cookie. But it gets placed inside the Authorization header and not the cookie header. Therefore the developer can decide where to save the token. 
+The advantage is that it can be used by platforms where cookies are not usable.
+The disadvantage is that the places can be less secure then a secure HTTP-only cookie, because the session storage can be accessable by malisious javascript.
+Some implementations only setup an endless initial token, but it is better to set an expiration to the token.</p>
+
+<h3 id="openid-connect"><a href="https://openid.net/connect/">OpenID Connect</a></h3>
+<p>based on token authentication</p>
+<ul>
+  <li>für User Authentication</li>
+  <li>führt ID Token ein (JWT - JSON Web Token) -&gt; JSON based Identity Protocols</li>
+  <li>beinhaltet Informationen über den User -&gt; strukturierte, festgelegte Eigenschaften</li>
+  <li>hilfreich wenn UI an User angepasst werden soll</li>
+  <li>UserInfo endpoint: Protected resource that, when presented with an access token by the client, returns authorized information about the end user</li>
+  <li>Beim erstmaligen Login per OAuth z.b. per Basic Authentication wird Token generiert, der später nur noch mitgesendet wird</li>
+  <li><a href="https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation">Validation des Tokens</a> = Authentication des Users</li>
+</ul>
+
+<p>Teilnehmer:</p>
+<ul>
+  <li>Relying Party = OAuth2 Client</li>
+  <li>Identity Provider = OAuth 2.0 authorization server</li>
+</ul>
+
+<h3 id="api-key">API Key</h3>
+<p>For a lot of web services, you have to add an api key as query parameter. This means, that mostly you have to register as an developer to get this key. With that ke you will then have the right to access some resources.
+The advantage is that it is very easy to use. The problem is that you cannot add an identiy to this key, like at the token or session based authentiction, because this key can be get public and then it is not really authentication as you dont know the identity of the user. With an api key you can only give permissions to use a service that does not need identity.</p>
+
+<h3 id="result">Result:</h3>
+<p>I would use the OpenID Connect standard, based on OAuth 2.0 to have a standardized token based authentication. Based on the requirements, the tokens can be validate without checking against an database, which makes it highly flexible.</p>
+
+<h2 id="authorization">Authorization:</h2>
+<p>Authorization is about permissions and roles. After the authentication, you will know the identity of an user, but not what he is allowed to access or not. 
+Therefore you need to have an permission system.</p>
+
+<ul>
+  <li>User Authorization</li>
+  <li>Client Authorization</li>
+</ul>
+
+<h3 id="oauth2">OAuth2:</h3>
+<p>With OAuth 2.0 you have to between user and client authorization.</p>
+
+<ul>
+  <li>ist für Client Authorization (<a href="https://oauth.net/articles/authentication/">https://oauth.net/articles/authentication/</a>)</li>
+  <li>Genauer “Delegation”</li>
+  <li>Client z.b 3rd party app muss user credentials nicht kennen</li>
+  <li>wie man sich bekannt gibt (Authentication) egal (https://tools.ietf.org/html/rfc6749#section-3.1)</li>
+  <li>gut wenn man noch third party apps integrieren möchte, die dann als Client agieren</li>
+  <li>für eigene Applikationen ist dann das Frontend oder die App der Client</li>
+  <li>Client sagt welche Berechtigungen er haben will, z.b Facebook API App möchte Zugang zu Likes</li>
+  <li>OAuth authorisiert Clients nicht User -&gt; nicht was der User machen darf oder nicht darf</li>
+</ul>
+
+<p>Teil von OAuth:</p>
+<ul>
+  <li>Token muss bei Erhalt des Requests validiert werden - noch gültig oder abgelaufen</li>
+  <li>Berechtigungen überprüfen, die nötig sind für die Resource (die am Anfang durch den User authorisiert wurden)</li>
+</ul>
+
+<p>Nicht Teil von OAuth:</p>
+<ul>
+  <li>User Authorization</li>
+  <li>dafür muss die User ID aus dem Token extrahiert werden (überhaupt möglich mit OAuth2 eher nicht ?)</li>
+  <li>danach dann Rolle des Users und benötigte Berechtigungen überprüfen</li>
+  <li>OpenID Connect baut auf OAuth auf, um User ID zu erweitern <a href="https://nordicapis.com/how-to-control-user-identity-within-microservices/">[1]</a>
+<a href="https://auth0.com/docs/protocols/oidc">[2]</a></li>
+  <li>Access Token kann auch JWT sein -&gt; darin könnte eine User ID vorhanden sein, Access Token könnte einfach validiert werden</li>
+  <li>Problematisch für Deaktiveren von Tokens da es keine zentrale Instanz gibt wo man nachfragt</li>
+  <li>kann gelöst werden in dem außerhalb eine Referenz und am API Gatewaydie Referenz in einen Wert umgewandelt wird</li>
+  <li>dann könnte Referenz gelöscht werden</li>
+</ul>
+
+<p>Teilnehmer:</p>
+<ul>
+  <li>Resource Owner (RO): the user</li>
+  <li>Client: the web or mobile app</li>
+  <li>Authorization Service (AS): OAuth 2.0 server</li>
+  <li>Resource Server (RS): where the actual service is stored</li>
+</ul>
+
+<p>Verschiedene Flows:</p>
+<ul>
+  <li>The code flow (or web server flow) -&gt; backend beim clien notwendig</li>
+  <li>Client credential flow</li>
+  <li>Resource owner credential flow</li>
+  <li>Implicit flow -&gt; client frontend reicht aus</li>
+</ul>
+
+<p>Ablauf:</p>
+<ul>
+  <li>The Client requests access to the Resource Server by calling the Authorization Server.</li>
+  <li>The Authorization Server redirects to allow the user to authenticate, which is usually performed within a browser. This is essentially signing into an authorization server, not the app.
+** Authentication des User z.b. durch Basic Auth</li>
+  <li>The Authorization Server then validates the user credentials and provides an Access Token to client, which can be use to call the Resource Server</li>
+  <li>The Client then sends the Token to the Resource Server</li>
+  <li>The Resource Server asks the Authorization Server if the token is valid.</li>
+  <li>The Authorization Server validates the Token, returning relevant information to the Resource Server i.e. time till token expiration, who the token belongs too.</li>
+  <li>The Resource Server then provides data to the Client. In our case, the requested emails are unbarred and delivered to the client.</li>
+</ul>
+
+<h3 id="username-und-rollerechte-in-db">Username und Rolle/Rechte in DB</h3>
+<ul>
+  <li>einfach User in einer DB anlegen</li>
+  <li>bei jedem Request nach erfolgreicher Authentication Rechte des Users mittels Usernamen abfragen</li>
+  <li>OpenID Connect setzt darauf auf, ID Token kann genutzt werden um DB zu checken</li>
+  <li>bei Microservices müsste entweder jeder request mit Basic Authentication den Usernamen übermitteln oder</li>
+  <li>mit Session Authentication müsste jede Session mit Usernamen verknüpft sein</li>
+  <li>bei API Gateway müsste nur dort Authorization überprüft werden</li>
+  <li>
+    <p>ohne API Gateway in jedem Service</p>
+  </li>
+  <li>einfach</li>
+  <li>beschränkt, möglich wenn z.B. nur das Frontend verwendet wird, praktisch für Monoliten</li>
+</ul>
+
+<h3 id="oauth2s-user-managed-access-uma-profile">OAuth2’s User-Managed Access (UMA) Profile</h3>
+<ul>
+  <li>http://www.keycloak.org/docs/3.0/authorization_services/topics/service/overview.html</li>
+  <li>Service als Resource Server registriert sich beim Authorization Server</li>
+  <li>nur möglich wenn User Authorization mit am Service (nicht mgl für Methode 2.3 da Veränderung am Service notwendig)</li>
+</ul>
+
+<h3 id="xacml">XACML</h3>
+
+<h3 id="json-policy">JSON Policy</h3>
+<ul>
+  <li>siehe Ory Ladon</li>
+</ul>
+
+<h3 id="ergebnis">Ergebnis:</h3>
+<ul>
+  <li>OAuth zur Client Authorization, da perfekt für 3rd party apps</li>
+  <li>Code Flow für 3rd party apps</li>
+  <li>Implicit Flow oder Resource Owner Password Credentials Flow für front end</li>
+  <li>User Authorization durch User - Rollen - Berechtigungen DB basierend auf OpenID Connect</li>
+</ul>
+
+<h1 id="gegebenheiten">Gegebenheiten:</h1>
+<ul>
+  <li>mehrere Microservices</li>
+  <li>Kong API Gateway</li>
+  <li>Services sollen innerhalb des Netzwerkes einfach zu bedienen sein</li>
+  <li>Platform soll aber auch von extern erreichbar sein</li>
+  <li>Services können im nachhinein dazu kommen</li>
+  <li>3rd party apps sollten möglich sein</li>
+</ul>
+
+<h1 id="fragestellungen">Fragestellungen:</h1>
+<ol>
+  <li>wie am einfachsten Zugriffschutz umsetzen</li>
+  <li>Was muss umgesetzt werden</li>
+</ol>
+
+<h1 id="methoden-in-microservice-architektur">Methoden in Microservice Architektur</h1>
+<ul>
+  <li>verschiedene Ebenen: Aufbau (wo was machen), genutzte Techniken (OAuth, Basic Auth,..), Umsetzung (bestehende Lösungen, eigene Implementation)</li>
+</ul>
+
+<h2 id="methode-1-ohne-api-gateway">Methode 1: Ohne API Gateway</h2>
+<ul>
+  <li>jeder Service überprüft Zugriffsrechte  (Authentication und Authorization)</li>
+  <li>ohne vorgeschaltetes Gateway, jeder Service wird direkt angesprochen</li>
+  <li>
+    <p><strong>Kong Gateway müsste Access Token und JWT Token / Credentials dann an Services weiterleiten</strong></p>
+  </li>
+  <li>jeder Microservice kann eigene Mechanismen verwenden</li>
+  <li>unabhängig von Kong</li>
+</ul>
+
+<h3 id="methode-11-auslagerung-in-neuen-service">Methode 1.1 Auslagerung in neuen Service</h3>
+<h4 id="beispiel-mit-oauth">Beispiel mit OAuth:</h4>
+<ul>
+  <li>Auslagerung von User Authentication, User Authorization und Client Authorization</li>
+  <li><a href="https://github.com/RichardKnop/go-oauth2-server">eigenen OAuth Service implementieren</a></li>
+  <li><a href="https://ory.gitbooks.io/hydra/content/#oauth-20-case-study">Ory Hydra</a></li>
+  <li><strong>Service leitet die Token weiter</strong></li>
+</ul>
+
+<p>Aufwand:</p>
+<ul>
+  <li>Authorization Service für OAuth bereitstellen -&gt; extra Service</li>
+  <li>Authorization Service für User bereitstellen -&gt; extra Service</li>
+  <li>
+    <p>Datenbank mit Usern und Rollen</p>
+  </li>
+  <li>wenig redundant da ausgelagert</li>
+  <li>einfach umzusetzen</li>
+  <li>Abhängigkeit -&gt; schlecht für Wiederverwendbarkeit des Service -&gt; Service so anpassen, dass auch ohne Zugriffsschutz nutzbar</li>
+  <li>Auth Server selber aufsetzen</li>
+  <li>Kong wird quasi nicht genutzt</li>
+</ul>
+
+<h3 id="methode-12-kapselung">Methode 1.2: Kapselung</h3>
+<h4 id="beispiel-mit-oauth-1">Beispiel mit OAuth</h4>
+<ul>
+  <li>User Authentication, User Authorization und Client Authorization am Service (Kapselung)</li>
+  <li>jeder Service beinhaltet gesamte Zugriffslogik.</li>
+  <li>Service validiert Token und führt User Authentication aus und erhält Rolle des Users durch Datenbankabfrage mittels dem JWT Token</li>
+  <li>Zugriffsschutz muss nicht Teil des Service kann -&gt; kann auch ohne funktionieren</li>
+</ul>
+
+<p>Aufwand:</p>
+<ul>
+  <li>Authorization Service für OAuth bereitstellen</li>
+  <li>Authorization Service für User bereitstellen</li>
+  <li>
+    <p>Datenbank mit Usern und Rollen</p>
+  </li>
+  <li>keine Abhängigkeit -&gt; gut für Wiederverwendbarkeit</li>
+  <li>sehr sicher -&gt; Security in Depth</li>
+  <li>gegen Microservices Paradigma, je nach Definition, Zugriffslogik kann auch essentieller Teil sei</li>
+  <li>hoher Aufwand</li>
+  <li>hohe Redundanz (z.b Rollen müssen bei jedem service angelegt werden)</li>
+</ul>
+
+<h3 id="methode-13-auslagerung-von-authentication">Methode 1.3: Auslagerung von Authentication</h3>
+<h4 id="beipsiel-mit-oauth">Beipsiel mit OAuth:</h4>
+<ul>
+  <li>User Authorization am Service und Auslagerung von User Authentication</li>
+  <li>jeder Service macht Authorization (OAuth und User Authoriztion)</li>
+  <li>checkt was darf der Nutzer/die Rolle</li>
+  <li>User Authentication wird ausgelagert:</li>
+  <li>Service erhält Request mit Basic Auth Headern und überprüft Authentication über extra Service oder Validierung des ID Tokens</li>
+  <li>wenn bestätigt, dann Berechtigung des Users checken</li>
+  <li>eine Datenbasis für User, da die für alle Services gleich sind</li>
+</ul>
+
+<p>Aufwand:</p>
+<ul>
+  <li>
+    <p>eigene Datenbasis für Authorization pro Service</p>
+  </li>
+  <li>eigene Rollendefinitionen pro Service einfach möglich</li>
+  <li>kann redundant sein</li>
+</ul>
+
+<p>-&gt; SEPL: alle Services haben gleiche Userbasis, alle Services haben gleiche Rollen?</p>
+<h2 id="methode-2-api-gateway">Methode 2: API Gateway</h2>
+<ul>
+  <li>vorgeschalteter API Gateway für alle Anfragen von außen.</li>
+  <li>Mehrere Gateways möglich:</li>
+  <li>OAuth Gateway für 3rd Party Apps</li>
+  <li>Web Gateway mit Session based Authentication für Websiten</li>
+  <li>unterteilt je nach dem ob Auth am Gateway oder am Service gemacht wird</li>
+  <li>
+    <p>weitere Unterteilung wie Methoden 1, was im Service gemacht wird oder ausgelagert wird</p>
+  </li>
+  <li>geringer Aufwand da bereits Plugin für Auth Server vorhanden</li>
+</ul>
+
+<h2 id="methode-21-user-authentication-am-gateway">Methode 2.1: User Authentication am Gateway</h2>
+
+<h3 id="beispiel-mit-oauth-2">Beispiel mit OAuth</h3>
+<ul>
+  <li>OAuth Authorization und User Authentication am Gateway</li>
+  <li>Kong Gateway macht OAuth Authorization und User Authentication</li>
+  <li>User Authorization:</li>
+  <li>Weiterleitung des gesamten JWTs, des JSON vom user-info endpoint (mit user id, user role)</li>
+  <li>dann entweder hardcoded im service (if user_role = admin), DB Lookup mit user id oder role und checken ob berechtigung für api vorhanden</li>
+  <li>Entweder ausgelagert und mit gemeinsamer Datenbasis oder je Service eigene User Authorization</li>
+  <li>Service komplett auslagern -&gt; dieser validiert Token und erhält Rolle oder User ID und macht DB Lookup für Berechtigungen auf API</li>
+  <li>DB müsste nicht User und Rollen mappen, wenn Rolle gleich im JWT</li>
+  <li>
+    <p>wenn Service nicht erreichbar wird request geblockt</p>
+  </li>
+  <li><a href="https://getkong.org/plugins/oauth2-authentication">Kong OAuth Plugin</a></li>
+  <li><a href="https://getkong.org/plugins/ee-openid-connect-rp/">Kong OpenID Connect Plugin</a> nur Enterprise</li>
+  <li><a href="https://github.com/nokia/kong-oidc">Github</a></li>
+</ul>
+
+<p>Aufwand:</p>
+<ul>
+  <li>OAuth Authorization -&gt; Plugin</li>
+  <li>User Authentication -&gt; entweder Plugin oder extra Service + Datenbank mit Usern, Passwörter Hashes</li>
+  <li>User Authorization -&gt; extra Service + Datenbank für Rollen und Berechtigungen für APIs</li>
+  <li>Login Seite (Authentication) und Seite wo Berechtigung erteilt wird müssen selbst implementiert werden</li>
+  <li><strong>Kong Gateway müsste User ID aus dem JWT Token oder JWT Token weiterleiten</strong></li>
+  <li>
+    <p>besser wäre JWT für Sicherheit</p>
+  </li>
+  <li>stark auf Kong basierend</li>
+  <li>zwei Sicherheitsschichten: Gateway und im Service</li>
+  <li>eigene Rollen je Service möglich</li>
+  <li>Änderungen an den Services</li>
+</ul>
+
+<h3 id="beispiel-mit-basic-authentication">Beispiel mit Basic Authentication</h3>
+<ul>
+  <li>Basic Authentication am Gateway</li>
+  <li><a href="https://getkong.org/plugins/basic-authentication/">Kong Basic Auth Plugin</a></li>
+  <li>Weiterleitung der user id an Service</li>
+  <li>dann User Authorization am Service</li>
+</ul>
+
+<h2 id="methode-22-nur-mit-oauth-oauth-authorization-am-gateway">Methode 2.2 (nur mit OAuth): OAuth Authorization am Gateway</h2>
+<ul>
+  <li><a href="https://getkong.org/plugins/oauth2-authentication">Kong OAuth Plugin</a> stellt OAuth Authorization Server bereit</li>
+  <li><strong>Kong Gateway leitet nur JWT Token weiter an Service</strong></li>
+  <li><strong>Service leitet Token an User Authentication und Authorization Service weiter</strong> (angenommen Services sind ausgelagert)</li>
+  <li>theoretisch auch unterteilbar in ausgelagerten User Authorization Service oder im Service selbst</li>
+  <li>bei Erstellen des Access Tokens müsste der AS auch den ID Token vom User Authentication Service mitsenden</li>
+</ul>
+
+<p>Aufwand:</p>
+<ul>
+  <li>User Authorization -&gt; extra Service</li>
+  <li>
+    <p>USer Authentication -&gt; extra Service</p>
+  </li>
+  <li>Kong wird genutzt</li>
+  <li>Service zur User Authrorization wird ausgelagert</li>
+  <li>geringere Änderung an den Services</li>
+  <li>Plugin generiert keine ID Tokens -&gt; Anapssung des Plugins</li>
+</ul>
+
+<h2 id="methode-23-authentication-und-authorization-am-gateway">Methode 2.3: Authentication und Authorization am Gateway</h2>
+
+<h3 id="beispiel-mit-oauth-3">Beispiel mit OAuth:</h3>
+<ul>
+  <li>OAuth Authorization, User Authentication und User Authorization am Gateway</li>
+  <li>Kong Gateway macht alle Checks und blockiert gleich den Request wenn Rechte nicht vorhanden</li>
+  <li>wie Services anbinden?</li>
+  <li>Plugin 2 -&gt; Session, Login automatisch bei erstem Service request</li>
+  <li>Eigenes Plugin -&gt; jeder Request müsste Tokens beinhalten, hinter Kong</li>
+  <li>JWT Plugin von Kong, nicht brauchbar, da Consumer angelegt werden muss -&gt; redundant mit Identity Provider wie Keycloak</li>
+  <li>
+    <p>Getrennt von Kong (kein Mehrwert)</p>
+  </li>
+  <li>nur eine Datenbasis mit APIs und Rollen</li>
+  <li>nur Kong basierend</li>
+  <li>keine Änderung an den Services notwendig</li>
+  <li>Single Point of Failure</li>
+  <li>keine Plugins die auch User Authorization implementieren</li>
+  <li>nur eine Sicherheitsschicht</li>
+</ul>
+
+<p>Aufwand:</p>
+<ul>
+  <li>Client Authorization (OAuth) -&gt; Plugin</li>
+  <li>User Authentication -&gt; Plugin z.b von Github</li>
+  <li>User Authorization -&gt; Service</li>
+</ul>
+
+<h1 id="softwarelösungen">Softwarelösungen:</h1>
+<h2 id="kong-oauth-plugin"><a href="https://getkong.org/plugins/oauth2-authentication">Kong OAuth Plugin</a></h2>
+<ul>
+  <li>bietet OAuth Authorization Server an</li>
+  <li>APIs /authorize und /token</li>
+  <li>zusätzlich notwendig: Authentication Seite (Berechtigung erteilen) und Login Seite imlementieren</li>
+  <li>
+    <p>Backend kommuniziert dann mit /authorize endpoint</p>
+  </li>
+  <li>nicht änderbar</li>
+</ul>
+
+<h2 id="kong-openid-connect-plugin-1"><a href="https://getkong.org/plugins/ee-openid-connect-rp/">Kong OpenID Connect Plugin 1</a></h2>
+<ul>
+  <li>nur Enterprise Version von Kong</li>
+</ul>
+
+<h2 id="kong-openid-connect-plugin-2"><a href="https://github.com/nokia/kong-oidc">Kong OpenID Connect Plugin 2</a></h2>
+<ul>
+  <li>Plugin von Nokia, um Kong zu einem Relying Party zu machen</li>
+  <li>zusätzlich notwendig:</li>
+  <li>Authorization Server für OAuth - extra Service oder Hydra oder Keycloak ?</li>
+  <li>implementiert nur User Authentication -&gt; User Authorization fehlt</li>
+  <li><a href="https://github.com/nokia/kong-oidc/issues/15">https://github.com/nokia/kong-oidc/issues/15</a></li>
+  <li>leitet dereferenzierte JWT also User Claims weiter -&gt; schlecht für zweite sicherheitsschicht</li>
+  <li>single sign on, bei jedem request wird geprüft, wenn nicht authenticated, dann redirect zu AS, mit Session Cookie kann dann jeder anderer Service verwendet werden</li>
+</ul>
+
+<h2 id="ory-hydra"><a href="https://github.com/ory/hydra">Ory Hydra</a></h2>
+<ul>
+  <li>OAuth and open ID server</li>
+  <li>verwaltete Keys, Validation</li>
+  <li>zusätzlich notwendig: User Management</li>
+  <li>ähnlich wie Kong Plugin OAuth Web App für den Consent Flow und User Management</li>
+  <li>User Authorization: Zusammen mit <a href="https://github.com/ory/ladon">Ory Ladon</a> um Rolen zu verwalten bzw. beinhaltet Lado bereits</li>
+  <li>User Managemtn nur für username und credentials -&gt; post an ladon für rollen</li>
+</ul>
+
+<h2 id="kong-basic-auth-plugin"><a href="https://getkong.org/plugins/basic-authentication/">Kong Basic Auth Plugin</a></h2>
+<ul>
+  <li>User werden bei Kong angelegt</li>
+  <li>bei jedem Request Credentials angeben</li>
+  <li>Weiterleitung der User ID an den Service, wo dann auf Consumer Datenbank von Kong zugegriffen werden müsste</li>
+  <li>zusätzlich notwendig: Datenbank mit Rollen, Berechtigungen je API mit Verbindung zu Consumer Datenbank</li>
+</ul>
+
+<h2 id="kong-openid-connect-plugin-3"><a href="https://github.com/GluuFederation/kong-plugins/tree/master/kong-openid-rp">Kong OpenID Connect Plugin 3</a></h2>
+<ul>
+  <li>wie Kong OpenID Connect Plugin 2</li>
+</ul>
+
+<h2 id="keycloack">[Keycloack]</h2>
+<ul>
+  <li>vollwertiger OpenID Provder mit Login und Consent sowie User Management</li>
+  <li>zusätzlich notwendig: User Authoriztaion</li>
+  <li>Anbindung an Kong entweder mit Kong OpenID Connect Plugin 2 oder getrennt von Kong <a href="https://ncarlier.gitbooks.io/oss-api-management/content/howto-kong_with_keycloak.html">siehe</a> oder hinter Kong</li>
+  <li>mit Plugin 2: OAtuh startet gleich beim Aufruf egal welcher Service</li>
+  <li>ohne Plugin 2 (also getrennt oder hinter Kong): jeder request muss Tokens beinhaltet sonst wird abgewiesen, Login muss explizit vorher gemacht werden</li>
+</ul>
+
+<h1 id="follow-up">Follow up</h1>
+<p>This post tries to present a way to implement the solution 2.4.</p>
+
+<h1 id="more-informationens">More informationens:</h1>
+<ul>
+  <li>https://nordicapis.com/how-to-control-user-identity-within-microservices/</li>
+  <li>https://nordicapis.com/api-security-oauth-openid-connect-depth/</li>
+  <li>https://auth0.com/docs/protocols/oidc</li>
+  <li>https://de.slideshare.net/2botech/neo-securitystack</li>
+  <li>https://connect2id.com/learn/openid-connect</li>
+  <li>https://blogs.mulesoft.com/dev/api-dev/api-security-ways-to-authenticate-and-authorize/</li>
+  <li>https://connect2id.com/blog/how-to-validate-an-openid-connect-id-token</li>
+  <li>https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation</li>
+  <li>https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/</li>
+  <li>https://www.nginx.com/blog/authenticating-api-clients-jwt-nginx-plus/</li>
+  <li>https://blog.codecentric.de/2016/08/single-sign-mit-keycloak-als-openid-connect-provider/</li>
+  <li>https://ncarlier.gitbooks.io/oss-api-management/content/howto-kong_with_keycloak.html</li>
+  <li>https://www.us-cert.gov/bsi/articles/knowledge/principles/defense-in-depth</li>
+  <li>http://www.grahamlea.com/2015/07/microservices-security-questions/</li>
+  <li>https://sdtimes.com/securing-microservices-the-api-gateway-authentication-and-authorization/</li>
+</ul>
+
+  </div>
+
+  
+
+  <a class="u-url" href="/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html" hidden></a>
+</article>
+
+      </div>
+    </main>
+
+    <nav>
+        
+    
+ 	
+            
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/about/">About</a></span>
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/blog/">Blog</a></span>
+            
+          
+            
+            
+          
+            
+            
+            <span class="nav_tile"><a class="page-link" href="/projects/">Projects</a></span>
+            
+          
+            
+            
+          
+            
+            
+          
+</nav>
+
+  </body>
+
+</html>

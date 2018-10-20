@@ -1,0 +1,1833 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.2">Jekyll</generator><link href="https://hannesh.de/feed.xml" rel="self" type="application/atom+xml" /><link href="https://hannesh.de/" rel="alternate" type="text/html" /><updated>2018-04-25T22:02:02+02:00</updated><id>https://hannesh.de/</id><title type="html">hannesh</title><entry><title type="html">Understanding neuronal networks</title><link href="https://hannesh.de/machinelearning/2018/03/18/understanding-neural-networks.html" rel="alternate" type="text/html" title="Understanding neuronal networks" /><published>2018-03-18T11:36:44+01:00</published><updated>2018-03-18T11:36:44+01:00</updated><id>https://hannesh.de/machinelearning/2018/03/18/understanding-neural-networks</id><content type="html" xml:base="https://hannesh.de/machinelearning/2018/03/18/understanding-neural-networks.html">&lt;p class=&quot;abstract&quot;&gt;I tried to understand neuronal networks and deep learning. Therefore I read an viewed some really great tutorials, that I append on the end. You can find the custom implementations of neuronal networks &lt;a href=&quot;https://github.com/hahahannes/neural_network&quot;&gt;here&lt;/a&gt;.
+The purpose is to try to understand the concepts and mathematics and to implement an own neuronal network from scratch.&lt;/p&gt;
+
+&lt;h1 id=&quot;other-work&quot;&gt;Other work&lt;/h1&gt;
+&lt;h2 id=&quot;bottom-to-top&quot;&gt;Bottom to top&lt;/h2&gt;
+&lt;p&gt;The explanation of Andrej Karpathy uses a bottom to top approach. He describes first how circuits are used to do calculations and goes then to backpropagation and calculus and then to neuronal networks.&lt;/p&gt;
+
+&lt;h2 id=&quot;top-to-bottom&quot;&gt;Top to bottom&lt;/h2&gt;
+&lt;p&gt;Th explanation of 3Blue1Brown uses a top to bottom approach. He describes first a neuronal network, then backpropagation and then the calculus behind it.&lt;/p&gt;
+
+&lt;h1 id=&quot;my-try&quot;&gt;My try&lt;/h1&gt;
+&lt;p&gt;For my neuronal network, I use the classic hello world program of machine learning: prediction handwritten digits.&lt;/p&gt;
+
+&lt;h2 id=&quot;neuron&quot;&gt;Neuron&lt;/h2&gt;
+&lt;p&gt;A neuron is just a ‘box’ that computes input values to an output value.
+It does this by getting a input values from previous neurons, giving them a weight and adding a bias.
+As an formular this looks like: ax + c, where a is the input from a previous neuron, which gets multiplied with an weight x, and c is the bias. As the bological neurons, a neuron does not send values always. That means, it does not fire all the time. To specify when it fires, you wrap the calculation of the output value into an activation function.&lt;/p&gt;
+
+&lt;h2 id=&quot;neuronal-network&quot;&gt;Neuronal network&lt;/h2&gt;
+&lt;p&gt;A neuronal network consists of multiple layers that contain multiple neurons.
+The first layer is the input layer and holds the input data. The last layer is the output layer and computes the predictions.&lt;/p&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;h3 id=&quot;data&quot;&gt;Data&lt;/h3&gt;
+&lt;p&gt;First you have to get data. This step contains often cleaning up and transforming the data, like in ETL processes. For the handwritten digits, this means, that you have to transform them in way you can pass them in the network. For example by resizing all images to one size, e.g. 28 px x 28 px and to align the images in the center. Then you can parse the images to a digist format, like a value between zero and one, depending on the darkness of the pixel. In the MNIST data set, all this done for you.&lt;/p&gt;
+
+&lt;h3 id=&quot;training&quot;&gt;Training&lt;/h3&gt;
+&lt;h4 id=&quot;forwading-data&quot;&gt;Forwading data&lt;/h4&gt;
+&lt;p&gt;Then the data has to loaded in the input layer. That means that the neurons of the input layer will be set with the data as value.
+As the pixels from the digits are loaded as an array of float numbers, each of them will be loaded in a single input neuron.&lt;/p&gt;
+
+&lt;h4 id=&quot;backpropagation--maths&quot;&gt;Backpropagation + Maths&lt;/h4&gt;
+&lt;p&gt;After forwarding the data, all neurons will have random biases and weights, as well computed values and activations. Also the output neurons will have computed an prediction. Now you have to turn the prediciton into an understandable value, based on the goal of the network.
+For example you can create ten output neurons for the possible outputs of the network: numbers between zero and nine.
+Depending of the output values of each neuron you can calculate how much they are wrong or right. For example this can be done by a formular called mean squared error.&lt;/p&gt;
+
+&lt;h3 id=&quot;testing&quot;&gt;Testing&lt;/h3&gt;
+&lt;p&gt;To check how accurate your network is, you have to test against data that it has never seen. Then you can simply calculate the error rate.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementing-neuronal-networks&quot;&gt;Implementing neuronal networks&lt;/h2&gt;
+&lt;h4 id=&quot;one-hidden-layer-with-one-neuron&quot;&gt;One hidden layer with one neuron&lt;/h4&gt;
+&lt;p&gt;The full code can be found here.&lt;/p&gt;
+
+&lt;h4 id=&quot;one-hidden-layer-with-multiple-neurons&quot;&gt;One hidden layer with multiple neurons&lt;/h4&gt;
+&lt;p&gt;The full code can be found here.&lt;/p&gt;
+
+&lt;h4 id=&quot;mulitple-layers-with-multiple-neurons&quot;&gt;Mulitple layers with multiple neurons&lt;/h4&gt;
+&lt;p&gt;The challenge with multiple layers is that the backpropagation gets complexer, as changes on the first hidden layer will have impact on a lot of neurons because of the next connections between the neurons of the next layers.
+The challenge with multiple neurons per layer is that instead of one weight and input pair, the neuron has to calculate the sum of multiple pairs of weights and input values. Therefore you have to save the weights somewhere.
+The full code can be found here.&lt;/p&gt;
+
+&lt;h4 id=&quot;adding-dynammically-layers-and-neurons&quot;&gt;Adding dynammically layers and neurons&lt;/h4&gt;
+&lt;p&gt;The full code can be found here.&lt;/p&gt;
+
+&lt;h2 id=&quot;review&quot;&gt;Review&lt;/h2&gt;
+&lt;p&gt;My neuronal network can be optimzied by using&lt;/p&gt;
+
+&lt;h1 id=&quot;more-informations&quot;&gt;More informations&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;http://karpathy.github.io/neuralnets/&lt;/li&gt;
+  &lt;li&gt;http://neuralnetworksanddeeplearning.com&lt;/li&gt;
+  &lt;li&gt;https://www.youtube.com/watch?v=u4alGiomYP4 and https://codelabs.developers.google.com/codelabs/cloud-tensorflow-mnist/&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html">I tried to understand neuronal networks and deep learning. Therefore I read an viewed some really great tutorials, that I append on the end. You can find the custom implementations of neuronal networks here. The purpose is to try to understand the concepts and mathematics and to implement an own neuronal network from scratch.</summary></entry><entry><title type="html">How to deploy a Django application on Uberspace</title><link href="https://hannesh.de/web/2018/02/04/how-to-deploy-a-django-application-on-uberspace.html" rel="alternate" type="text/html" title="How to deploy a Django application on Uberspace" /><published>2018-02-04T12:16:52+01:00</published><updated>2018-02-04T12:16:52+01:00</updated><id>https://hannesh.de/web/2018/02/04/how-to-deploy-a-django-application-on-uberspace</id><content type="html" xml:base="https://hannesh.de/web/2018/02/04/how-to-deploy-a-django-application-on-uberspace.html">&lt;p class=&quot;abstract&quot;&gt;This is not a sponsored post. I just want to show you the steps, that are needed to easily deploy a Django application.&lt;/p&gt;
+
+&lt;p&gt;Uberspace.de is an awesome german hosting company, where you can host your web application via shared hosting. That means, that your applicaton is running on a web server, that you share with other people. 
+You get 10 GB of webspace and a lot of possibilities if you can handle a shell to access your web space. 
+In difference to other hosting companies, where you are only able to deploy a PHP application, you have the choice to choose your tools. For example, if you want use Python and the Django framework, it is no problem, because you can install Django with pip, only with restriction to install it for your user.&lt;/p&gt;
+
+&lt;p&gt;If you want to deploy a Django application on a uberspace U7 host, then you can do the following steps:&lt;/p&gt;
+
+&lt;h1 id=&quot;steps&quot;&gt;Steps&lt;/h1&gt;
+&lt;h2 id=&quot;setup-your-project&quot;&gt;Setup your project&lt;/h2&gt;
+&lt;p&gt;First you have to install your requirements. For a simple Django application you will need Django of course.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;pip3.6 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;django &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;For a more advanced setup with the Django REST framework, CORS headers and a MySQL database you will need more.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;pip3.6 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;django &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;
+pip3.6 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;djangorestframework &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;
+pip3.6 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;django-cors-headers &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;
+pip3.6 &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;mysqlclient &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;port&quot;&gt;Port&lt;/h2&gt;
+&lt;p&gt;Because Uberspace is using a shared hosting environment and so you are sharing a host with other people, you cannot use the default port of an application like 8080 for the webserver. In order to deploy your applocation you need to have a public port nevertheless, which you get with this command. Run this command as long as it showing “try again”.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;$((&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$RANDOM&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;4535&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;61000&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; netstat &lt;span class=&quot;nt&quot;&gt;-tulpen&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$DJANGOPORT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;try again&quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;deamon&quot;&gt;Deamon&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/etc/services.d
+nano gunicorn.init
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Paste the following text, where gunicorn is the name of the deamon, which should be also the name of the file (gunicorn.ini). Then you have to exchange my port 63250 with the port of the above step.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;[program:gunicorn]
+command=bash -c '~/.local/bin/gunicorn --error-logfile - --reload --chdir ~/backend --bind 127.0.0.1:63250 backend.wsgi:application'
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then start the deamon with:&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;supervisorctl reread
+supervisorctl update
+supervisorctl start gunicorn
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;routing-with-htaccess&quot;&gt;Routing with .htaccess&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/html
+nano .htaccess
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then paste this text, where you have to exchange the port numbers again.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;RewriteEngine On
+RewriteRule (.*) http://127.0.0.1:63250/$1 [P]
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;updating-the-project&quot;&gt;Updating the project&lt;/h2&gt;
+&lt;p&gt;If you update your project, e.g. with a git pull or updating new code per FTP, you have to simply restart the deamon.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;supervisorctl restart gunicorn
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For more information, visit the &lt;a href=&quot;https://manual.uberspace.de/en/index.html&quot;&gt;Uberspace manual&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">This is not a sponsored post. I just want to show you the steps, that are needed to easily deploy a Django application.</summary></entry><entry><title type="html">How to secure a platform</title><link href="https://hannesh.de/web/security/2018/01/29/securing-a-platform.html" rel="alternate" type="text/html" title="How to secure a platform" /><published>2018-01-29T21:46:54+01:00</published><updated>2018-01-29T21:46:54+01:00</updated><id>https://hannesh.de/web/security/2018/01/29/securing-a-platform</id><content type="html" xml:base="https://hannesh.de/web/security/2018/01/29/securing-a-platform.html">&lt;p class=&quot;abstract&quot;&gt;This post shall be an overview about my series on how to design and implement an architecture to secure a complex platform.&lt;/p&gt;
+
+&lt;p&gt;In difference to a small web application, for example a website with a frontend, backend and a relational database, where you have only one user, the owner/admin and/or a few others. There it is easy to select a securing method, like session based authentication or token based authentication and then check if a requesting user is authenticated and what role he has. In this simple usecase you have a small monolithic application, but if you have a bigger platform, based on multiple microservices, then it will be hard. If you want to give third parties access to your platform or if you are having different platforms, where&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;Overview about authentication and authorization methods&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;Implementing one method with OAuth/Open ID Connect #1&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;&quot;&gt;Adding third party client registration&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><summary type="html">This post shall be an overview about my series on how to design and implement an architecture to secure a complex platform.</summary></entry><entry><title type="html">OAuth client registration</title><link href="https://hannesh.de/web/security/2018/01/29/oauth-clients.html" rel="alternate" type="text/html" title="OAuth client registration" /><published>2018-01-29T21:46:54+01:00</published><updated>2018-01-29T21:46:54+01:00</updated><id>https://hannesh.de/web/security/2018/01/29/oauth-clients</id><content type="html" xml:base="https://hannesh.de/web/security/2018/01/29/oauth-clients.html">&lt;p class=&quot;abstract&quot;&gt;This post follows up on this post on implementing an architecture with OAuth/OIDC. Now the next step is to add the possibilty to register a client as a developer.&lt;/p&gt;</content><author><name></name></author><summary type="html">This post follows up on this post on implementing an architecture with OAuth/OIDC. Now the next step is to add the possibilty to register a client as a developer.</summary></entry><entry><title type="html">Overview of authentication and authorization architectures</title><link href="https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html" rel="alternate" type="text/html" title="Overview of authentication and authorization architectures" /><published>2018-01-29T21:46:54+01:00</published><updated>2018-01-29T21:46:54+01:00</updated><id>https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures</id><content type="html" xml:base="https://hannesh.de/web/security/2018/01/29/overview-of-authentication-and-authorization-architectures.html">&lt;h1 id=&quot;basics&quot;&gt;Basics:&lt;/h1&gt;
+&lt;p&gt;The selection of an authentication and authorization method depends on multiple factors. For example it depends on the architecture of your project. If it is a monolithic architecture or a microservice based architecture. Then it depends on the usage of the user and roles. Whether you want to use it only for your own purpose or to open your service to third parties.&lt;/p&gt;
+
+&lt;h2 id=&quot;authentication&quot;&gt;Authentication:&lt;/h2&gt;
+&lt;p&gt;Authentication is about identity of a user. A user has to verify that he is who he claims to be, for example by knowing a username, password pair.&lt;/p&gt;
+
+&lt;h3 id=&quot;http-basic-authentication&quot;&gt;HTTP Basic Authentication:&lt;/h3&gt;
+&lt;p&gt;Username and password are placed inside the Authorization HTTP header. Connection has to be secured with TLS and has to be added to every request. For this you can simply use the &lt;a href=&quot;https://getkong.org/plugins/basic-authentication/&quot;&gt;Kong Basic Plugin&lt;/a&gt; or check the credentials by your own. Then you have to setup a database with users and credentials (never use plaintext storage). This means that on every incoming request, you will have to compare it with your database.&lt;/p&gt;
+
+&lt;h3 id=&quot;session-authentication&quot;&gt;Session Authentication&lt;/h3&gt;
+&lt;p&gt;Session Authentication is based on a session cookie. It contains a session id, that is matched to an unique session, that expires after some time. Most webpages use this type of authentication. For example if you have the possibility to stay logged in, a session cookie with higher lifetime, e.g. 30 days, will be generated. This will need an additional service and database, where opaque session ids get generated and stored. Then you can compare the value of a session cookie from an incoming request with your database and connect the session id to an user id.&lt;/p&gt;
+
+&lt;h3 id=&quot;token-authentication&quot;&gt;Token Authentication&lt;/h3&gt;
+&lt;p&gt;Token Authentication is based on an opaque token like the one that is in the session cookie. But it gets placed inside the Authorization header and not the cookie header. Therefore the developer can decide where to save the token. 
+The advantage is that it can be used by platforms where cookies are not usable.
+The disadvantage is that the places can be less secure then a secure HTTP-only cookie, because the session storage can be accessable by malisious javascript.
+Some implementations only setup an endless initial token, but it is better to set an expiration to the token.&lt;/p&gt;
+
+&lt;h3 id=&quot;openid-connect&quot;&gt;&lt;a href=&quot;https://openid.net/connect/&quot;&gt;OpenID Connect&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;based on token authentication&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;für User Authentication&lt;/li&gt;
+  &lt;li&gt;führt ID Token ein (JWT - JSON Web Token) -&amp;gt; JSON based Identity Protocols&lt;/li&gt;
+  &lt;li&gt;beinhaltet Informationen über den User -&amp;gt; strukturierte, festgelegte Eigenschaften&lt;/li&gt;
+  &lt;li&gt;hilfreich wenn UI an User angepasst werden soll&lt;/li&gt;
+  &lt;li&gt;UserInfo endpoint: Protected resource that, when presented with an access token by the client, returns authorized information about the end user&lt;/li&gt;
+  &lt;li&gt;Beim erstmaligen Login per OAuth z.b. per Basic Authentication wird Token generiert, der später nur noch mitgesendet wird&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation&quot;&gt;Validation des Tokens&lt;/a&gt; = Authentication des Users&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Teilnehmer:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Relying Party = OAuth2 Client&lt;/li&gt;
+  &lt;li&gt;Identity Provider = OAuth 2.0 authorization server&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;api-key&quot;&gt;API Key&lt;/h3&gt;
+&lt;p&gt;For a lot of web services, you have to add an api key as query parameter. This means, that mostly you have to register as an developer to get this key. With that ke you will then have the right to access some resources.
+The advantage is that it is very easy to use. The problem is that you cannot add an identiy to this key, like at the token or session based authentiction, because this key can be get public and then it is not really authentication as you dont know the identity of the user. With an api key you can only give permissions to use a service that does not need identity.&lt;/p&gt;
+
+&lt;h3 id=&quot;result&quot;&gt;Result:&lt;/h3&gt;
+&lt;p&gt;I would use the OpenID Connect standard, based on OAuth 2.0 to have a standardized token based authentication. Based on the requirements, the tokens can be validate without checking against an database, which makes it highly flexible.&lt;/p&gt;
+
+&lt;h2 id=&quot;authorization&quot;&gt;Authorization:&lt;/h2&gt;
+&lt;p&gt;Authorization is about permissions and roles. After the authentication, you will know the identity of an user, but not what he is allowed to access or not. 
+Therefore you need to have an permission system.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;User Authorization&lt;/li&gt;
+  &lt;li&gt;Client Authorization&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;oauth2&quot;&gt;OAuth2:&lt;/h3&gt;
+&lt;p&gt;With OAuth 2.0 you have to between user and client authorization.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ist für Client Authorization (&lt;a href=&quot;https://oauth.net/articles/authentication/&quot;&gt;https://oauth.net/articles/authentication/&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Genauer “Delegation”&lt;/li&gt;
+  &lt;li&gt;Client z.b 3rd party app muss user credentials nicht kennen&lt;/li&gt;
+  &lt;li&gt;wie man sich bekannt gibt (Authentication) egal (https://tools.ietf.org/html/rfc6749#section-3.1)&lt;/li&gt;
+  &lt;li&gt;gut wenn man noch third party apps integrieren möchte, die dann als Client agieren&lt;/li&gt;
+  &lt;li&gt;für eigene Applikationen ist dann das Frontend oder die App der Client&lt;/li&gt;
+  &lt;li&gt;Client sagt welche Berechtigungen er haben will, z.b Facebook API App möchte Zugang zu Likes&lt;/li&gt;
+  &lt;li&gt;OAuth authorisiert Clients nicht User -&amp;gt; nicht was der User machen darf oder nicht darf&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Teil von OAuth:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Token muss bei Erhalt des Requests validiert werden - noch gültig oder abgelaufen&lt;/li&gt;
+  &lt;li&gt;Berechtigungen überprüfen, die nötig sind für die Resource (die am Anfang durch den User authorisiert wurden)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Nicht Teil von OAuth:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;User Authorization&lt;/li&gt;
+  &lt;li&gt;dafür muss die User ID aus dem Token extrahiert werden (überhaupt möglich mit OAuth2 eher nicht ?)&lt;/li&gt;
+  &lt;li&gt;danach dann Rolle des Users und benötigte Berechtigungen überprüfen&lt;/li&gt;
+  &lt;li&gt;OpenID Connect baut auf OAuth auf, um User ID zu erweitern &lt;a href=&quot;https://nordicapis.com/how-to-control-user-identity-within-microservices/&quot;&gt;[1]&lt;/a&gt;
+&lt;a href=&quot;https://auth0.com/docs/protocols/oidc&quot;&gt;[2]&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Access Token kann auch JWT sein -&amp;gt; darin könnte eine User ID vorhanden sein, Access Token könnte einfach validiert werden&lt;/li&gt;
+  &lt;li&gt;Problematisch für Deaktiveren von Tokens da es keine zentrale Instanz gibt wo man nachfragt&lt;/li&gt;
+  &lt;li&gt;kann gelöst werden in dem außerhalb eine Referenz und am API Gatewaydie Referenz in einen Wert umgewandelt wird&lt;/li&gt;
+  &lt;li&gt;dann könnte Referenz gelöscht werden&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Teilnehmer:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Resource Owner (RO): the user&lt;/li&gt;
+  &lt;li&gt;Client: the web or mobile app&lt;/li&gt;
+  &lt;li&gt;Authorization Service (AS): OAuth 2.0 server&lt;/li&gt;
+  &lt;li&gt;Resource Server (RS): where the actual service is stored&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Verschiedene Flows:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The code flow (or web server flow) -&amp;gt; backend beim clien notwendig&lt;/li&gt;
+  &lt;li&gt;Client credential flow&lt;/li&gt;
+  &lt;li&gt;Resource owner credential flow&lt;/li&gt;
+  &lt;li&gt;Implicit flow -&amp;gt; client frontend reicht aus&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ablauf:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;The Client requests access to the Resource Server by calling the Authorization Server.&lt;/li&gt;
+  &lt;li&gt;The Authorization Server redirects to allow the user to authenticate, which is usually performed within a browser. This is essentially signing into an authorization server, not the app.
+** Authentication des User z.b. durch Basic Auth&lt;/li&gt;
+  &lt;li&gt;The Authorization Server then validates the user credentials and provides an Access Token to client, which can be use to call the Resource Server&lt;/li&gt;
+  &lt;li&gt;The Client then sends the Token to the Resource Server&lt;/li&gt;
+  &lt;li&gt;The Resource Server asks the Authorization Server if the token is valid.&lt;/li&gt;
+  &lt;li&gt;The Authorization Server validates the Token, returning relevant information to the Resource Server i.e. time till token expiration, who the token belongs too.&lt;/li&gt;
+  &lt;li&gt;The Resource Server then provides data to the Client. In our case, the requested emails are unbarred and delivered to the client.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;username-und-rollerechte-in-db&quot;&gt;Username und Rolle/Rechte in DB&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;einfach User in einer DB anlegen&lt;/li&gt;
+  &lt;li&gt;bei jedem Request nach erfolgreicher Authentication Rechte des Users mittels Usernamen abfragen&lt;/li&gt;
+  &lt;li&gt;OpenID Connect setzt darauf auf, ID Token kann genutzt werden um DB zu checken&lt;/li&gt;
+  &lt;li&gt;bei Microservices müsste entweder jeder request mit Basic Authentication den Usernamen übermitteln oder&lt;/li&gt;
+  &lt;li&gt;mit Session Authentication müsste jede Session mit Usernamen verknüpft sein&lt;/li&gt;
+  &lt;li&gt;bei API Gateway müsste nur dort Authorization überprüft werden&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;ohne API Gateway in jedem Service&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;einfach&lt;/li&gt;
+  &lt;li&gt;beschränkt, möglich wenn z.B. nur das Frontend verwendet wird, praktisch für Monoliten&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;oauth2s-user-managed-access-uma-profile&quot;&gt;OAuth2’s User-Managed Access (UMA) Profile&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;http://www.keycloak.org/docs/3.0/authorization_services/topics/service/overview.html&lt;/li&gt;
+  &lt;li&gt;Service als Resource Server registriert sich beim Authorization Server&lt;/li&gt;
+  &lt;li&gt;nur möglich wenn User Authorization mit am Service (nicht mgl für Methode 2.3 da Veränderung am Service notwendig)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;xacml&quot;&gt;XACML&lt;/h3&gt;
+
+&lt;h3 id=&quot;json-policy&quot;&gt;JSON Policy&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;siehe Ory Ladon&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ergebnis&quot;&gt;Ergebnis:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;OAuth zur Client Authorization, da perfekt für 3rd party apps&lt;/li&gt;
+  &lt;li&gt;Code Flow für 3rd party apps&lt;/li&gt;
+  &lt;li&gt;Implicit Flow oder Resource Owner Password Credentials Flow für front end&lt;/li&gt;
+  &lt;li&gt;User Authorization durch User - Rollen - Berechtigungen DB basierend auf OpenID Connect&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;gegebenheiten&quot;&gt;Gegebenheiten:&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;mehrere Microservices&lt;/li&gt;
+  &lt;li&gt;Kong API Gateway&lt;/li&gt;
+  &lt;li&gt;Services sollen innerhalb des Netzwerkes einfach zu bedienen sein&lt;/li&gt;
+  &lt;li&gt;Platform soll aber auch von extern erreichbar sein&lt;/li&gt;
+  &lt;li&gt;Services können im nachhinein dazu kommen&lt;/li&gt;
+  &lt;li&gt;3rd party apps sollten möglich sein&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;fragestellungen&quot;&gt;Fragestellungen:&lt;/h1&gt;
+&lt;ol&gt;
+  &lt;li&gt;wie am einfachsten Zugriffschutz umsetzen&lt;/li&gt;
+  &lt;li&gt;Was muss umgesetzt werden&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h1 id=&quot;methoden-in-microservice-architektur&quot;&gt;Methoden in Microservice Architektur&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;verschiedene Ebenen: Aufbau (wo was machen), genutzte Techniken (OAuth, Basic Auth,..), Umsetzung (bestehende Lösungen, eigene Implementation)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;methode-1-ohne-api-gateway&quot;&gt;Methode 1: Ohne API Gateway&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;jeder Service überprüft Zugriffsrechte  (Authentication und Authorization)&lt;/li&gt;
+  &lt;li&gt;ohne vorgeschaltetes Gateway, jeder Service wird direkt angesprochen&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Kong Gateway müsste Access Token und JWT Token / Credentials dann an Services weiterleiten&lt;/strong&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;jeder Microservice kann eigene Mechanismen verwenden&lt;/li&gt;
+  &lt;li&gt;unabhängig von Kong&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;methode-11-auslagerung-in-neuen-service&quot;&gt;Methode 1.1 Auslagerung in neuen Service&lt;/h3&gt;
+&lt;h4 id=&quot;beispiel-mit-oauth&quot;&gt;Beispiel mit OAuth:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;Auslagerung von User Authentication, User Authorization und Client Authorization&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/RichardKnop/go-oauth2-server&quot;&gt;eigenen OAuth Service implementieren&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ory.gitbooks.io/hydra/content/#oauth-20-case-study&quot;&gt;Ory Hydra&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Service leitet die Token weiter&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Aufwand:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Authorization Service für OAuth bereitstellen -&amp;gt; extra Service&lt;/li&gt;
+  &lt;li&gt;Authorization Service für User bereitstellen -&amp;gt; extra Service&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Datenbank mit Usern und Rollen&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;wenig redundant da ausgelagert&lt;/li&gt;
+  &lt;li&gt;einfach umzusetzen&lt;/li&gt;
+  &lt;li&gt;Abhängigkeit -&amp;gt; schlecht für Wiederverwendbarkeit des Service -&amp;gt; Service so anpassen, dass auch ohne Zugriffsschutz nutzbar&lt;/li&gt;
+  &lt;li&gt;Auth Server selber aufsetzen&lt;/li&gt;
+  &lt;li&gt;Kong wird quasi nicht genutzt&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;methode-12-kapselung&quot;&gt;Methode 1.2: Kapselung&lt;/h3&gt;
+&lt;h4 id=&quot;beispiel-mit-oauth-1&quot;&gt;Beispiel mit OAuth&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;User Authentication, User Authorization und Client Authorization am Service (Kapselung)&lt;/li&gt;
+  &lt;li&gt;jeder Service beinhaltet gesamte Zugriffslogik.&lt;/li&gt;
+  &lt;li&gt;Service validiert Token und führt User Authentication aus und erhält Rolle des Users durch Datenbankabfrage mittels dem JWT Token&lt;/li&gt;
+  &lt;li&gt;Zugriffsschutz muss nicht Teil des Service kann -&amp;gt; kann auch ohne funktionieren&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Aufwand:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Authorization Service für OAuth bereitstellen&lt;/li&gt;
+  &lt;li&gt;Authorization Service für User bereitstellen&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Datenbank mit Usern und Rollen&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;keine Abhängigkeit -&amp;gt; gut für Wiederverwendbarkeit&lt;/li&gt;
+  &lt;li&gt;sehr sicher -&amp;gt; Security in Depth&lt;/li&gt;
+  &lt;li&gt;gegen Microservices Paradigma, je nach Definition, Zugriffslogik kann auch essentieller Teil sei&lt;/li&gt;
+  &lt;li&gt;hoher Aufwand&lt;/li&gt;
+  &lt;li&gt;hohe Redundanz (z.b Rollen müssen bei jedem service angelegt werden)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;methode-13-auslagerung-von-authentication&quot;&gt;Methode 1.3: Auslagerung von Authentication&lt;/h3&gt;
+&lt;h4 id=&quot;beipsiel-mit-oauth&quot;&gt;Beipsiel mit OAuth:&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;User Authorization am Service und Auslagerung von User Authentication&lt;/li&gt;
+  &lt;li&gt;jeder Service macht Authorization (OAuth und User Authoriztion)&lt;/li&gt;
+  &lt;li&gt;checkt was darf der Nutzer/die Rolle&lt;/li&gt;
+  &lt;li&gt;User Authentication wird ausgelagert:&lt;/li&gt;
+  &lt;li&gt;Service erhält Request mit Basic Auth Headern und überprüft Authentication über extra Service oder Validierung des ID Tokens&lt;/li&gt;
+  &lt;li&gt;wenn bestätigt, dann Berechtigung des Users checken&lt;/li&gt;
+  &lt;li&gt;eine Datenbasis für User, da die für alle Services gleich sind&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Aufwand:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;eigene Datenbasis für Authorization pro Service&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;eigene Rollendefinitionen pro Service einfach möglich&lt;/li&gt;
+  &lt;li&gt;kann redundant sein&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;-&amp;gt; SEPL: alle Services haben gleiche Userbasis, alle Services haben gleiche Rollen?&lt;/p&gt;
+&lt;h2 id=&quot;methode-2-api-gateway&quot;&gt;Methode 2: API Gateway&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;vorgeschalteter API Gateway für alle Anfragen von außen.&lt;/li&gt;
+  &lt;li&gt;Mehrere Gateways möglich:&lt;/li&gt;
+  &lt;li&gt;OAuth Gateway für 3rd Party Apps&lt;/li&gt;
+  &lt;li&gt;Web Gateway mit Session based Authentication für Websiten&lt;/li&gt;
+  &lt;li&gt;unterteilt je nach dem ob Auth am Gateway oder am Service gemacht wird&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;weitere Unterteilung wie Methoden 1, was im Service gemacht wird oder ausgelagert wird&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;geringer Aufwand da bereits Plugin für Auth Server vorhanden&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;methode-21-user-authentication-am-gateway&quot;&gt;Methode 2.1: User Authentication am Gateway&lt;/h2&gt;
+
+&lt;h3 id=&quot;beispiel-mit-oauth-2&quot;&gt;Beispiel mit OAuth&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;OAuth Authorization und User Authentication am Gateway&lt;/li&gt;
+  &lt;li&gt;Kong Gateway macht OAuth Authorization und User Authentication&lt;/li&gt;
+  &lt;li&gt;User Authorization:&lt;/li&gt;
+  &lt;li&gt;Weiterleitung des gesamten JWTs, des JSON vom user-info endpoint (mit user id, user role)&lt;/li&gt;
+  &lt;li&gt;dann entweder hardcoded im service (if user_role = admin), DB Lookup mit user id oder role und checken ob berechtigung für api vorhanden&lt;/li&gt;
+  &lt;li&gt;Entweder ausgelagert und mit gemeinsamer Datenbasis oder je Service eigene User Authorization&lt;/li&gt;
+  &lt;li&gt;Service komplett auslagern -&amp;gt; dieser validiert Token und erhält Rolle oder User ID und macht DB Lookup für Berechtigungen auf API&lt;/li&gt;
+  &lt;li&gt;DB müsste nicht User und Rollen mappen, wenn Rolle gleich im JWT&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;wenn Service nicht erreichbar wird request geblockt&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://getkong.org/plugins/oauth2-authentication&quot;&gt;Kong OAuth Plugin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://getkong.org/plugins/ee-openid-connect-rp/&quot;&gt;Kong OpenID Connect Plugin&lt;/a&gt; nur Enterprise&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/nokia/kong-oidc&quot;&gt;Github&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Aufwand:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;OAuth Authorization -&amp;gt; Plugin&lt;/li&gt;
+  &lt;li&gt;User Authentication -&amp;gt; entweder Plugin oder extra Service + Datenbank mit Usern, Passwörter Hashes&lt;/li&gt;
+  &lt;li&gt;User Authorization -&amp;gt; extra Service + Datenbank für Rollen und Berechtigungen für APIs&lt;/li&gt;
+  &lt;li&gt;Login Seite (Authentication) und Seite wo Berechtigung erteilt wird müssen selbst implementiert werden&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Kong Gateway müsste User ID aus dem JWT Token oder JWT Token weiterleiten&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;besser wäre JWT für Sicherheit&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;stark auf Kong basierend&lt;/li&gt;
+  &lt;li&gt;zwei Sicherheitsschichten: Gateway und im Service&lt;/li&gt;
+  &lt;li&gt;eigene Rollen je Service möglich&lt;/li&gt;
+  &lt;li&gt;Änderungen an den Services&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;beispiel-mit-basic-authentication&quot;&gt;Beispiel mit Basic Authentication&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Basic Authentication am Gateway&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://getkong.org/plugins/basic-authentication/&quot;&gt;Kong Basic Auth Plugin&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Weiterleitung der user id an Service&lt;/li&gt;
+  &lt;li&gt;dann User Authorization am Service&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;methode-22-nur-mit-oauth-oauth-authorization-am-gateway&quot;&gt;Methode 2.2 (nur mit OAuth): OAuth Authorization am Gateway&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://getkong.org/plugins/oauth2-authentication&quot;&gt;Kong OAuth Plugin&lt;/a&gt; stellt OAuth Authorization Server bereit&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Kong Gateway leitet nur JWT Token weiter an Service&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Service leitet Token an User Authentication und Authorization Service weiter&lt;/strong&gt; (angenommen Services sind ausgelagert)&lt;/li&gt;
+  &lt;li&gt;theoretisch auch unterteilbar in ausgelagerten User Authorization Service oder im Service selbst&lt;/li&gt;
+  &lt;li&gt;bei Erstellen des Access Tokens müsste der AS auch den ID Token vom User Authentication Service mitsenden&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Aufwand:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;User Authorization -&amp;gt; extra Service&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;USer Authentication -&amp;gt; extra Service&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Kong wird genutzt&lt;/li&gt;
+  &lt;li&gt;Service zur User Authrorization wird ausgelagert&lt;/li&gt;
+  &lt;li&gt;geringere Änderung an den Services&lt;/li&gt;
+  &lt;li&gt;Plugin generiert keine ID Tokens -&amp;gt; Anapssung des Plugins&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;methode-23-authentication-und-authorization-am-gateway&quot;&gt;Methode 2.3: Authentication und Authorization am Gateway&lt;/h2&gt;
+
+&lt;h3 id=&quot;beispiel-mit-oauth-3&quot;&gt;Beispiel mit OAuth:&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;OAuth Authorization, User Authentication und User Authorization am Gateway&lt;/li&gt;
+  &lt;li&gt;Kong Gateway macht alle Checks und blockiert gleich den Request wenn Rechte nicht vorhanden&lt;/li&gt;
+  &lt;li&gt;wie Services anbinden?&lt;/li&gt;
+  &lt;li&gt;Plugin 2 -&amp;gt; Session, Login automatisch bei erstem Service request&lt;/li&gt;
+  &lt;li&gt;Eigenes Plugin -&amp;gt; jeder Request müsste Tokens beinhalten, hinter Kong&lt;/li&gt;
+  &lt;li&gt;JWT Plugin von Kong, nicht brauchbar, da Consumer angelegt werden muss -&amp;gt; redundant mit Identity Provider wie Keycloak&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Getrennt von Kong (kein Mehrwert)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;nur eine Datenbasis mit APIs und Rollen&lt;/li&gt;
+  &lt;li&gt;nur Kong basierend&lt;/li&gt;
+  &lt;li&gt;keine Änderung an den Services notwendig&lt;/li&gt;
+  &lt;li&gt;Single Point of Failure&lt;/li&gt;
+  &lt;li&gt;keine Plugins die auch User Authorization implementieren&lt;/li&gt;
+  &lt;li&gt;nur eine Sicherheitsschicht&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Aufwand:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Client Authorization (OAuth) -&amp;gt; Plugin&lt;/li&gt;
+  &lt;li&gt;User Authentication -&amp;gt; Plugin z.b von Github&lt;/li&gt;
+  &lt;li&gt;User Authorization -&amp;gt; Service&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;softwarelösungen&quot;&gt;Softwarelösungen:&lt;/h1&gt;
+&lt;h2 id=&quot;kong-oauth-plugin&quot;&gt;&lt;a href=&quot;https://getkong.org/plugins/oauth2-authentication&quot;&gt;Kong OAuth Plugin&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;bietet OAuth Authorization Server an&lt;/li&gt;
+  &lt;li&gt;APIs /authorize und /token&lt;/li&gt;
+  &lt;li&gt;zusätzlich notwendig: Authentication Seite (Berechtigung erteilen) und Login Seite imlementieren&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Backend kommuniziert dann mit /authorize endpoint&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;nicht änderbar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kong-openid-connect-plugin-1&quot;&gt;&lt;a href=&quot;https://getkong.org/plugins/ee-openid-connect-rp/&quot;&gt;Kong OpenID Connect Plugin 1&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;nur Enterprise Version von Kong&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kong-openid-connect-plugin-2&quot;&gt;&lt;a href=&quot;https://github.com/nokia/kong-oidc&quot;&gt;Kong OpenID Connect Plugin 2&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Plugin von Nokia, um Kong zu einem Relying Party zu machen&lt;/li&gt;
+  &lt;li&gt;zusätzlich notwendig:&lt;/li&gt;
+  &lt;li&gt;Authorization Server für OAuth - extra Service oder Hydra oder Keycloak ?&lt;/li&gt;
+  &lt;li&gt;implementiert nur User Authentication -&amp;gt; User Authorization fehlt&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/nokia/kong-oidc/issues/15&quot;&gt;https://github.com/nokia/kong-oidc/issues/15&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;leitet dereferenzierte JWT also User Claims weiter -&amp;gt; schlecht für zweite sicherheitsschicht&lt;/li&gt;
+  &lt;li&gt;single sign on, bei jedem request wird geprüft, wenn nicht authenticated, dann redirect zu AS, mit Session Cookie kann dann jeder anderer Service verwendet werden&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ory-hydra&quot;&gt;&lt;a href=&quot;https://github.com/ory/hydra&quot;&gt;Ory Hydra&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;OAuth and open ID server&lt;/li&gt;
+  &lt;li&gt;verwaltete Keys, Validation&lt;/li&gt;
+  &lt;li&gt;zusätzlich notwendig: User Management&lt;/li&gt;
+  &lt;li&gt;ähnlich wie Kong Plugin OAuth Web App für den Consent Flow und User Management&lt;/li&gt;
+  &lt;li&gt;User Authorization: Zusammen mit &lt;a href=&quot;https://github.com/ory/ladon&quot;&gt;Ory Ladon&lt;/a&gt; um Rolen zu verwalten bzw. beinhaltet Lado bereits&lt;/li&gt;
+  &lt;li&gt;User Managemtn nur für username und credentials -&amp;gt; post an ladon für rollen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kong-basic-auth-plugin&quot;&gt;&lt;a href=&quot;https://getkong.org/plugins/basic-authentication/&quot;&gt;Kong Basic Auth Plugin&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;User werden bei Kong angelegt&lt;/li&gt;
+  &lt;li&gt;bei jedem Request Credentials angeben&lt;/li&gt;
+  &lt;li&gt;Weiterleitung der User ID an den Service, wo dann auf Consumer Datenbank von Kong zugegriffen werden müsste&lt;/li&gt;
+  &lt;li&gt;zusätzlich notwendig: Datenbank mit Rollen, Berechtigungen je API mit Verbindung zu Consumer Datenbank&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;kong-openid-connect-plugin-3&quot;&gt;&lt;a href=&quot;https://github.com/GluuFederation/kong-plugins/tree/master/kong-openid-rp&quot;&gt;Kong OpenID Connect Plugin 3&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;wie Kong OpenID Connect Plugin 2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;keycloack&quot;&gt;[Keycloack]&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;vollwertiger OpenID Provder mit Login und Consent sowie User Management&lt;/li&gt;
+  &lt;li&gt;zusätzlich notwendig: User Authoriztaion&lt;/li&gt;
+  &lt;li&gt;Anbindung an Kong entweder mit Kong OpenID Connect Plugin 2 oder getrennt von Kong &lt;a href=&quot;https://ncarlier.gitbooks.io/oss-api-management/content/howto-kong_with_keycloak.html&quot;&gt;siehe&lt;/a&gt; oder hinter Kong&lt;/li&gt;
+  &lt;li&gt;mit Plugin 2: OAtuh startet gleich beim Aufruf egal welcher Service&lt;/li&gt;
+  &lt;li&gt;ohne Plugin 2 (also getrennt oder hinter Kong): jeder request muss Tokens beinhaltet sonst wird abgewiesen, Login muss explizit vorher gemacht werden&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;follow-up&quot;&gt;Follow up&lt;/h1&gt;
+&lt;p&gt;This post tries to present a way to implement the solution 2.4.&lt;/p&gt;
+
+&lt;h1 id=&quot;more-informationens&quot;&gt;More informationens:&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://nordicapis.com/how-to-control-user-identity-within-microservices/&lt;/li&gt;
+  &lt;li&gt;https://nordicapis.com/api-security-oauth-openid-connect-depth/&lt;/li&gt;
+  &lt;li&gt;https://auth0.com/docs/protocols/oidc&lt;/li&gt;
+  &lt;li&gt;https://de.slideshare.net/2botech/neo-securitystack&lt;/li&gt;
+  &lt;li&gt;https://connect2id.com/learn/openid-connect&lt;/li&gt;
+  &lt;li&gt;https://blogs.mulesoft.com/dev/api-dev/api-security-ways-to-authenticate-and-authorize/&lt;/li&gt;
+  &lt;li&gt;https://connect2id.com/blog/how-to-validate-an-openid-connect-id-token&lt;/li&gt;
+  &lt;li&gt;https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation&lt;/li&gt;
+  &lt;li&gt;https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/&lt;/li&gt;
+  &lt;li&gt;https://www.nginx.com/blog/authenticating-api-clients-jwt-nginx-plus/&lt;/li&gt;
+  &lt;li&gt;https://blog.codecentric.de/2016/08/single-sign-mit-keycloak-als-openid-connect-provider/&lt;/li&gt;
+  &lt;li&gt;https://ncarlier.gitbooks.io/oss-api-management/content/howto-kong_with_keycloak.html&lt;/li&gt;
+  &lt;li&gt;https://www.us-cert.gov/bsi/articles/knowledge/principles/defense-in-depth&lt;/li&gt;
+  &lt;li&gt;http://www.grahamlea.com/2015/07/microservices-security-questions/&lt;/li&gt;
+  &lt;li&gt;https://sdtimes.com/securing-microservices-the-api-gateway-authentication-and-authorization/&lt;/li&gt;
+&lt;/ul&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Implementing an auth archtictures with microservices and an API gateway #1</title><link href="https://hannesh.de/web/security/2017/12/20/implementing-an-auth-architecture-with-microservices-and-an-api-gateway-1.html" rel="alternate" type="text/html" title="Implementing an auth archtictures with microservices and an API gateway #1" /><published>2017-12-20T21:46:54+01:00</published><updated>2017-12-20T21:46:54+01:00</updated><id>https://hannesh.de/web/security/2017/12/20/implementing-an-auth-architecture-with-microservices-and-an-api-gateway-1</id><content type="html" xml:base="https://hannesh.de/web/security/2017/12/20/implementing-an-auth-architecture-with-microservices-and-an-api-gateway-1.html">&lt;p class=&quot;abstract&quot;&gt;This post tries to present a way on implementing an auth architectue using an API gateway, where multiple services are handled and OAuth/OIDC for securing the system. For an introduction to different ways on authentication and authorization methods, you can read my other post.&lt;/p&gt;
+
+&lt;h1 id=&quot;what-is-part-of-this-architecture&quot;&gt;What is part of this architecture?&lt;/h1&gt;
+
+&lt;h2 id=&quot;kong&quot;&gt;Kong&lt;/h2&gt;
+&lt;p&gt;I am using the open source API gateway Kong, which already has plugin support for several authentication methods. For example there is a plugin for basic key authentication and OAuth 2.0, but there are not suitable for more complex architectures. One problem is the the management of users that are called consumers in Kong.
+You can find my customized Kong version &lt;a href=&quot;https://github.com/hahahannes/auth-kong&quot;&gt;here&lt;/a&gt;, also with a Dockerfile.
+Then I added the &lt;a href=&quot;https://github.com/pantsel/kong-middleman-plugin&quot;&gt;Middleman plugin&lt;/a&gt; for Kong to check the authentication and authorization at an own service.&lt;/p&gt;
+
+&lt;h2 id=&quot;keycloak&quot;&gt;Keycloak&lt;/h2&gt;
+&lt;p&gt;Keycloak is my favourite authentication and authorization tool because of its wide range of functionalities. In this example I am using Keycloak as my authorization server and for identity management.
+You can find my customized Keycloak version &lt;a href=&quot;https://github.com/hahahannes/auth-keycloak&quot;&gt;here&lt;/a&gt;, also with a Dockerfile.&lt;/p&gt;
+
+&lt;h2 id=&quot;ory-ladon&quot;&gt;Ory Ladon&lt;/h2&gt;
+&lt;p&gt;Ladon is a Go library for managing access policies. These policies store permissions based on a subject, action and resource relation. Because of this abstraction, you can use it for many purposes. In this case it used in an Go web server together with an SQL database to act as an authorization service. It stores policies and answers permissions requests. Therefore a user role will be treated as subject, a HTTP method will be treated as an action and a endpoint will be treated as a resource.&lt;/p&gt;
+
+&lt;h1 id=&quot;how-does-this-architecture-work&quot;&gt;How does this architecture work?&lt;/h1&gt;
+&lt;p&gt;This architecture is using a method where the authentication and authorization are done at the central place at the API gateway. Before an icoming request gets directedd to the upstream by Kong, a request to an auth-check service will be made, that contains the whole request information. This service will perform the authentication and authorization. Therefore it checks if an access token exists and blocks if not. If it exists it will validate the token by sending it to the Keycloak token introspection endpoint. If this is also successfull, the user role gets extracted and gets sent to the Authorization storage service Ladon. This service will check if the user role has the needed permissions to access a resource.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;
+                                 +----------------+
+     +-----------+               |                |
+     | User      |               |Secured Service |
+     +----+------+               |                |                         +------------------+      +----------------+
+          |                      +-------+--------+      OAuth/OIDC flow    |                  |      |                |
+          |User flows                    |           +----------------------+ Keycloak Service +------+ Datebase       |
++------------------------+               |           |                      |                  |      | Users, Clients |
+|         |              |               |           |                      +------------------+      +----------------+
+|         |              |               |           |
+|   +-----+----------+   |               |           |
+|   |  Kong          +-------------------+-----------+----------------------------+
+|   +----+-----------+   |                                                        |
+|        |               |                                                  +-----+-----------+       +-----------------+
+|        |               |                                                  |                 |       |                 |
+|        |               |                                                  | Ladon           +-------+ Database        |
+|        |               |                                                  |                 |       | Access Policies |
+|        |               |                                                  +-----+-----------+       +-----------------+
+|        |               |                                                        |
+|        |               |                   +-----------------+                  |
+|  +-----+------------+  |                   |                 |                  |
+|  |  Middleman Plugin+----------------------+  Auth Service   +------------------+
+|  +------------------+  |   POST with       |                 |      POST with request data
+|                        |   request data    +-----------------+
+|                        |                      Authentication: Token Validation
+|                        |                      Authoriztation: Ladon
++------------------------+
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;build&quot;&gt;Build&lt;/h1&gt;
+&lt;p&gt;You have to build the docker images of each part of the architectures.
+You can find the repositories here:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hahahannes/auth-keycloak&quot;&gt;Keycloak&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hahahannes/auth-ladon&quot;&gt;Ladon&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hahahannes/auth-kong&quot;&gt;Kong&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hahahannes/auth-check&quot;&gt;Check&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;run&quot;&gt;Run&lt;/h1&gt;
+&lt;p&gt;If you have built all parts of the architecture, then you can run it with this docker-compose file.&lt;/p&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;na&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;2'&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;keycloak-db&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak-db&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres:latest&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_DB=keycloak&lt;/span&gt;
+          &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_USER=keycloak&lt;/span&gt;
+          &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_PASSWORD=password&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;keycloak&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak:latest&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak-db:postgres&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;KEYCLOAK_USER=user&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;KEYCLOAK_PASSWORD=password&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PROXY_ADDRESS_FORWARDING=true&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;keycloak-db&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;auth&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;auth&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;auth:latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ladon&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ladon&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ladon&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_DB=ladon&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_USER=user&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_PASSWORD=password&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;links&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ladon-db:ladon-db&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;8080:8080&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;depends_on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;ladon-db&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+                &lt;span class=&quot;na&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;service_healthy&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;ladon-db&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;container_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ladon-db&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;postgres:latest&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_DB=ladon&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_USER=user&lt;/span&gt;
+            &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;POSTGRES_PASSWORD=password&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;healthcheck&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CMD&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;pg_isready&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-U&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;postgres&quot;&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;10s&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;30s&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;retries&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;5&lt;/span&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;review&quot;&gt;Review&lt;/h1&gt;
+&lt;p&gt;The advantage of this implementation is, that every microservice behind the gateway does not care about the authentication and authorization, which makes them very flexible and independent.
+This architectures suffers from a lot of requests, because with every incoming request, two request follows before it gets sent to the upstream service.
+Therefore a shorter solution could be to develop a Kong plugin in Lua, that validates the JWT Token.&lt;/p&gt;</content><author><name></name></author><summary type="html">This post tries to present a way on implementing an auth architectue using an API gateway, where multiple services are handled and OAuth/OIDC for securing the system. For an introduction to different ways on authentication and authorization methods, you can read my other post.</summary></entry><entry><title type="html">Cheatsheet</title><link href="https://hannesh.de/tools/2017/11/15/cheatsheet.html" rel="alternate" type="text/html" title="Cheatsheet" /><published>2017-11-15T21:46:54+01:00</published><updated>2017-11-15T21:46:54+01:00</updated><id>https://hannesh.de/tools/2017/11/15/cheatsheet</id><content type="html" xml:base="https://hannesh.de/tools/2017/11/15/cheatsheet.html">&lt;h1 id=&quot;git&quot;&gt;Git&lt;/h1&gt;
+&lt;h2 id=&quot;clean-merge-into-master-branch&quot;&gt;Clean merge into master branch&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;git checkout master
+git pull 
+git checkout dev
+git merge master
+git checkout master
+git merge dev
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;keep-fork-up-to-date&quot;&gt;Keep Fork up to date&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;git remote add upstream URL_TO_ORIGINAL_REPO
+git fetch upstream // this will create new branches like upstream/master
+git checkout BRANCH
+git merge upstream/BRANCH
+git push &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; origin master // to update your remote forked repository
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h2 id=&quot;removing-a-file-from-the-local-and-remote-repository&quot;&gt;Removing a file from the local and remote repository&lt;/h2&gt;
+
+&lt;h2 id=&quot;removing-a-branch-from-the-local-and-remote-repository&quot;&gt;Removing a branch from the local and remote repository&lt;/h2&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;git branch &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; BRANCH
+git push &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; origin master &lt;span class=&quot;nt&quot;&gt;--delete&lt;/span&gt; 
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;python&quot;&gt;Python&lt;/h1&gt;
+
+&lt;h1 id=&quot;javascript&quot;&gt;JavaScript&lt;/h1&gt;</content><author><name></name></author><summary type="html">Git Clean merge into master branch 1 2 3 4 5 6 git checkout master git pull git checkout dev git merge master git checkout master git merge dev</summary></entry><entry><title type="html">How to deploy a static web page on Uberspace</title><link href="https://hannesh.de/web/2017/10/17/how-to-deploy-a-static-web-page-on-uberspace.html" rel="alternate" type="text/html" title="How to deploy a static web page on Uberspace" /><published>2017-10-17T16:46:54+02:00</published><updated>2017-10-17T16:46:54+02:00</updated><id>https://hannesh.de/web/2017/10/17/how-to-deploy-a-static-web-page-on-uberspace</id><content type="html" xml:base="https://hannesh.de/web/2017/10/17/how-to-deploy-a-static-web-page-on-uberspace.html">&lt;p class=&quot;abstract&quot;&gt;This posts follows on my tutorial “How to deploy a Django application on Uberspace”.
+To deploy a static web page, like an Angular project is very easy.&lt;/p&gt;
+
+&lt;h1 id=&quot;steps&quot;&gt;Steps&lt;/h1&gt;
+&lt;h2 id=&quot;setup-your-project&quot;&gt;Setup your project&lt;/h2&gt;
+&lt;p&gt;This is an example for a Angular project, where you can build you static page with the cli.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;ng build --prod --output-path ./dist
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;routing-with-htaccess&quot;&gt;Routing with .htaccess&lt;/h2&gt;
+&lt;p&gt;Because you want that Angular handles the routes, you have to tell the webserver to route every request to the index.html, where your Angular project lives. You can do this by creating a .htaccess file in your DocumentRoot.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;cd ~/html
+nano .htaccess
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then paste this text. The last line adds optionally compression.&lt;/p&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript text/javascript application/json
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For more information, visit the &lt;a href=&quot;https://manual.uberspace.de/en/index.html&quot;&gt;Uberspace manual&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">This posts follows on my tutorial “How to deploy a Django application on Uberspace”. To deploy a static web page, like an Angular project is very easy.</summary></entry><entry><title type="html">Service Registration und Discovery im Internet of Things</title><link href="https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html" rel="alternate" type="text/html" title="Service Registration und Discovery im Internet of Things" /><published>2017-09-08T23:01:18+02:00</published><updated>2017-09-08T23:01:18+02:00</updated><id>https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things</id><content type="html" xml:base="https://hannesh.de/iot/2017/09/08/service-registration-und-discovery-im-internet-of-things.html">&lt;p class=&quot;abstract&quot;&gt;Das Thema dieser Arbeit ist die Untersuchung verschiedener Ansätze
+zur Registration und Service Discovery im Internet of Things. Das
+Internet of Things besteht aus einer Vielzahl von verschiedenen Geräten,
+welche unterschiedliche Technologien nutzen und somit über
+unterschiedliche Wege identifizierbar und ansprechbar sind. Um diese
+Geräte ohne menschliche Hilfe und möglichst automatisch nutzen zu
+können, gibt es verschiedene Möglichkeiten, sie zu finden. Dafür müssen
+sich die Geräte je nach genutztem Ansatz registrieren. Anschließend
+können Interessenten nach den Geräten und den angebotenen Services
+suchen und mithilfe maschinenlesbarer Beschreibung ansprechen. Das Ziel
+der Arbeit ist der Vergleich der unterschiedlichen Ansätze und eine
+Untersuchung von Integrationsmöglichkeiten. Aufbauend auf der
+Literaturrecherche soll in einem Prototypen eine identifizierte Lösung
+umgesetzt werden. Schlüsselwörter: Registration, Discovery, Internet of
+Things&lt;/p&gt;
+
+&lt;h1 id=&quot;einleitung&quot;&gt;Einleitung&lt;/h1&gt;
+
+&lt;p&gt;Das Internet of Things (IoT) wird durch eine hohe Anzahl smarter Geräte
+bestimmt. Diese Geräte wiederum bieten Services an, welche anschließend
+innerhalb des Netzwerks genutzt werden können. Um Geräte und ihre
+Services sofort und ohne menschliche Einrichtung zu nutzen, müssen sich
+diese möglichst einfach in einer bestehenden IoT Architektur integrieren
+lassen. Dies geschieht durch die Prozesse Registration und Discovery.
+Dazu muss sich ein Gerät bei der erstmaligen Nutzung im Netzwerk
+registrieren und seine Services bekannt machen. Durch Service Discovery
+ist es anschließend möglich im Netzwerk nach Geräten und angebotenen
+Services zu suchen. Sowohl bei der Registration als auch bei der
+Discovery wird eine Nachricht übermittelt, welche grundlegende
+Informationen über das Gerät und die Services beinhaltet. Weiterhin
+müssen Services maschinenlesbar und einheitlich beschrieben werden, um
+die verschiedenen Arten von Services zu verstehen.&lt;/p&gt;
+
+&lt;h2 id=&quot;problemstellung-und-motivation&quot;&gt;Problemstellung und Motivation&lt;/h2&gt;
+
+&lt;p&gt;Die Heterogenität der Geräte stellt jedoch für die Interoperabilität der
+Prozesse eine Herausforderung dar, da die Geräte unterschiedliche
+Transportwege und Technologien nutzen. Auf Grund fehlender Standards
+können die Geräte nicht einheitlich kommunizieren, wodurch schließlich
+die Bereitstellung von IoT-Services beeinträchtigt wird (vgl.
+[@Khodadadi2016 207]). Zudem ist die Komplexität des gesamten
+IoT-Netzwerks ein Problem. Die Geräte können zum Beispiel innerhalb
+eines lokalen Netzwerks oder mit einem Server in der Cloud
+kommunizieren. Der Server kann wiederum mit anderen Servern
+kommunizieren. Die Prozesse zur Registration und Discovery müssen sich
+daher an den jeweiligen Anwendungsfall anpassen (vgl. [@Khodadadi2016
+262]). Weiterhin stellt die eindeutige Identifikation der Geräte und der
+Services eine Herausforderung dar, da diese noch nicht einheitlich
+ansprechbar sind (vgl. [@Delicato2017 34]). Verschiedene Allianzen von
+Herstellern und eine Vielzahl an Protokollen stellen ebenfalls eine
+Hürde in der Entwicklung größerer IoT-Architekturen dar. Daher stellen
+sich die Fragen, welche Eigenschaften die Ansätze zur Registration und
+Discovery haben, wie sie sich unterscheiden und welche Möglichkeiten es
+zur Integration gibt.&lt;/p&gt;
+
+&lt;h2 id=&quot;zielstellung&quot;&gt;Zielstellung&lt;/h2&gt;
+
+&lt;p&gt;Ziel der Arbeit ist die Erstellung eines Überblicks über die
+unterschiedlichen Ansätze zur Registration und Discovery. Dabei sollen
+verschiedene Ausprägungen der Ansätze betrachtet werden und basierend
+auf den Eigenschaften Identifikation der Geräte und Services, Sicherheit
+und Datenschutz, verwendete Protokolle, Skalierung, Reichweite, Eignung
+für beschränkte Geräte und Suchmöglichkeiten verglichen werden. Darauf
+aufbauend sollen verschiedene Möglichkeiten zur Integration der Ansätze
+betrachtet werden. Weiterhin soll ein Prototyp erstellt werden, welcher
+eine identifizierte Lösung zur Registration und Discovery nutzt.&lt;/p&gt;
+
+&lt;h2 id=&quot;vorgehensweise&quot;&gt;Vorgehensweise&lt;/h2&gt;
+
+&lt;p&gt;Die verwendeten Methoden sind die Literaturrecherche und die
+Implementierung eines Prototyps. Für die Literaturrecherche werden
+Bücher als auch wissenschaftliche Artikel genutzt. Basierend auf dieser
+ersten Recherche werden die Primärquellen genutzt. Dazu zählen zum
+Beispiel die Spezifikationen der Internet Engineering Task Force.
+Ausgehend von der Literaturrecherche sollen die Ansätze herausgearbeitet
+werden und exemplarisch in einem Prototypen umgesetzt werden.&lt;/p&gt;
+
+&lt;h1 id=&quot;grundlagen-des-internet-of-things&quot;&gt;Grundlagen des Internet of Things&lt;/h1&gt;
+
+&lt;p&gt;Im Folgenden werden die Grundlagen des IoT erklärt, um den Aufbau, die
+beteiligten Geräte und die verwendeten Kommunikationswege zu verstehen.
+Weiterhin werden grundlegende Begriffe definiert.&lt;/p&gt;
+
+&lt;h2 id=&quot;definitionen&quot;&gt;Definitionen&lt;/h2&gt;
+
+&lt;p&gt;Der Client ist der Ursprung einer Anfrage und das Ziel einer Antwort
+(vgl. [Shelby et al. 2014, 4]) und bezeichnet im Zusammenhang mit dem
+Prozess der Discovery den interessierten Teilnehmer im Netzwerk. Der
+Server ist das Ziel einer Anfrage und der Ursprung einer Antwort (vgl.
+[Shelby et al. 2014, 4]). Der Endpoint stellt den Zugang zu einer
+Funktionalität des physischen Gerätes, zum Beispiel einem Sensor, dar
+und kann einen oder mehrere Services bereitstellen. Ein Gerät kann
+mehrere Endpoints haben, wenn es zum Beispiel durch mehrere Protokolle
+ansprechbar ist. Ein Service ist ein konkreter Dienst, zum Beispiel das
+Messen von Spannung. Registration bezeichnet im engeren Sinn den Prozess
+des Endpoints, sich direkt anzumelden oder die Möglichkeit zu schaffen,
+gefunden werden zu können. Im weiteren Sinn gehört das Abmelden des
+Endpoints und die Bekanntmachung von Änderungen dazu. Discovery
+bezeichnet im engeren Sinn den Prozess des Clients, Endpoints und ihre
+angebotenen Services automatisch oder manuell zu finden. Im weiteren
+Sinn unterteilt sich dieser Prozess in das Finden aller Endpoints und
+Services und das auf Parametern basierende Suchen.&lt;/p&gt;
+
+&lt;h2 id=&quot;aufbau-und-infrastruktur&quot;&gt;Aufbau und Infrastruktur&lt;/h2&gt;
+
+&lt;p&gt;Das IoT wird durch eine starke Heterogenität bestimmt, da viele
+unterschiedliche Geräte am IoT teilnehmen. Dazu gehören leistungsfähige
+Computer, Smartphones, Smart TV, aber auch leistungsschwache Sensoren,
+Lampen und Mikrocontroller. Die leistungsschwächsten Geräte gehören zur
+Gruppe der beschränkten Geräte, welche durch begrenzten Speicher,
+begrenzte CPU, begrenzt nutzbare Netzwerkbandbreite sowie
+Batteriebetrieb gekennzeichnet sind (vgl. [@Petersen2014 1]). Um diese
+Geräte im IoT integrieren zu können, müssen die genutzten Ansätze und
+Protokolle ressourcensparend funktionieren. Je nach Reichweite kann
+innerhalb des IoT zwischen Device to Device, Device to Server und Server
+to Server Kommunikation unterschieden werden (vgl. [@Khodadadi2016
+262]). In Device to Device Umgebungen werden mindestens zwei Teilnehmer
+innerhalb eines lokalen Netzwerkes benötigt. In Device to Server
+Umgebungen sind mindestens 3 Teilnehmer beteiligt. Der Server kann
+innerhalb eines lokalen Netzwerkes oder über das Internet erreichbar
+sein. Server to Server Umgebungen stellen eine Spezifikation der Device
+to Server Umgebung dar, in welcher zwei Plattformen miteinander
+kommunizieren. Weiterhin verwenden die Geräte unterschiedliche drahtlose
+und drahtgebundene Technologien, wodurch die Kommunikation erschwert
+wird.Die Vernetzungsdichte nimmt besonders durch die kabellosen
+Technologien zu (vgl. [@Petersen2014 1]). Wireless Personal Area
+Networks (WPAN), auch Wireless Sensor Networks genannt, basieren auf dem
+IEEE 802-15 Standard und agieren in kurzen Distanzen. Spezifikationen
+wie Zigbee, Bluetooth und 6LoWPAN sind Teil dieser Gruppe. Wireless
+Local Area Networks (WLAN) basieren auf dem IEE 802-11 Standard und
+haben eine größere Reichweite im Vergleich zu WPAN.&lt;/p&gt;
+
+&lt;h2 id=&quot;kommunikation&quot;&gt;Kommunikation&lt;/h2&gt;
+
+&lt;p&gt;Die Kommunikation im IoT basiert auf dem OSI Schichtenmodell (siehe Abb.
+1). Die verwendeten Protokolle und Spezifikationen werden dabei je zu
+einer oder mehreren Schichten zugeordnet.
+Die ersten beiden Schichten, Bitübertragungsschicht und
+Sicherungsschicht legen die technischen Voraussetzungen für die
+Übertragung und die Umwandlung von Information in physikalische Signale
+fest (vgl. [@comer2003tcp 195]). Die verschiedenen Arten der
+Netzwerkstrukturen wie WLAN, LAN und WPAN stellen Spezifikationen dieser
+Schichten dar. Darauf aufbauend sorgt die Vermittlungsschicht für das
+Routing zwischen den Teilnehmern. Dabei muss zwischen IP-basierter und
+nicht-IP-basierter Vermittlung unterschieden werden. Während die
+IP-basierte Vermittlung das Internet Protocol (IP) verwendet, nutzt die
+nicht IP-basierte Vermittlung unterschiedliche Spezifikationen. Diese
+Spezifikationen enthalten zudem bereits Definitionen für die nächsten
+Schichten, wie zum Beispiel Zigbee. IP ist ein unverlässliches und
+verbindungsloses Protokoll, welches das Format der Datenübertragung,
+sogenannte Internet Datagramme, definiert. Dieses wird von den folgenden
+Schichten erweitert. Weiterhin stellt es eine eindeutige Adressierung
+der Teilnehmer durch IP-Adressen als auch die Routing Funktionalität
+durch Netzwerke bereit (vgl. [@comer2003tcp 120f]). Nachdem ein
+Datenpaket mittels IP beim Empfänger angekommen ist, wird durch die
+Transportschicht festgelegt, wie zuverlässig der Pakettransport erfolgt
+und an welchem Ziel innerhalb des Empfängers das Paket verwendet werden
+soll. Das Ziel wird durch einen Port definiert (vgl. [@comer2003tcp
+207]). Ein Protokoll der Transportschicht ist das User Datagram Protocol
+(UDP), welches, basierend auf IP, unzuverlässig und verbindungslos
+Datenpakete transportiert. Der Vorteil dieser Methode ist die sparsame
+Nutzung von Ressourcen und der daraus resultierende Performancegewinn.
+Der Nachteil ist jedoch, dass der Sender keine Informationen über den
+Zustand der Pakete erhält. Dadurch ist es möglich, dass Pakete beim
+Empfänger nicht ankommen oder in der falschen Reihenfolge ankommen (vgl.
+[@comer2003tcp 208]). Im Gegensatz zu UDP ist das Transmission Control
+Protocol (TCP) verbindungsorientiert und zuverlässig. Pakete, welche
+über TCP versendet werden, kommen somit sicher beim Empfänger an (vgl.
+[@comer2003tcp 222f]). Um dies zu gewährleisten ist jedoch ein höherer
+Aufwand nötig, wodurch die Performance von TCP sinkt. Die
+Zuverlässigkeit wird durch einen Drei-Wege-Handschlag garantiert,
+welcher beim Verbindungsaufbau und Verbindungsabbau zum Einsatz kommt.
+Dieser sieht den Austausch von drei Nachrichten vor. Zunächst wird mit
+einer Nachricht der Empfänger informiert, dass der Sender zum Beispiel
+eine Verbindung aufbauen möchte. Der Empfänger bestätigt die Nachricht,
+woraufhin der Sender den Empfang erneut bestätigt (vgl. [@comer2003tcp
+242]). Die verschiedenen Ansätze zur Registration und Discovery nutzen
+darauf aufbauend Protokolle aus der Anwendungsschicht. Die IP-basierte
+Kommunikation nutzt zur Identifikation der Teilnehmer IP-Adressen,
+wohingegen die nicht-IP-basierte Kommunikation eigene
+Identifikationsnummer verwendet, zum Beispiel basierend auf
+MAC-Adressen. Durch IPv6 wird angenommen, dass in Zukunft IP-Adressen
+zur Identifikation aller Geräte nutzbar sind. Weiterhin stellt die
+Identifikation der Services auf Grund fehlender Standards eine
+Herausforderung dar (vgl. [@Delicato2017 34]). Es wird meist eine
+‘Uniform Resource Identifier’ (URI) verwendet, um einen Service eines
+Gerätes anzusprechen. Diese stellt eine Abfolge von Zeichen dar, um eine
+abstrakte oder physische Ressource zu identifizieren (vgl.
+[@Berner-Lee2005 1]). Diese besteht aus einem ‘Scheme’, einer
+‘Authority’, einem ‘Path’, einer ‘Query’ und einem ‘Fragment’ (vgl.
+[@Berner-Lee2005 16]). In der IP-basierten Kommunikation ist das
+‘Scheme’ das Protokoll und die ‘Authority’ die IP-Adresse und der Port
+(vgl. [@Berner-Lee2005 17ff]).&lt;/p&gt;
+
+&lt;h2 id=&quot;genereller-ablauf-der-registration-und-discovery&quot;&gt;Genereller Ablauf der Registration und Discovery&lt;/h2&gt;
+
+&lt;p&gt;Grundlegend laufen die Ansätze zur Bereitstellung von IoT-Services nach
+einem ähnlichen Schema ab. Der erste Schritt besteht aus der
+Registration eines neuen Endpoints. Dieser kann sich in einem lokalen
+Netzwerk durch das Lauschen auf einen bestimmten Port anmelden oder
+einem Server bekannt machen. Darauf folgt die Discovery, welche von
+einem Client ausgeht. Dieser kann je nach verwendetem Ansatz direkt nach
+Endpoints suchen oder einen Server anfragen (siehe Abb. 2). Im ersten
+Fall kann nach Endpoints im lokalen Netzwerk oder in der unmittelbaren
+Umgebung über andere physische Schichten gesucht werden. Im zweiten Fall
+sucht der Client in einer zentralen oder verteilten Datenbasis nach
+Endpoints. Nachdem ein Endpoint und seine anzubietenden Services
+gefunden wurden, müssen die Informationen maschinenlesbar und
+standardisiert beschrieben werden, um ohne menschliche Hilfe nach der
+Discovery verwendet werden zu können.&lt;/p&gt;
+
+&lt;h1 id=&quot;ansätze-zur-registration-und-discovery&quot;&gt;Ansätze zur Registration und Discovery&lt;/h1&gt;
+
+&lt;p&gt;Die Einteilung der Ansätze orientiert sich an [@Broring2016]. Die
+Autoren ordnen die Ansätze dabei in die Kategorien ‘Searching around
+me’, ‘Searching on my network’ und ‘Searching in Directories’ ein. Die
+Bezeichnungen sind jedoch nicht eindeutig, da es ein ‘Directory’ auch in
+lokalen Netzwerken geben kann und die Reichweite ‘around me’ auch lokale
+Netzwerke mit einschließt. ‘Searching around me’ entspricht somit dem
+nicht-IP-basierten Device to Device Ansatz und ‘Searching on my network’
+dem IP-basierten Device to Device Ansatz. Die Kategorie ‘Searching in
+Directories’ gehört zum Device to Server Ansatz. Der Ansatz Server to
+Server ist eine Unterkategorie des Device to Server Ansatzes. Er wird
+bei der Kommunikation zwischen zwei Servern, zum Beispiel zwei
+IoT-Plattformen, verwendet.&lt;/p&gt;
+
+&lt;h2 id=&quot;device-to-device&quot;&gt;Device to Device&lt;/h2&gt;
+
+&lt;p&gt;Die Device to Device Umgebung ist hauptsächlich durch eine begrenzte
+Distanz zwischen den Geräten gekennzeichnet und findet dadurch zum
+Beispiel im Smart Home Bereich Anwendung. Weiterhin nehmen mindestens
+zwei Teilnehmer teil, welche direkt miteinander kommunizieren. Dazu
+zählen lokale Netzwerke, basierend auf IP und Spezifikationen, welche
+andere Protokolle in den ersten drei OSI Schichten nutzen. Eine
+Unterteilung in drahtlose und drahtgebundene Kommunikation ist nicht
+empfehlenswert, da zwar der nicht-IP-basierte Ansatz drahtlos
+funktioniert, der IP-basierte Ansatz jedoch beides unterstützt.&lt;/p&gt;
+
+&lt;h3 id=&quot;ip-basiert&quot;&gt;IP-basiert&lt;/h3&gt;
+
+&lt;p&gt;Der IP-basierte Device-to-Device Ansatz nutzt die Protokolle IP und UDP.
+Er ist ein Teilbereich der ‘Zeroconfiguration Networks’. Diese
+Spezifikation ging 1999 aus der IETF Zeroconf Working Group hervor. Um
+die Anforderungen zu erfüllen, müssen vier Bedingung gegeben sein.
+Zunächst werden die IP-Adressen automatisch und ohne DHCP Server
+zugeordnet. Darauf aufbauend werden sie ohne DNS Server zu Hostnamen
+aufgelöst. Zudem muss eine Möglichkeit zur IP Multicast Kommunikation
+angeboten werden. Können die Geräte schließlich angesprochen werden,
+muss eine Service Discovery ohne zentralen Server möglich sein (vgl.
+[@Cheshire2017; @Williams2002 1]). Grundsätzlich kann die Registration
+des Endpoints durch zwei Wege erfolgen (vgl. [@Broring2016 3]). Zum
+Einen kann sich ein Endpoint, zum Beispiel beim Starten im Netzwerk ,
+bekannt machen, indem es einen Multicast Request sendet. Die Discovery
+würde dann automatisch nach dem Empfangen des Requests starten (siehe
+Abb. 3).&lt;/p&gt;
+
+&lt;p&gt;\centering
+&lt;img src=&quot;./content/hauptkapitel/d2d_ip_2.png&quot; alt=&quot;IP-basierte Device to Device Kommunikation ausgehend vom Endpoint (In
+Anlehnung an [@Broring2016
+3])&quot; /&gt;{height=”5cm”}&lt;/p&gt;
+
+&lt;p&gt;Zum Anderen kann der Endpoint nur auf einen Multicast Port einer
+bestimmten Adresse lauschen. Der Client müsste die Discovery Anfrage
+aktiv senden, woraufhin der Endpoint auf einen Multicast Request des
+Clients antwortet (siehe Abb. 4).&lt;/p&gt;
+
+&lt;p&gt;\centering
+&lt;img src=&quot;./content/hauptkapitel/d2d_ip_1.png&quot; alt=&quot;IP-basierte Device to Device Kommunikation ausgehend vom Client (In
+Anlehnung an [@Broring2016
+3])&quot; /&gt;{height=”5cm”}&lt;/p&gt;
+
+&lt;p&gt;Vorteil des IP-basierten Device to Device Ansatzes ist die einfache und
+automatische Nutzung in lokalen Netzwerken, da dort die Multicast
+Kommunikation gewährleistet ist. Allerdings sind die Reichweite und die
+Suchmöglichkeiten stark begrenzt. Falls eine Firewall auf dem Endpoint
+eingerichtet ist, muss zudem eine Ausnahme für die entsprechenden
+Multicast Ports gesetzt werden. Dies kann problematisch sein, wenn der
+Endpoint auch über das Internet erreichbar ist, da dadurch UDP-
+Verstärkungsattacken ermöglicht werden (vgl. [@US-CERT2016 1]).&lt;/p&gt;
+
+&lt;h4 id=&quot;multicast-constrained-application-protocol&quot;&gt;Multicast Constrained Application Protocol&lt;/h4&gt;
+&lt;p&gt;Das Constrained Application Protocol (CoAP) ist ein Protokoll speziell für beschränkte Gerä-
+te. Es basiert auf IP in der Netzwerkschicht und auf UDP in der Transportschicht.
+CoAP basiert wie HTTP auf dem Client-Server Prinzip. Der Client sendet einen Request
+an den Server, um eine bestimmte Aktion auf einer bestimmten Ressource anzufragen. Die
+Aktion wird durch einen Code und die Ressource durch eine URI festgelegt. Die Antwortet
+des Servers besteht aus einem Code und eventuell einem Payload (vgl. [Shelby et al. 2014,
+10]).
+Die verwendeten Methoden sind wie bei HTTP GET, PUT, DELETE und POST. Es kön-
+nen zudem eigene Methoden definiert werden. Im Gegensatz zu HTTP, welches TCP nutzt,
+basiert CoAP auf UDP. Um trotz UDP zuverlässig Nachrichten auszutauschen, gibt es vier
+verschiedene Nachrichtentypen. ’Confirmable’ Nachrichten, müssen im Gegensatz zu ’Non-
+Confirmable’ Nachrichten nach dem Empfang bestätigt werden. Dies geschieht durch das
+Senden einer ’Acknowledgment’ Nachricht, in welcher der Empfang bestätigt wird. Innerhalb
+dieser Nachricht kann auch die Antwort mitgesendet werden, um eine zweite Antwort zu
+vermeiden. Eine Reset Nachricht wird gesendet, falls eine Nachricht empfangen wurde, aber
+nicht verarbeitet werden konnte (vgl. [Shelby et al. 2014, 10f]).
+Die Registration besteht aus dem Lauschen des Endpoints auf den Port 5683 der reservierte
+Multicast Adresse 224.0.1.187. CoAP besitzt keine Definition für eine Nachricht zum Be-
+kanntmachen im Netzwerk. Der Client kann daraufhin einen GET Request an die Multicast
+Adresse senden. Der Endpoint antwortet mit einer Response Nachricht, welche die Informa-
+tionen über den Endpoint und die Services beinhaltet (vgl. [Shelby et al. 2014, 97]).
+Mit dem CoRE Link Format ist weiterhin eine Spezifikation für den Ablauf der Discovery
+definiert. Sie sieht vor, dass der Discovery Request an die reservierte URI ’/.well-known/core’
+gesendet werden soll. Unter diesem Pfad erhält der Client eine Liste mit angebotenen Services,
+welche entsprechend der Spezifikation beschrieben sind (vgl. [Shelby et al. 2014, 64].
+Die Ausprägung Multicast CoAP erweist sich als sehr praktisch für die Verwendung mit
+beschränkten Geräten, da der geringe Header Overhead, eine einfache Parsing Möglichkeit,
+sowie die Verwendung von UDP sehr ressourcensparend sind. CoAP stellt zudem eine Mög-
+lichkeit für zuverlässige Kommunikation bereit, welche dem Drei-Wege-Handschlag von
+TCP ähnelt. Ein Mapping zu HTTP und Multicast DNS wird ebenfalls unterstützt, wodurch
+die Kommunikation über das Web vereinfacht wird. Es bietet zudem die Möglichkeit zur
+Verschlüsselung über Datagram Transport Layer Security (vgl. [Shelby et al. 2014, 5f]).&lt;/p&gt;
+
+&lt;h4 id=&quot;simple-service-discovery-protocol&quot;&gt;Simple Service Discovery Protocol&lt;/h4&gt;
+&lt;p&gt;Das Simple Service Discovery Protocol (SSDP) basiert auf den Protokollen IP und UDP. Es
+wird vom Protokoll Universal Plug and Play (UPnP) zur Discovery von Services genutzt und
+wurde 1999 von Microsoft und Hewlett Packard spezifiziert.
+SSDP nutzt teilweise das HTTP Header Format. Die Nachrichten haben nur einen Header
+und keinen Body (vgl. [Donoho et al. 2008, 15f]).
+Die Identifikation der Endpoints erfolgt durch eine ’Universally Unique Identifier’ (UUID),
+welche durch fünf hexadezimale Zahlen dargestellt wird. UPnP empfiehlt zur Berechnung
+einen Zeit und MAC-Adressenbasierten Algorithmus (vgl. [Donoho et al. 2008, 17]).
+Das Lauschen des Endpoints auf den Port 1900 der für SSDP reservierte Multicast Adresse
+239.255.255.250 stellt die Registration dar (vgl. [Goland et al. 1999, 4]).
+Daneben kann auch der Client auf die Adresse hören, um automatisch bei Eintritt eines
+Endpoints benachrichtigt zu werden.
+Der Client sendet zur Discovery im ersten Fall einen M-SEARCH Request an die Multicast
+Adresse, welche vom Endpoint empfangen wird (siehe Listing 1). Im HTTP-Header müssen
+zusätzlich die Attribute ’HOST’, ’MAN’, ’ST’ und ’MX’ gesetzt werden. Unter ’ST’ in
+Zeile 5 wird ein Service Typ festgelegt, um eine einfache Suche, basierend auf dem Typen,
+durchzuführen. ’MX’ in Zeile 4 legt den Zeitraum fest, in welchem die Endpoints antworten
+sollen. Die Suchmöglichkeiten beschränken sich auf den ’ST’ Parameter, welcher verschie-
+dene Arten von URI anbietet. Die URI ’ssdp:all’ kann genutzt werden, um alle Endpoints
+zu finden, während ’uuid:’, gefolgt von einer UUID, nach einem konkreten Endpoint sucht.
+Durch die URI ’urn:schemas-upnp-org:device’ und ’urn:schemas-upnp-org:service’, gefolgt
+von einem Typen, wird nach Endpoints und Services mit einem bestimmten Typen gesucht
+(vgl. [Donoho et al. 2008, 30f]).
+Zusätzlich kann sich ein Endpoint durch das Senden eines NOTIFY Requests über Multicast
+bei den anderen Teilnehmern bekannt machen (siehe Anhang B). Unter dem Header ’NTS’
+wird der Typ der Bekanntmachung festgelegt. Mit dem Wert ’ssdp:alive’ wird der Beitritt des
+Endpoints zum Netzwerk definiert (vgl. [Donoho et al. 2008, 19]).
+Der Client kann nach Empfang dieser Nachricht einen Discovery Request senden und in per
+Unicast direkt an den Endpoint senden oder eine generelle Multicast Anfrage durchführen.
+Der Endpoint antwortet daraufhin mit einer Unicast Response. Die unter ’LOCATION’
+angegebenen URI in Zeile 8 von Listing 2 verweist auf ein XML-Dokument beim Endpoint,
+welches die Beschreibungen beinhaltet. Unter ’USN’ ist eine eindeutige URI des Services
+angegeben (vgl. [Goland et al. 1999, 5]).
+Die Beschreibung wird durch UPnP definiert und besteht aus zwei Teilen: der Beschreibung
+des Endpoints und der Services. Der Endpoint wird unter anderem durch den Modelnamen,
+die Seriennummer und den Herstellernamen charakterisiert. Die Services werden durch einen
+Service Namen, eine URL zur genaueren Beschreibung und eine URL zum Ansprechen der
+Services beschrieben (vgl. [Donoho et al. 2008, 37], siehe Anhang J).
+Durch einen NOTIFY Request kann sich ein Endpoint zudem abmelden, indem er den ’NTS’
+Parameter mit ’ssdp:byebye’ setzt (vgl. [Donoho et al. 2008, 25]).
+Eine Änderung im Endpoint kann durch den Wert ’ssdp:update’ bekannt gemacht werden
+(vgl. [Donoho et al. 2008, 27]).
+SSDP bietet den Vorteil, dass es bereits von vielen Geräten durch den Standard UPnP
+unterstützt wird. Allerdings ist nur eine einfache Suche, basierend auf dem Service und
+Endpoint Typ, möglich. Zum Vergleich des Suchwertes wird nur die Gleichheit der URI
+verwendet.&lt;/p&gt;
+
+&lt;h4 id=&quot;dns-service-discovery-mittels-multicast-dns&quot;&gt;DNS Service Discovery mittels Multicast DNS&lt;/h4&gt;
+&lt;p&gt;DNS Service Discovery (DNS-SD) ist eine Spezifikation, um Services über DNS in einem
+lokalen Netzwerk zu finden. Es wird zum Beispiel vom Apple Dienst Bonjour verwendet,
+welches von iTunes genutzt wird, um Computer mit freigegebener Musik im lokalen Netz-
+werk zu finden. Zur Kommunikation wird Multicast DNS verwendet. Dieses ermöglicht die
+Auflösung von Hostnamen zu IP-Adressen ohne DNS Server (vgl. [Cheshire et al. 2013a, 1]).
+Die Auflösung der Hostnamen über einen DNS Server gehört wiederum zu den Device to
+Server Ansätzen.
+Mutlicast DNS definiert die Bezeichnung der Hostnamen von Geräten in einem lokalen
+Netzwerk. Diese benennen sich durch einen selbstgewählten Namen, auf welchen die DNS
+Top-Level-Domain ’.local.’ folgt (vgl. [Cheshire et al. 2013a, 5f]).
+Möchte ein Client den Hostnamen auflösen, sendet er eine Multicast Nachricht an alle End-
+points.
+DNS-SD definiert darauf aufbauend, wie die ’DNS Records’ aufgebaut sein müssen, damit
+eine Discovery möglich ist (vgl. [Cheshire et al. 2013b, 3f]).
+Ein ’DNS Record’ besteht aus vier Teilen (siehe Listing 3). Der ’A Record’ beinhaltet die
+IP-Adresse und den Namen des Endpoints. Der ’SRV Record’ beinhaltet den Service, basie-
+rend auf dem Service Typen und dem Port. Der ’PTR Record’ sagt aus, dass ein bestimmter
+Service Typ vorhanden ist (vgl. [Saint-Andre 2008, 2]).
+Die Registration eines Endpoints kann durch das Lauschen auf den Port 5353 der Multicast
+Adresse 224.0.0.251 geschehen oder durch das aktive Anmelden durch das Senden eines
+’DNS Records’ (vgl. [Cheshire et al. 2013a, 15]).
+Die Discovery erfolgt durch das Senden eines Multicast Requests, welcher einen ’PTR
+Record’ beinhaltet. Basierend auf dem Service Typen kann auf Gleichheit gesucht werden.
+Ein Endpoint antwortet darauf mit seinem ’DNS Record’, welcher die IP-Adresse und die
+URI des Services beinhaltet (vgl. [Saint-Andre 2008, 2]).
+Vorteil von DNS-SD ist, dass die Nutzung eines Services auch bei einem IP-Adressen-Wechsel
+des Endpoints weiterhin möglich ist, da der Client den Hostnamen des Endpoints verwenden
+kann, um per Multicast DNS die neue IP-Adresse zu erhalten.&lt;/p&gt;
+
+&lt;h3 id=&quot;nicht-ip-basiert&quot;&gt;Nicht-IP-basiert&lt;/h3&gt;
+
+&lt;p&gt;Zu dem nicht-IP-basierten Device to Device Ansatz gehören Technologien,
+wie Zigbee, Z-Wave, NFC, Bluetooth und iBeacon. Diese gehören zur Gruppe
+der WPAN. Der Ansatz soll anhand von Zigbee genauer erläutert werden.
+Die Zigbee Spezifikation beschreibt mehrere Schichten des OSI Modells,
+basierend auf dem IEEE 802.15.4 Standard in der Bitübertragungsschicht
+und Sicherungsschicht. Ein Zigbee Netzwerk besteht aus zwei bzw. drei
+Teilnehmern. Das Endgerät stellt den Endpoint dar. Dieser gehört zur
+Gruppe der beschränkten Geräten, da er nicht immer aktiv ist und meist
+mit Batterien betrieben wird. Der Router dient dem Transport der Pakete
+innerhalb des Netzwerkes und kann das Netzwerk vergrößern. Der
+Koordinator besitzt die Fähigkeit, ein Netzwerk zu starten und wird
+anschließend zu einem Router (vgl. [@Hersent2011 96]). Die
+Identifikation der Teilnehmer im Zigbee Netzwerk basiert auf der 64-bit
+MAC-Adresse der Sicherungsschicht sowie einer 16-bit Netzwerkadresse,
+welche entweder zufällig oder entlang einer Baumstruktur vergeben wird
+(vgl. [@Krausse2014 229]). Das Zigbee Netzwerk wird dabei durch eine
+‘PAN ID’ identifiziert, welche der Koordinator bei Start des Netzwerks
+per Broadcast Beacon kommuniziert. Zur Registration des Endpoints muss
+dieser die ‘PAN ID’ des Netzwerkes kennen. Dies geschieht durch den
+Empfang des Beacons vom Koordinator oder durch das Senden eines
+Broadcast Beacons, woraufhin der Koordinator erneut die ‘PAN ID’
+mitteilt [@Hersent2011 97]). In der Anwendungsschicht erfolgt
+schließlich die Discovery. Dazu definiert das Gerät verschiedene
+Deskriptoren, um sich zu beschreiben. Der ‘Node-Deskriptor’ beschreibt
+das physische Gerät und seine Rolle im Netzwerk, der
+‘Node-Power-Deskriptor’ beschreibt die Stromversorgung und der
+‘Simple-Deskriptor’ beschreibt den Endpoint [@Krausse2014 311]). Die
+Deskriptoren können durch verschiedene Nachrichten angefragt werden.
+Dies erfolgt durch das Senden eines Broadcast Requests (vgl.
+[@Krausse2014 319]). Mit der Zigbee IP Spezifikation wird die Verwendung
+von IP in der Vermittlungsschicht ebenfalls unterstützt. Es nutzt dabei
+das 6LoWPAN Protokoll (vgl. [@Hersent2011 213]). Zigbee bietet den
+Vorteil, dass es von einer großen Allianz von Herstellern betrieben
+wird, wodurch die Interoperabilität zwischen den Herstellern
+gewährleistet wird. Weiterhin unterstützt Zigbee eine hohe
+Teilnehmerzahl im Netzwerk und kann durch den
+AES-Verschlüsselungsalgorithmus gesichert werden.&lt;/p&gt;
+
+&lt;h2 id=&quot;device-to-server&quot;&gt;Device to Server&lt;/h2&gt;
+
+&lt;p&gt;Im Device to Server Umfeld befinden sich mindestens drei Geräte. Ein
+nachfragender Client, ein Endpoint, welcher einen Service anbietet, und
+ein Teilnehmer, welcher die Informationen in einer Datenbasis, genannt
+‘Resource Directory’ (RD), speichert. Der grundlegende Ablauf besteht
+aus der Registration des Endpoints beim RD. Ein nachfragender Client
+kann in diesem wiederum nach bestehenden Endpoints und Services suchen.
+Die Möglichkeiten der Suche unterscheiden sich dabei je nach genutztem
+Ansatz (vgl. [@Broring2016 3]). Im Device to Server Umfeld muss
+unterschieden werden, ob sich das RD in einem lokalen Netzwerk oder im
+Internet befindet. Wenn es sich in einem lokalen Netzwerk befindet, kann
+es aktiv oder auf Anfrage nach neuen Endpoints suchen, indem es Device
+to Device Ansätze nutzt. Weiterhin muss unterschieden werden, ob der
+Endpoint die IP-Adresse des RD kennt oder nicht kennt. Ist die
+IP-Adresse des RD bekannt, zum Beispiel durch eine Vorkonfiguration des
+Gerätes, erfolgt die Registration problemlos, da der Endpoint sich
+direkt anmelden kann. Ist die IP-Adresse nicht bekannt, muss diese
+zunächst ermittelt werden. Dies kann durch eine Integration mit Device
+to Device Ansätzen erfolgen. Befindet sich das RD im Internet, muss die
+IP-Adresse bekannt sein, da es keinen Weg gibt, diese dynamisch zu
+erhalten. Eine weitere Unterscheidung erfolgt anhand der gewählten
+Infrastruktur. Das RD kann entweder zentral oder verteilt gehostet
+werden. Durch einen dritten Teilnehmer, welcher die Informationen
+persistent speichert, kann sichergestellt werden, dass auch Services von
+vorübergehend inaktiven Endpoints gefunden werden. Diese würden durch
+Device to Device Ansätze ignoriert werden.&lt;/p&gt;
+
+&lt;h3 id=&quot;zentrales-rescource-directory&quot;&gt;Zentrales Rescource Directory&lt;/h3&gt;
+
+&lt;p&gt;Bei diesem Ansatz wird das RD durch einen zentralen Server dargestellt,
+welcher von den Endpoints und Clients angesprochen wird. Es wird
+angenommen, dass die IP-Adresse des RD bekannt ist (siehe Abb. 5).
+Der Vorteil dieses Ansatzes ist, dass ein Client auch außerhalb eines
+lokalen Netzwerkes nach Endpoints und Services suchen kann. Dazu kann
+der Client eine IoT-Plattform über einen ihrer Server anfragen. Dieser
+hat wiederum Zugriff auf ein RD, welches die Informationen über die
+Endpoints der Plattform beinhaltet. Der Nachteil dieser Umgebung ist
+jedoch die Anfälligkeit für Angriffe von außen, zum Beispiel durch
+‘Distributed Denial of Service’ Attacken.&lt;/p&gt;
+
+&lt;h4 id=&quot;rd-mit-dem-message-queue-telemetry-transport-protocol&quot;&gt;RD mit dem Message Queue Telemetry Transport Protocol&lt;/h4&gt;
+&lt;p&gt;Das Message Queue Telemetry Transport Protocol (MQTT) basiert auf TCP und dem Publish-
+Subscribe Modell (siehe Abb. 6). Innerhalb dieses Modells gibt es mindestens drei Teilnehmer.
+Ein Producer, welcher ein Endpoint sein kann, produziert und liefert Informationen über
+ein bestimmtes Thema an einen Broker. Der Broker ist ein Server, welcher als Schnittstelle
+zwischen dem Producer und dem Subscriber agiert. Der Subscriber kann sich beim Broker für
+ein bestimmten Thema anmelden und bekommt daraufhin die entsprechenden Nachrichten
+vom Producer über den Broker weitergeleitet. Zum Beispiel kann ein Lichtsensor über das
+Thema Helligkeit Informationen an den Broker senden. Ein Client könnte dann das Thema
+Helligkeit auf dem Server abonnieren (vgl. [Lampkin et al. 2012, 6]).
+MQTT bietet weiterhin drei ’Quality of Services’ Level, welche die Zustellung von Nach-
+richten bestimmen. Je höher das Level, desto zuverlässiger werden die Nachrichten gesendet.
+Das erste Level ist das Unzuverlässigste. Es wird keine Antwort erwartet, wodurch nicht
+sichergestellt werden kann, ob die Nachricht angekommen ist. Nur die TCP/IP Funktionen
+werden genutzt. Ein unerwarteter Verbindungsabbruch oder ein Serverproblem würden nicht
+auffallen. Die aufbauenden Level ähneln dem Drei-Wege-Handschlag von TCP und fügen
+eine weitere Sicherungsschicht zu TCP hinzu (vgl. [Lampkin et al. 2012, 212f]).
+MQTT kann im Device to Server Umfeld auch für die Bereitstellung von IoT Services verwen-
+det werden. Allerdings bietet MQTT in der reinen Protokoll Spezifikation keine Definitionen
+für diesen Anwendungsfall. Es wäre möglich, dass ein Endpoint bei seiner erstmaligen Nut-
+zung Informationen über sich und seine Services an eine festgelegte Broker Adresse sendet.
+Dieser könnte dann Clients, die das Discovery Thema vorher abonniert haben, informieren
+und ihnen die Beschreibung weiterleiten. Falls der interessierte Client nicht online ist, wird er
+die Information jedoch nicht erhalten. Stattdessen könnte ein existierendes RD einen Broker
+als Proxy nutzen, um die Registration der Endpoints nicht direkt zu erhalten (siehe Abb. 7).
+Dadurch wird das RD entlastet. Ein Angreifer könnte dann durch eine DDoS Attacke nur den
+Broker treffen, wodurch zwar keine Registration mehr möglich ist, aber das RD weiterhin
+funktioniert.
+MQTT bietet die Vorteile, dass es ein offenes und leichtes Protokoll ist. Durch die feste
+Headergröße von 2 Bytes ist es auch für beschränkte Geräte nutzbar. Im Vergleich zu CoAP
+ist die Ressourcennutzung jedoch, auf Grund der Verwendung von TCP, höher. Zudem kann
+die Zuverlässigkeit der Nachrichten genau bestimmt werden (vgl. [Lampkin et al. 2012, 5]).
+Bei der Implementierung muss ein Thema für die Registration definiert werden und ein Format
+zur Beschreibung der Services gewählt werden. Dies ist möglich für eigene Entwicklungen
+aber hinderlich bei der Nutzung bestehender Endpoints, da diese das Thema nicht kennen.&lt;/p&gt;
+
+&lt;h4 id=&quot;constrained-resource-enviroment-resource-discovery&quot;&gt;Constrained Resource Enviroment Resource Discovery&lt;/h4&gt;
+&lt;p&gt;Die ’Constrained Resource Enviroment Resource Discovery’ (CoRE RD) Spezifikation stellt
+eine Erweiterung der Multicast CoAP Ausprägung dar. Sie beschreibt ein RD, welches über
+eine API mit unterschiedlichen Protokollen verwendet werden kann. Die Spezifikation nennt
+dabei zum Beispiel CoAP und HTTP. Für die Erklärung des Ansatzes soll CoAP dienen.
+Zur Beschreibung der Services wird zur Erklärung das CoRE Link Format genutzt. Dieses
+legt das Format des Payloads fest und stellt einen eigenen ’Internet Media Type’ in Form von
+’application/link-format’ dar (vgl. [Shelby 2012, 7]).
+Die Struktur eines Links besteht aus dem Pfad des Services in eckigen Klammern gefolgt von
+den beschreibenden Parametern, getrennt durch ein Semikolon. Mehrere Links werden durch
+ein Komma getrennt (vgl. [Shelby 2012, 7]).
+Ein Parameter kann mehrere Werte haben, wenn diese durch ein Leerzeichen getrennt werden.
+Der Parameter ’title’ ist eine menschenlesbare Beschreibung des Services, wohingegen der
+Parameter ’rt’ eine semantische und komplexere Beschreibung des Ressourcentyps darstellt
+(vgl. [Shelby 2012, 9]).
+Dieser könnte bei einem Temperatursensor auf eine Ontologie verweisen, welche die Ressour-
+ce Temperatur beschreibt. Der Parameter ’if’ dient zur Beschreibung des Interfaces. Mehrere
+Services, zum Beispiel Sensoren für verschiedene Eigenschaften, können über das gleiche
+Interface angesprochen werden (vgl. [Shelby 2012, 10]).
+Durch die Parameter ’rel’ und ’anchor’ können Beziehung zwischen Links beschrieben wer-
+den. Der Link in Zeile 1 aus Listing 4 sagt aus, dass die Sensor Ressource durch einen
+externen Link beschrieben wird. Der Link in Zeile 2 gibt einen alternativen Link für die
+Sensor Ressource an (vgl. [Shelby 2012, 14]).
+Wenn kein Relationen Parameter gesetzt ist, wird der Typ ’hosts’ angenommen, da meist
+Services beschrieben werden, die auch bei dem entsprechenden Server gehostet werden (vgl.
+[Shelby 2012, 8f]).
+Das CoRE Link Format ist ressourcensparend, da es kompakt aufgebaut ist. Allerdings ist es
+im Vergleich zu XML und JSON noch nicht sehr verbreitet.
+CoRE RD erweitert das CoRE Link Format um weitere Attribute, um den Endpoint und die
+Services genauer zu beschreiben.
+Für die Registration benötigt der Endpoint zunächst den Basis Pfad des RD, an welcher er
+sich anschließend anmeldet (vgl. [Shelby et al. 2016, 11]).
+Durch die Antwort erhält der Endpoint die IP-Adresse und die Basis URI des RD ’&amp;lt;/rd&amp;gt;’
+(siehe Listing 5 Zeile 7). Ist die IP-Adresse bekannt, muss der Request per Unicast an das RD
+gesendet werden, um die Basis URI zu erhalten.
+Die Registration erfolgt anschließend durch das Senden eines POST Requests an die Basis
+Adresse (vgl. [Shelby et al. 2016, 13], siehe Listing 6).
+Es muss mindestens der Name des Endpoints als Query Parameter ’ep’ gesetzt werden.
+Dieser muss innerhalb einer Domain eindeutig sein. Weitere optionale Query Parameter
+können die Domain ’d’, der Endpoint Typ ’et’, die Lebenszeit ’lt’ und der Kontext ’con’
+sein. Die Lebenszeit bezeichnet die Dauer der Gültigkeit der Registration in Sekunden und
+kann zwischen einer Minute und 71582788 Minuten liegen. Der Kontext stellt die URI des
+Endpoints dar, falls die Registration über einen Verwalter des Endpoints abläuft, welcher über
+eine andere IP-Adresse angesprochen wird. Die Domain ist der Geltungsbereich, zu welcher
+der Endpoint gehört (vgl. [Shelby et al. 2016, 16]).
+Der Payload beinhaltet eine Liste mit Services, welche der Endpoint anmelden möchte. Das
+Format des Payloads muss entweder dem CoRE Link Format, JSON CoRE Link Format oder
+CBOR CoRE Link Format entsprechen (vgl. [Shelby et al. 2016, 15]).
+Eine andere Möglichkeit zur Registration ist das dauerhafte Senden eines Registration Re-
+quests an alle verfügbaren RD durch die Multicast Adresse. Dieser wird jedoch an die
+’/.well-known/core’ Ressource gesendet, da der Pfad zum RD unbekannt ist. In der URI
+muss mindestens der Parameter Endpoint Name gesetzt sein. Der Payload des Requests muss
+zudem leer sein. Wenn das RD einen Request dieser Art erhält, sendet es einen Device to
+Device Discovery Request an die ’/.well-known/core’ Ressource des Endpoints (vgl. [Shelby
+et al. 2016, 17]).
+Wenn mehrere Endpoints zu einer Gruppe gehören, da sie zum Beispiel am selben Standort
+platziert sind oder die selbe Funktionalität haben, ist es möglich, eine Gruppe im RD zu
+registrieren. Dazu wird ein Gerät benötigt, welches als Verwalter der Gruppe dient. Eine
+weitere Voraussetzung ist die vorige Registration der einzelnen Endpoints. Der Registration
+Request wird vom Verwalter an die ’rd-group’ Ressource des RD gesendet und muss den
+Parameter ’gp’ als Gruppenname enthalten. Er kann die Parameter Kontext und Domain
+enthalten. Im Payload werden leere Links mit den Namen der zugehörigen Endpoints gesetzt
+(vgl. [Shelby et al. 2016, 28ff]).
+Anschließend können Clients das RD durch eine Anfrage an den Server durchsuchen. Ähnlich
+wie bei der Registration eines Endpoints, muss der Client das Discovery Interface des RD
+kennen. Dieses erhält er über die Ressource ’./well-known/core’. Dazu muss der Ressourcen-
+typ als Parameter ’rt’ mit ’core.rd-lookup’ angegeben werden (vgl. [Shelby et al. 2016, 13],
+siehe Listing 7).
+Die Discovery erfolgt durch das Senden eines GET Requests vom Client an diesen Pfad,
+welcher um den Typ erweitert wird (siehe Listing 8 Zeile 3). Der Client kann dabei nach den
+Typen Ressource ’/res’, Endpoint ’/ep’, Domain ’/d’ und Gruppe ’/gp’ suchen (vgl. [Shelby et
+al. 2016, 30]).
+Ohne Query Parameter gibt das RD die Menge aller Ergebnisse eines Suchtyps zurück. Such-
+möglichkeiten sind zum Beispiel der Name des Endpoints ’ep’, die Domain ’d’, der Name der
+Ressource ’res’, die Gruppe ’gp’, der Typ der Ressource ’rt’ oder der Typ des Endpoints ’et’.
+Zudem können selbst definierte Link Attribute aus der Registration verwendet werden, wenn
+zum Beispiel das CoRE Link Format verwendet wird. Durch die Verwendung der Parameter
+’page’ und ’count’ ist es weiterhin möglich, die Anzahl der Ergebnisse zu beschränken (vgl.
+[Shelby et al. 2016, 32]).
+Beim Austritt des Endpoints aus dem Netzwerk kann sich dieser durch einen DELETE Re-
+quest aus dem RD entfernen. Der Request erfolgt an den Pfad, den der Endpoint nach der
+erfolgreichen Registration erhalten hat (vgl. [Shelby et al. 2016, 20]). An den selben Pfad
+erfolgt das Ändern von Eigenschaften des Endpoints durch das Senden eines POST Requests
+(vgl. [Shelby et al. 2016, 18]).
+Die Vorteile dieser Ausprägung sind die Suchmöglichkeit, basierend auf Schlüssel-Wert
+Paaren, sowie die selben Vorteile der Multicast CoAP Ausprägung. Zudem sind die Prozesse
+umfangreich definiert, zum Beispiel durch die Beachtung von Gruppen und Gültigkeitsberei-
+chen.
+Durch die Verwendung von CoAP und daraus resultierend UDP ist das RD jedoch anfällig für
+UDP-Verstärkungsattacken (vgl. [Shelby et al. 2016, 37]).
+Bei der Nutzung von HTTP entfällt dieser Nachteil, aber damit auch der Vorteil, dass der
+Einsatz mit beschränkten Geräten unterstützt wird.&lt;/p&gt;
+
+&lt;h4 id=&quot;rd-mit-dem-extensible-messaging-and-presence-protocol&quot;&gt;RD mit dem Extensible Messaging and Presence Protocol&lt;/h4&gt;
+&lt;p&gt;Das Extensible Messaging and Presence Protocol (XMPP) ist ein offenes Kommunikations-
+protokoll, welches auf IP und TCP basiert. Es nutzt XML, um standardisiert Nachrichten
+auszutauschen.
+Um XMPP nutzen zu können, wird ein XMPP Server benötigt, welcher als Kommunika-
+tonsschnittstelle dient. Die Identifikation der Teilnehmer basiert nicht nur auf IP-Adressen,
+sondern wird durch einen ’Jabber Idenitifier’ (JID) erweitert. Die Syntax dieser JID ähnelt
+einer Emailadresse (vgl. [Kaes 2003, 1]).
+Mithilfe von XMPP können zwei Ausprägungen des Device to Servers Ansatzes implementiert
+werden. Die Spezifikation XEP-0030 definiert die Discovery zwischen zwei Teilnehmern, in
+welcher der Client mit Hilfe des XMPP Servers direkt den Endpoint anfragt (vgl. [Hildebrand
+et al. 2016, 2]).
+Die Spezifikation XEP-0347 definiert die Registration und die Discovery unter Nutzung
+eines zentralen RD, welches einen eigenen XMPP Teilnehmer darstellt. Die Spezifikation
+XEP-0347 wird im Folgenden untersucht.
+Der erste Schritt ist das Finden eines XMPP Servers. Dessen Adresse kann entweder festgelegt
+sein oder per Device to Device Ansatz innerhalb eines lokalen Netzwerkes gesucht werden
+(vgl. [Waher et al. 2017, 3ff]).
+Im Gegensatz zur Ausprägung CoRE RD erfolgt die Kommunikation zum RD nicht direkt
+zwischen den Teilnehmern, sondern durch die Vermittlung der Nachrichten durch einen
+XMPP Server. Die JID des RD muss allerdings bekannt sein, um Nachrichten an das RD
+senden zu können. Die Registration erfolgt daraufhin durch das Senden eines Requests mit
+dem Tag ’register’, welcher weitere Metatags mit Informationen über den Endpoint und die
+Services beinhaltet (vgl. [Waher et al. 2017, 6], siehe Listing 9).
+XMPP spezifiert bereits viele Metatags, welche zur Beschreibung eines Endpoints und der
+Services verwendet werden können (siehe Anhang G). Der Tag ’SN’ kennzeichnet zum
+Beispiel die Seriennummer des Endpoints (siehe Listing 9 Zeile 4). Neben diesen können
+eigene Tags definiert werden. Der Tagname darf dabei maximal 32 Zeichen lang sein. Die
+Werte der Tags haben eine maximale Länge von 128 Zeichen (vgl. [Waher et al. 2017, 17]).
+Die Discovery erfolgt durch das Senden eines Discovery Requests an das RD (siehe Listing
+10). Innerhalb des Tags ’search’ ab Zeile 3 ist es möglich, Suchparameter festzulegen. Dabei
+können verschiedene numerische und zeichenbasierte Operatoren als auch Kardinalitäten
+verwendet werden (vgl. [Waher et al. 2017, 12f], siehe Anhang H).
+Der Suchparameter ’numRange’ in Zeile 6 und 7 legt zum Beispiel einen Wertebereich für
+die Längen- und Breitengrade des Endpoints fest.
+Weiterhin werden die Prozesse zum Ändern von Eigenschaften und dem Entfernen des
+Endpoints aus dem RD definiert. Dies geschieht durch die Nutzung eines ’unregister’ oder
+’update’ Tags (vgl. [Waher et al. 2017, 10f,14], siehe Anhang E und F).
+Die Nutzung eines RD mittels XMPP bietet umfangreiche Suchmöglichkeiten. Sie ist jedoch
+nicht für beschränkte Geräte geeignet, da TCP und große Payloads durch die Verwendung von
+XML mehr Ressourcen benötigen. Zudem kann die Einrichtung nicht automatisch ablaufen,
+da es keine Standard JID für das RD gibt und auch keine Möglichkeit diese dynamisch zu
+finden. Diese Funktionalität könnte durch die Verwendung eines Device to Device Ansatzes
+ergänzt werden.&lt;/p&gt;
+
+&lt;h4 id=&quot;hypercat&quot;&gt;Hypercat&lt;/h4&gt;
+&lt;p&gt;Eine weitere Möglichkeit zur Beschreibung von Endpoints und Services ist die Nutzung der
+Hypercat Sepzifikation. Hypercat ist ein JSON-basierendes Format, um Services in Form
+von URI darzustellen und in einem Katalog als RD zu verwalten. Diese werden durch RDF-
+ähnliche Aussagen beschrieben (vgl. [Jaffey et al. 2016, 1f]).
+Ein Hypercat Katalog ist ein JSON Objekt mit den Objekten ’items’, welches eine Liste mit
+Services beinhaltet und ’catalogue-metadata’ (vgl. [Jaffey et al. 2016, 5], siehe Anhang C).
+Die Elemente der Serviceliste bestehen wiederum aus den Objekten ’href’ für die URI des
+Services und ’item-metadata’ als Liste mit Parametern. Diese werden durch die Eigenschaften
+’rel’ und ’val’ beschrieben, wobei ’rel’ den Parameter, ähnlich wie ein RDF Prädikat, darstellt
+und ’val’ den Wert, ähnlich wie ein RDF Objekt, darstellt. Die jeweiligen Werte werden als
+URI dargestellt (vgl. [Jaffey et al. 2016, 6], siehe Listing 11).
+Hypercat definiert zudem Prozesse zur Registration und Discovery. Der Webserver wird über
+TCP und HTTP angesprochen und wird über die Methoden GET und POST zur Registration
+und Discovery genutzt. Das RD ist unter dem Basis Pfad ’/cat’ ansprechbar.
+Der Endpoint kann sich durch einen POST Request an diesen Pfad registrieren, indem es das
+JSON Objekt ’items’ im Payload mitsendet. Das Objekt beinhaltet die Services des Endpoints.
+Das RD entscheidet, in welchem Katalog die Services gespeichert werden (vgl. [Jaffey et al.
+2016, 10]).
+Die Discovery erfolgt entweder durch einen GET Request an den Hauptkatalog unter der ’/cat’
+Ressource oder einen untergeordneten Katalog (vgl. [Jaffey et al. 2016, 10]). Zudem ist eine
+Schlüssel-Wert Suche durch Query Parameter in der URI des GET Requests möglich. Die
+Unterstützung zur Suche muss der Katalog in den Katalog Metadaten unter der Eigenschaft
+’urn:Xhypercat:rels:supportsSearch’ angeben. Die Ergebnisse werden basierend auf der In-
+tersektion der Parameter gefiltert. Mögliche Parameter sind ’rel’, ’val’ und ’href’. Das RD
+antwortet mit einem Katalog, welcher die Services beinhaltet (vgl. [Jaffey et al. 2016, 12f]).
+Durch die Nutzung von TCP ist eine Verschlüsselung durch TLS möglich. Die Spezifikation
+sieht zudem die Unterstützung eines ’Authorization Headers’ oder die Nutzung eines ’xapikeys
+Headers’ vor, um den Zugriff auf das RD zu beschränken (vgl. [Jaffey et al. 2016, 11]).
+Die Hypercat Spezifikation ist jedoch nicht für den Einsatz mit beschränkten Geräten geeignet,
+da es auf TCP basiert. Die Prozesse zur Registration und Discovery sind im Vergleich zu den
+Ausprägungen RD mit XMPP und CoRE RD zudem einfacher konzipiert.
+Das Format kann jedoch zur Beschreibung von Ressourcen in anderen Ansätze verwendet
+werden. Der Vorteil liegt in der Nutzung von JSON, da dieses sehr gut unterstützt wird.&lt;/p&gt;
+
+&lt;h3 id=&quot;verteiltes-resource-directory&quot;&gt;Verteiltes Resource Directory&lt;/h3&gt;
+
+&lt;p&gt;Die Funktionsweise eines verteilten RD basiert grundlegend auf den
+selben Prozessen wie bei der Nutzung eines zentralen RD. Der Unterschied
+ist die Verwendung mehrerer Peers, welche zusammen das verteilte RD
+darstellen (siehe Abb. 8). Dies wird durch die Nutzung einer verteilten
+Hashtabelle realisiert. Anstelle eines Client-Server Prinzips entspricht
+dieser Ansatz somit dem Peer-to-Peer Prinzip (vgl. [@Jimenez2013 1]).
+Zur Untersuchung des Ansatzes dient die Ausprägung CoRE RD in Verbindung
+mit dem Peer-to-Peer Ansatz.
+Ähnlich wie die CoRE RD Spezifikation benötigt der Endpoint ein
+Registration Interface, welches er zum Beispiel durch einen Unicast oder
+Multicast GET Request an die ‘/.well-known/core’ Ressource eines Peers
+erhält (vgl. [@Jimenez2013 4]). Die Registration erfolgt durch das
+Senden eines POST Requests an einen Peer, welcher die Request URI als
+Hash in der verteilten Hashtabelle als Schlüssel und den Payload des
+Requests mit den verfügbaren Services als Wert verwendet. Der Query
+Parameter Endpoint Name ‘ep’ muss zur Identifikation des Endpoints
+gesetzt werden (vgl. [@Jimenez2013 5]). Die Discovery erfolgt durch das
+Senden eines GET Requests an einen Peer, welcher im RD nach dem Hash der
+Request URI sucht. Das verteilte RD findet den Peer, welcher den Wert zu
+dem Hashschlüssel besitzt und gibt den Wert zurück (vgl. [@Jimenez2013
+6]). Ein Vorteile dieses Ansatzes ist die Skalierung bei zunehmender
+Anzahl von Endpoints, da kein zentraler Server überlastet wird. Eine
+weitere Eigenschaft des verteilten RD ist die hohe Verfügbarkeit, da es
+selbst bei Ausfall mehrerer Peers noch erreichbar ist (vgl. [@Cirani2014
+5]). Nachteil ist die direkte Registration der Endpoints im Netz, da die
+URI des Registration Requests als Hash berechnet wird. Diese ändert sich
+jedoch durch die Verwendung verschiedener Query Parameter, wodurch eine
+konsistente Parameterverwendung benötigt wird.&lt;/p&gt;
+
+&lt;h2 id=&quot;vergleich-und-integration&quot;&gt;Vergleich und Integration&lt;/h2&gt;
+
+&lt;p&gt;Die Auswahl eines Ansatzes zur Bereitstellung von IoT Services variiert
+je nach Anwendungsfall und beteiligten Geräten. Im Smart Home Bereich
+reichen Ansätze aus dem Device to Device Umfeld, da hier hauptsächlich
+im lokalen Netzwerk mittels IP oder über kurze Distanzen, zum Beispiel
+mit Zigbee oder Bluetooth, kommuniziert wird. Die Ansätze unterliegen
+jedoch drei Einschränkungen. Sie sind meist nur in kurzen Distanzen
+nutzbar, bieten keine umfangreichen Suchmöglichkeiten und die Discovery
+von Endpoints wird durch Ruhezustände erschwert. Der nicht-IP-basierte
+Ansatz eignet sich auf Grund der Verwendung von ressourcensparenden
+Technologien vor allem für beschränkte Geräte. Die vielen
+unterschiedlichen Ausprägungen erschweren jedoch die Kommunikation,
+sobald mehr als eine Spezifikation verwendet wird. Endpoints aus dem
+Zigbee Bereich können zum Beispiel nicht über Z-Wave kommunizieren. Der
+IP-basierte Ansatz bietet dem entgegen den Vorteil, dass Endpoints,
+welche IP unterstützen, mehrere Ausprägungen des Ansatzes verwenden
+können. Im Smart City und Smart Energy Bereich sind Ansätze aus dem
+Device to Server und Server to Server Bereich sinnvoller, da mehr Geräte
+beteiligt sind und auch über mehrere Standorte und somit zerstreute
+Netzwerke kommuniziert wird. Der Aspekt der Skalierung ist zudem sehr
+wichtig, um geringe Latenzen und die Erreichbarkeit der Plattform zu
+gewährleisten. Zudem muss die Sicherheit der gesamten Plattform bedacht
+werden, da durch die Erreichbarkeit aus dem Internet Angriffsziele
+entstehen können. Die Nutzung eines RD bietet den Vorteil einer
+dauerhaften Speicherung, wodurch auch Endpoints entdeckt werden können,
+die temporär nicht ansprechbar sind. Ein zentrales RD ermöglicht darauf
+aufbauend eine komplexere Suche und die Nutzung von Ontologien zur
+Beschreibung der Services. Zentrale Server sind jedoch anfällig für
+DDoS-Attacken. Verteilte RD bieten dem entgegen eine bessere Skalierung
+und eine höhere Verfügbarkeit aber schlechtere Suchmöglichkeiten.
+Kriterien zum Vergleich der Ausprägungen sind die verwendeten
+Protokolle, die Reichweite, die Suchmöglichkeiten, die Eignung für
+beschränkte Geräte, Sicherheit und Datenschutz, die Existenz von
+Standards zur Beschreibung der Services, die Identifikation der
+Endpoints, sowie Möglichkeiten zur Speicherung und Skalierung (siehe
+Anhang I). Die Auswahl der Kriterien baut auf dem Kriterienkatalog von
+[@Broring2016] auf. Um verschiedene Geräte und Anwendungsfälle verwenden
+zu können, kann eine Integration der Ansätze sinnvoll sein. Die
+Integration von Device to Device Ansätzen und Device to Server Ansätzen
+ist zum Beispiel notwendig, wenn die IP-Adresse des RD in einem lokalen
+Netzwerk nicht bekannt ist und eine direkte Registration nicht möglich
+ist. Die Registration kann dann auf vier verschiedenen Wegen erfolgen
+(siehe Abb. 9).
+Wird eine Device to Device Discovery ausgehend vom Endpoint genutzt,
+agiert das RD als Endpoint und erhält den Discovery Request per
+Multicast, woraufhin er dem ursprünglichen Endpoint antwortet. Die
+Ausprägung CoRE RD definiert zum Beispiel bereits eine Integration mit
+Multicast CoAP. Der Endpoint ermittelt die IP-Adresse durch das Senden
+eines Multicast GET Requests an die ‘./well-known/core’ Ressource.
+Daneben wird der Query Parameter Ressourcen Typ ‘rt’ mit ‘core.rd’
+angegeben. Dadurch antworten nur CoAP Server mit Zugang zu einem RD
+(vgl. [Shelby et al. 2016, 11], siehe Anhang A). Geht die Device to
+Device Discovery vom RD aus, erfolgt der Prozess umgekehrt. Beide Fälle
+wären zum Beispiel durch die Nutzung von Multicast CoAP und dem CoRE
+Link Format möglich. In beiden Fällen muss die Discovery aktiv gestartet
+werden. Dies geschieht entweder durch den Startvorgang des Endpoints
+oder durch das regelmäßige Suchen des RD nach Endpoints. Durch das
+Bekanntmachen des Endpoints oder des RD wird der andere Teilnehmer über
+die Existenz informiert. Dies erfolgt ebenfalls beim Start des Endpoints
+oder periodisch durch das RD. [@Cirani2014] nutzt dafür DNS-SD mit zwei
+verschiedenen Service Typen, um die Existenz des entsprechenden
+Teilnehmers zu kommunizieren. Für die folgende Registration nutzt
+[@Cirani2014] Unicast CoAP und das CoRE Link Format (vgl. [@Cirani2014
+9]). Die Ausprägung RD mit XMPP definiert diese Möglichkeit ebenfalls.
+Das RD sendet dazu ‘DNS Records’ mit dem Service Typen ‘xmpp-client’,
+welcher bei der IANA registriert ist. Die anderen Teilnehmer können
+dadurch den XMPP Server finden (vgl. [@Waher2017 4f], siehe Anhang D).
+Die Ausprägung CoRE RD kann ebenfalls mittels DNS-SD genutzt werden. Die
+Spezifikation beschreibt dazu einen Client, welcher die Einträge im RD
+zu DNS-SD übersetzt. Zunächst fragt dieser die Services beim RD ab und
+sendet die entsprechenden ‘DNS Records’ pro Service im Netzwerk aus. Der
+Parameter Ressourcen Typ ‘rt’ wird dabei als Service Typ verwendet (vgl.
+[Shelby et al. 2016, 36]). Wenn der Endpoint nicht weiß, wie er sich
+aktiv registriert, ist die Bekanntmachung des Endpoints sinnvoller, da
+er dazu nur eine Ressource mit der Beschreibung bedienen muss und der
+Server die Informationen erfragt (vgl. [Shelby et al. 2016, 16]). Die
+Bekanntmachung durch den Endpoint ist zudem besser als die Discovery
+durch das RD, da das RD nicht weiß, ob der Endpoint zum Zeitpunkt der
+Discovery ansprechbar ist oder nicht. Zum Beispiel wäre die
+Implementierung eines zentralen RD möglich, welches durch einen Endpoint
+und den Device to Server Ansatz oder durch ein RD und den Server to
+Server Ansatz gefüllt wird. Innerhalb der lokalen Netzwerke erfolgt die
+Registration der Endpoints entweder direkt an ein lokales RD oder
+indirekt durch das RD (siehe Abb. 10). Dies hat den Vorteil, dass auch
+Endpoints unterstützt werden, die nicht in der Lage sind, sich selber zu
+registrieren oder sich nur in einem lokalen Netzwerk registrieren
+können.
+[@Jara2013] beschreibt eine skalierbare Architektur, welche auf
+zentralen RD basiert. Die Discovery erfolgt durch einen Such-Server,
+basierend auf ‘ElasticSearch’, welcher die Integration mehrerer RD
+ermöglicht. Durch die Vorlagerung dieses Servers wird die Skalierung der
+Discovery gewährleistet (vgl. [@Jara2013 6]). Allerdings besteht das
+Skalierungsproblem weiterhin bei der Registration. Eine weitere
+Möglichkeit ist die Nutzung von vielen lokalen RD, welche in einem
+Peer-to-Peer Netz miteinander verbunden sind. Die Aufgabe des zentralen
+RD wäre dann verteilt auf die Lokalen. [@Cirani2014] beschreibt den
+Aufbau einer globalen Peer-to-Peer Architektur bestehend aus zwei Arten
+von ‘IoT Gateways’ und den Endpoints. Die ‘IoT Gateways’ stellen RD in
+lokalen Netzwerken dar, welche zu gleich als Peers in einem global
+verteilten RD agieren. Die ‘IoT Gateways’ kommunizieren über
+verschiedene Protokolle wie CoAP und HTTP mit den Endpoints (vgl.
+[@Cirani2014 4]). Der ‘Distributed Location Service’ stellt die erste
+Schicht des Peer-Netzwerkes dar und beinhaltet die URI zum Ansprechen
+der Services. Die ‘Distributed Geographic Table’ stellt die zweite
+Schicht dar und beinhaltet die Standorte der Endpoints (vgl.
+[@Cirani2014 5]). Der Vorschlag von [@Cirani2014] nutzt die Vorteile des
+verteilten RD, indem es eine hochverfügbare und skalierbare Architektur
+bereitstellt. Die Suche nach Services ist jedoch zunächst auf
+geographische Standorte beschränkt. Erst nach dem Entdecken der ‘IoT
+Gateways’ der entsprechenden Standorte ist eine Suche mit mehr
+Parametern basierend auf der CoRE RD Ausprägung möglich. Durch eine
+Integration mehrerer Ansätze kann zudem sicher gestellt werden, dass
+alle Endpoints gefunden werden. Eine Integration zwischen dem
+nicht-IP-basierten Ansatz und dem IP-basierten Ansatz ist zum Beispiel
+wichtig, um WPAN, wie Zigbee, im Kontext einer IP-basierten IoT
+Plattform nutzen zu können. Eine Möglichkeit stellt ein Gateway zwischen
+zwei Protokollen dar, welches die Nachrichten übersetzt (vgl.
+[@Mitsugi2011 2]). Dazu wäre es zum Beispiel möglich einen Zigbee Router
+zu einem Gateway umzuwandeln, welcher Nachrichten zwischen Zigbee und
+UPnP umwandelt. Die Anbindung zu IP kann je nach Gerätetyp des Routers
+durch unterschiedliche Technologien, zum Beispiel WLAN oder 6LoWPAN,
+geschehen. Die Spezifikation 6LoWPAN stellt eine Alternative zu Zigbee
+dar und ist ein Protokoll der Sicherungs- und Vermittlungsschicht. Es
+bietet die Unterstützung von IP auf drahtloser Sensorebene an und eignet
+sich besonders für beschränkte Geräte (vgl. [@Kushalnagar2007 2]).
+6LoWPAN besitzt selber noch keine Definitionen zur Registration und
+Discovery (vgl. [@Kushalnagar2007 6]). Es können aber andere IP-basierte
+Device to Device Ansätze verwendet werden. Die Spezifikation Zigbee IP
+basiert weiterhin auf 6LoWPAN und erweitert es um die weiteren OSI
+Schichten. Sobald eine IP-Verbindung besteht, kann das Gateway über
+MQTT, UPnP, HTTP, CoAP oder andere Protokolle angesprochen werden. Die
+Wahl des Protokolls ist abhängig davon, ob das Gateway ein
+leistungsstarkes Gerät ist oder als Teil des Endpoints zu den
+beschränkten Geräten gehört. Der Nachteil eines Gateways zur Übersetzung
+ist jedoch, dass ein neuer Endpoint oder Service erst eingerichtet
+werden müssen (vgl. [@Mitsugi2011 2]). Der Parameter Ressourcen Typ in
+der Ausprägung CoRE RD müsste zum Beispiel manuell gesetzt werden. Die
+zweite Möglichkeit ist die Nutzung eines Gateways, welches die
+Nachrichten weiterleitet anstatt sie zu übersetzen. Dies ist mittels
+MQTT-SN möglich. Dieses Protokoll ist eine Erweiterung des MQTT
+Protokolls und ermöglicht dessen Nutzung in WPAN, indem es auf
+Protokollen aus verschiedenen OSI Schichten, wie 6LoWPAN und UDP oder
+Zigbee, aufbaut. Es kann somit zur Integration der IP-basierten und
+nicht-IP-basierten Ansätze und als Erweiterung von 6LoWPAN als eigener
+Ausprägung dienen. Es wird ein Gateway verwendet, welches mittels TCP
+und MQTT mit einem Broker und mittels MQTT-SN mit den Endpoints
+verbunden ist (vgl. [@Govindan2015 1]). Das Gateway muss bei dieser
+Möglichkeit jedoch TCP nutzen und kann somit nicht direkt über einen
+Endpoint funktionieren. [@Mitsugi2011] beschreibt eine ähnliche
+Architektur, in welcher Zigbee mit UPnP mittels CoAP verbunden wird.
+Dazu wird ein Gateway verwendet, welches über SSDP und UPnP ansprechbar
+ist. Die Endpoints senden zur Registration Zigbee Nachrichten, welche im
+CoAP Format dargestellt werden. Das Gateway leitet die Nachrichten
+anschließend weiter. Der Vorteil dieses Ansatzes ist die verringerte
+Komplexität auf Seite des Gateways. Allerdings ist eine Anpassung der
+Endpoints notwendig, zum Beispiel, um CoAP Nachrichten auf Basis von
+Zigbee zu senden.&lt;/p&gt;
+
+&lt;h2 id=&quot;evaluation&quot;&gt;Evaluation&lt;/h2&gt;
+
+&lt;p&gt;Im Experiment liefen die Prozesse erfolgreich ab. Der SmartPi als
+Endpoint registrierte sich beim RD und die Services wurden vom Client
+gefunden. Der Client nutzte die Informationen des RD, um den SmartPi
+anschließend anzusprechen. Bei der Durchführung des Experiments wurden
+jedoch zwei Probleme der Spezifikation offensichtlich. Bei der Discovery
+erhält der Client zwar die URI des Services, aber nicht die zu
+verwendende Methode. Es kann entweder angenommen werden, dass die
+Methode GET verwendet werden soll, oder es kann ein neuer Parameter, zum
+Beispiel ‘method’, bei der Registration eingeführt werden. Die Anpassung
+des Parameters Kontext ist ebenfalls möglich. Dieser müsste dann jedoch
+obligatorisch sein. Zudem muss der Endpoint über eine statische
+IP-Adresse verfügen, damit der Client ihn direkt ansprechen kann. Die
+Nutzung von Endpoints und direkter Registration in einem lokalen
+Netzwerk mit dynamischen IP-Adressen ist somit nicht möglich.
+Stattdessen ist es möglich, dass ein lokales RD als Verwalter der
+Endpoints die Registration übernimmt und im Parameter Kontext die eigene
+URI angibt und als Pfad den Endpoint Namen. Ein Client fragt dann das
+lokale RD an, welches als Gateway dient und wiederum den Endpoint
+anfragt. Die Umsetzung eines Ansatzes zur Registration und Discovery
+anhand des Prototyps hat weiterhin verdeutlicht, dass die Nutzung
+standardisierter Prozesse wichtig für die Interoperabilität des RD ist.
+Das RD des Prototyps kann in einer anwendungsbezogenen Architektur Teil
+einer größeren IoT-Plattform sein. Diese würde über verschiedene
+Schnittstellen die unterschiedlichen Ansätze implementieren und in einer
+oder mehreren Datenbasen die Informationen speichern. Durch die
+Implementierung zeigte sich zudem, dass die eindeutige Identifizierung
+der Endpoints, die Beschreibung und die Speicherung der Informationen
+eine wichtige Rolle spielen. Die Beschreibung der Endpoints und Services
+ist bei vielen Ausprägungen unterschiedlich und kann auf XML, RDF, JSON
+oder dem CoRE Link Format basieren. Diese unterscheiden sich
+hinsichtlich der Komplexität und dem Umfang der Beschreibung, sowie der
+Eignung für beschränkte Geräte und der Verbreitung des Formates. Die
+Identifikation des Endpoints geschieht beim Prototypen über die
+IP-Adresse, welche im Device to Server Umfeld statisch ist. Dies
+funktioniert jedoch nur, wenn sich der Endpoint direkt über das Internet
+registriert. Eine Integration mit Device to Device Ansätzen erschwert
+die Identifikation, da der nicht-IP-basierte Ansatz keine IP-Adresse
+unterstützt und sich die IP-Adresse im lokalen Netzwerk des IP-basierten
+Ansatzes ändern können. Zudem gibt es Ausprägungen des IP-basierten
+Device to Device Ansatzes und des Device to Server Ansatzes, welche
+neben der IP-Adresse weitere Identifikationsmöglichkeiten, wie UUID oder
+JID, nutzen. Der Prototyp nutzt das CoRE Link Format und RDF zur
+Beschreibung und speichert die Eigenschaften des Endpoints und der
+Services mithilfe von zwei Datenmodellen. Das relationale Datenmodell
+eignet sich auf Grund der hohen Verbreitung und Mächtigkeit. Der
+Prototyp nutzt dazu zwei Tabellen, um jeweils die Endpoints und die
+Services zu speichern. Die ID des Endpoints dient dabei als
+Fremdschlüssel. Das graphische Datenmodell in Verwendung mit RDF kann
+für eine semantische Speicherung und Discovery genutzt werden. Eine IoT
+Plattform müsste für die verschiedenen Ansätze und Beschreibungsformate
+eigene Datenmodelle nutzen oder eine Übersetzung in ein einheitliches
+Format durchführen. Der SmartPi als Endpoint war zudem ein sehr
+interessantes Gerät, da er vor dem Experiment erst zusammen gebaut
+werden musste. Weiterhin ermöglicht er die Nutzung der Smart Meter
+Funktionalität in privaten Anwendungsfällen und ließ sich sehr gut bei
+der Entwicklung des Prototyps nutzen.&lt;/p&gt;
+
+&lt;h1 id=&quot;fazit&quot;&gt;Fazit&lt;/h1&gt;
+
+&lt;p&gt;Die Nutzung des IoT bietet zahlreiche Chancen, sofern eine
+funktionierende und skalierbare Infrastruktur aufgebaut ist. In dieser
+sollte es möglich sein, ohne menschliche Hilfe eine Vielzahl an
+Endpoints zum Netzwerk hinzuzufügen. Weiterhin müssen die Endpoints und
+die angebotenen Services maschinenlesbar und standardisiert beschrieben
+werden, um die unterschiedlichen Arten von Endpoints bedienen zu können.
+In dieser Arbeit wurden verschiedene Ansätze betrachtet, welche je nach
+Anwendungsfall unterschiedliche Vor- und Nachteile haben. Um die
+Vorteile mehrerer Ansätze zu nutzen, kann eine Integration der Ansätze
+sinnvoll sein. Weiterhin ist die Nutzung mehrerer Ausprägungen der
+Ansätze hilfreich, um mehrere Schnittstellen anbieten zu können.
+Ressourcensparende Ausprägungen wie CoRE RD bieten sich für den Prozess
+der Registration von beschränkten Geräten an. Die Nutzung von Hypercat
+und XMPP, welche mehr Ressourcen benötigen, ist wiederum bei der
+Discovery durch leistungsfähigere Clients sinnvoll. Die Spezifikation
+CoRE RD wurde im Prototypen um eine umfangreichere Discovery erweitert,
+wodurch diese auch für leistungsfähigere Clients geeignet ist. Basierend
+auf dem Umfang der Spezifikation, der Eignung für beschränkte Geräte und
+der zunehmenden Verbreitung von CoAP stellt sie die
+erfolgversprechendste Lösung für eine IP-basierte Registration und
+Discovery dar. Durch die Nutzung von IPv6 und 6LoWPAN kann weitergehend
+davon ausgegangen werden, dass die Nutzung von IP auch in WPAN steigen
+wird. Eine Folge wird sein, dass der IP-basierte Device to Device Ansatz
+den nicht-IP-basierten Ansatz verdrängen wird. Nach den Prozessen der
+Registration und Discovery ist der nächste Schritt die Speicherung und
+Verwaltung der Endpoints und Services. Dies kann durch die Verwendung
+von Ontologien geschehen, um eine semantische und wissensbasierte
+Nutzung des IoT zu ermöglichen. Das ‘Semantic Web of Things’ basiert auf
+den Ansätzen und baut eine umfangreichere Suche darauf auf (vgl.
+[@Ruta2013 1]). Eine Herausforderungen bei der Bearbeitung des Themas
+war die Unterscheidung zwischen den einzelnen Ausprägungen der Ansätze
+und den von ihnen genutzten Protokollen. Die Ausprägung RD mit XMPP
+bezieht sich zum Beispiel nur auf die Verwendung des Protokolls XMPP,
+während die Ausprägung CoRE RD unabhängig vom genutzten Protokoll, wie
+HTTP oder CoAP, ist. Eine weitere Herausforderung war die Unterscheidung
+zwischen den Ausprägungen und den Standards zur Beschreibung von
+Endpoints und Services. Die Hypercat Spezifikation sowie SSDP stellen
+zum Beispiel Ausprägungen der entsprechenden Ansätze dar, beinhalten
+aber auch eine eigene Formatierung der Beschreibung. CoRE RD empfiehlt
+zwar die Verwendung des CoRE Link Formats, bleibt aber trotzdem
+flexibel. Durch die Implementierung des Prototyps wurde offensichtlich,
+dass die Themen Identifikation der Endpoints, Beschreibungsformate und
+die verwendeten Datenmodelle weitergehend betrachtet werden können. Für
+eine umfangreichere Untersuchung der Ansätze sind auch die Themen
+Sicherheit und Verwaltung von Endpoints interessant. Die Prozesse der
+Registration und Discovery sollten Mechanismen zur Verschlüsselung und
+zur Authentifizierung der Nutzer unterstützen, um den Datenschutz in der
+IoT Plattform zu gewährleisten. Die Discovery könnte zum Beispiel
+verschiedene Rollen der Nutzer berücksichtigen, um die Endpoints vor
+bestimmten Nutzergruppen zu verbergen. Weiterhin ist die Möglichkeit zur
+Verwaltung eines Endpoints durch einen zusätzlichen Verwalter
+interessant, um die beschränkten Geräte besser integrieren zu können.
+Ein leistungsfähigerer Verwalter würde sich um die Registration mehrerer
+Endpoints kümmern. Dies hätte eine höhere Zuverlässigkeit der
+Registration zur Folge, aber auch die Anschaffung eines zusätzlichen
+Gerätes.&lt;/p&gt;</content><author><name></name></author><summary type="html">Das Thema dieser Arbeit ist die Untersuchung verschiedener Ansätze zur Registration und Service Discovery im Internet of Things. Das Internet of Things besteht aus einer Vielzahl von verschiedenen Geräten, welche unterschiedliche Technologien nutzen und somit über unterschiedliche Wege identifizierbar und ansprechbar sind. Um diese Geräte ohne menschliche Hilfe und möglichst automatisch nutzen zu können, gibt es verschiedene Möglichkeiten, sie zu finden. Dafür müssen sich die Geräte je nach genutztem Ansatz registrieren. Anschließend können Interessenten nach den Geräten und den angebotenen Services suchen und mithilfe maschinenlesbarer Beschreibung ansprechen. Das Ziel der Arbeit ist der Vergleich der unterschiedlichen Ansätze und eine Untersuchung von Integrationsmöglichkeiten. Aufbauend auf der Literaturrecherche soll in einem Prototypen eine identifizierte Lösung umgesetzt werden. Schlüsselwörter: Registration, Discovery, Internet of Things</summary></entry></feed>
